@@ -1,0 +1,297 @@
+package com.example.pkiservicebackend.model;
+
+import com.example.pkiservicebackend.certificate.CertificateRole;
+import com.example.pkiservicebackend.certificate.CertificateStatus;
+import com.example.pkiservicebackend.certificate.TypeOfEntity;
+import jakarta.persistence.*;
+
+import java.util.Date;
+
+@Entity
+public class CertificateData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column
+    private String firstName;
+
+    @Column
+    private String lastName;
+
+    @Column
+    private String organization;
+
+    @Column
+    private String organizationUnit;
+
+    @Column
+    private String country;
+
+    @Column(unique = true)
+    private String email;
+
+    @Enumerated(value = EnumType.STRING)
+    private TypeOfEntity typeOfEntity;
+
+    @Enumerated(value = EnumType.STRING)
+    private CertificateRole certificateRole;
+
+    @Transient
+    private String firstNameSubject;
+
+    @Transient
+    private String lastNameSubject;
+
+    @Transient
+    private String organizationSubject;
+
+    @Transient
+    private String organizationUnitSubject;
+
+    @Transient
+    private String countrySubject;
+
+    @Transient
+    private String emailSubject;
+
+    @Column
+    private boolean[] keyUsage;
+
+    @Column
+    private boolean[] extendedKeyUsage;
+
+    @Enumerated(value = EnumType.STRING)
+    private CertificateStatus certificateStatus;
+
+    @Column
+    private Long parent;
+
+    @Column
+    Date startDate;
+
+    @Column
+    Date expiringDate;
+
+    public CertificateData() {
+    }
+
+    public CertificateData(String firstName, String lastName, String organization, String organizationUnit,
+                                String country, String email, String firstNameSubject,
+                                String lastNameSubject, String organizationSubject, String organizationUnitSubject,
+                                String countrySubject, String emailSubject,
+                                boolean[] keyUsage,boolean[] extendedKeyUsage) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.organization = organization;
+        this.organizationUnit = organizationUnit;
+        this.country = country;
+        this.email = email;
+        this.firstNameSubject = firstNameSubject;
+        this.lastNameSubject = lastNameSubject;
+        this.organizationSubject = organizationSubject;
+        this.organizationUnitSubject = organizationUnitSubject;
+        this.countrySubject = countrySubject;
+        this.emailSubject = emailSubject;
+        this.certificateStatus = CertificateStatus.VALID;
+        this.keyUsage = keyUsage;
+        this.extendedKeyUsage = extendedKeyUsage;
+    }
+
+    public CertificateData(String firstName, String lastName, String organization, String organizationUnit,
+                                String country, String email, TypeOfEntity typeOfEntity,
+                                CertificateRole certificateRole,boolean[] keyUsage,boolean[] extendedKeyUsage) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.organization = organization;
+        this.organizationUnit = organizationUnit;
+        this.country = country;
+        this.email = email;
+        this.typeOfEntity = typeOfEntity;
+        this.certificateRole = certificateRole;
+        this.certificateStatus = CertificateStatus.VALID;
+        this.keyUsage = keyUsage;
+        this.extendedKeyUsage = extendedKeyUsage;
+    }
+
+    public CertificateData(Long id, String firstName, String lastName, String organization, String organizationUnit, String country, String email, TypeOfEntity typeOfEntity, CertificateRole certificateRole, String firstNameSubject, String lastNameSubject, String organizationSubject, String organizationUnitSubject, String countrySubject, String emailSubject, boolean[] keyUsage, boolean[] extendedKeyUsage, CertificateStatus certificateStatus, Long parent, Date startDate, Date expiringDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.organization = organization;
+        this.organizationUnit = organizationUnit;
+        this.country = country;
+        this.email = email;
+        this.typeOfEntity = typeOfEntity;
+        this.certificateRole = certificateRole;
+        this.firstNameSubject = firstNameSubject;
+        this.lastNameSubject = lastNameSubject;
+        this.organizationSubject = organizationSubject;
+        this.organizationUnitSubject = organizationUnitSubject;
+        this.countrySubject = countrySubject;
+        this.emailSubject = emailSubject;
+        this.keyUsage = keyUsage;
+        this.extendedKeyUsage = extendedKeyUsage;
+        this.certificateStatus = certificateStatus;
+        this.parent = parent;
+        this.startDate = startDate;
+        this.expiringDate = expiringDate;
+    }
+
+    public boolean[] getExtendedKeyUsage() {
+        return extendedKeyUsage;
+    }
+
+    public void setExtendedKeyUsage(boolean[] extendedKeyUsage) {
+        this.extendedKeyUsage = extendedKeyUsage;
+    }
+
+    public boolean[] getKeyUsage() {
+        return keyUsage;
+    }
+
+    public void setKeyUsage(boolean[] keyUsage) {
+        this.keyUsage = keyUsage;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstNameSubject() {
+        return firstNameSubject;
+    }
+
+    public void setFirstNameSubject(String firstNameSubject) {
+        this.firstNameSubject = firstNameSubject;
+    }
+
+    public String getLastNameSubject() {
+        return lastNameSubject;
+    }
+
+    public void setLastNameSubject(String lastNameSubject) {
+        this.lastNameSubject = lastNameSubject;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public String getOrganizationUnit() {
+        return organizationUnit;
+    }
+
+    public void setOrganizationUnit(String organizationUnit) {
+        this.organizationUnit = organizationUnit;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getOrganizationSubject() {
+        return organizationSubject;
+    }
+
+    public void setOrganizationSubject(String organizationSubject) {
+        this.organizationSubject = organizationSubject;
+    }
+
+    public String getOrganizationUnitSubject() {
+        return organizationUnitSubject;
+    }
+
+    public void setOrganizationUnitSubject(String organizationUnitSubject) {
+        this.organizationUnitSubject = organizationUnitSubject;
+    }
+
+    public String getCountrySubject() {
+        return countrySubject;
+    }
+
+    public void setCountrySubject(String countrySubject) {
+        this.countrySubject = countrySubject;
+    }
+
+    public String getEmailSubject() {
+        return emailSubject;
+    }
+
+    public void setEmailSubject(String emailSubject) {
+        this.emailSubject = emailSubject;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public TypeOfEntity getTypeOfEntity() {
+        return typeOfEntity;
+    }
+
+    public void setTypeOfEntity(TypeOfEntity typeOfEntity) {
+        this.typeOfEntity = typeOfEntity;
+    }
+
+    public CertificateRole getCertificateRole() {
+        return certificateRole;
+    }
+
+    public void setCertificateRole(CertificateRole certificateRole) {
+        this.certificateRole = certificateRole;
+    }
+
+    public CertificateStatus getCertificateStatus() { return certificateStatus; }
+
+    public void setCertificateStatus(CertificateStatus certificateStatus) { this.certificateStatus = certificateStatus; }
+
+    public Long getParent() {
+        return parent;
+    }
+
+    public void setParent(Long parent) {
+        this.parent = parent;
+    }
+
+    public Date getStartDate() { return startDate; }
+
+    public void setStartDate(Date startDate) { this.startDate = startDate; }
+
+    public Date getExpiringDate() { return expiringDate; }
+
+    public void setExpiringDate(Date expiringDate) { this.expiringDate = expiringDate; }
+}
