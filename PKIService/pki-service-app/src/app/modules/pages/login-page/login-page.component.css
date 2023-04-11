@@ -1,0 +1,33 @@
+.login-page-main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../../assets/geometric1.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+.login-mat-card{
+    width: 300px;
+    margin-right: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px 10px #12121287;
+}
+
+.login-mat-card mat-card-actions{
+    display: flex;
+    justify-content: center;
+}
+
+.sign-in-button{
+    border: lightgray outset 3px;
+    border-radius: 12px;
+    margin-bottom: 5px;
+}
+
+.login-mat-card mat-card-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

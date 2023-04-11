@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { MaterialModule } from '../material/material.module';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {path:'login', component: LoginPageComponent},
@@ -14,7 +16,9 @@ const routes: Routes = [
   ],
   imports: [
     AppRoutingModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MaterialModule,
+    FormsModule
   ],
   providers: []
 })

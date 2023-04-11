@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LogInRequestData } from 'src/app/model/logInRequestData';
 
 @Component({
   selector: 'app-login-page',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class LoginPageComponent {
 
+  logInData : LogInRequestData = new LogInRequestData()
+  constructor() { }
+
+  signIn(){
+     console.log('signinnnn')
+  }
 }
