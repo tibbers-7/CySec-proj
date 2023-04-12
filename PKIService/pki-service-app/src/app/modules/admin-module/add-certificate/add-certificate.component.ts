@@ -14,6 +14,7 @@ import { KSPasswordModalDialog } from '../ks-password-modal-dialog/ks-modal-dial
 export class AddCertificateComponent {
 
   selectedCertificateType : string = ''
+  allIssuers : DigitalEntity[] = []
   selectedIssuer : DigitalEntity | undefined
   SSFormData : NewCertificateRequestData = new NewCertificateRequestData()
   EEAndCAFormData : NewCertificateRequestData = new NewCertificateRequestData()
@@ -22,6 +23,10 @@ export class AddCertificateComponent {
   public constructor(private certificateService: CertificateService, private toast: ToastrService, public dialog: MatDialog){}
 
   onInit(){
+    this.certificateService.getIssuers().subscribe(res=>{
+      console.log(res,res.data)
+      this.allIssuers = res.data
+    })
   }
 
   submitCAEEForm(){

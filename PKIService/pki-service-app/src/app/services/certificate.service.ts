@@ -24,4 +24,8 @@ import { Observable } from "rxjs"
     getIssuers(): Observable<any>{
       return this.http.get<any>(this.apiHost + "", {headers:this.headers})
     }
+
+    revokeCertificate(): Observable<any>{
+      return this.http.post<any>(this.apiHost + "", {headers: this.headers})
+    }
   }
