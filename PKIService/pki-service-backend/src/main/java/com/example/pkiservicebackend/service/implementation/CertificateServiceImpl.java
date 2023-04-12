@@ -45,6 +45,8 @@ public class CertificateServiceImpl implements CertificateService {
     public void issueCertificate(NewCertificateRequestDataDTO certData, String keyStorePassword) throws NoSuchAlgorithmException, CertificateException, NoSuchProviderException, KeyStoreException, IOException {
 
 
+
+
         DigitalEntity subject=certData.getSubject();
         DigitalEntity issuer=certData.getIssuer();
 
@@ -73,6 +75,12 @@ public class CertificateServiceImpl implements CertificateService {
 
         // Nije SELF_SIGED issuer postoji u bazi, a subjecta treba snimiti
         if (!certData.getCertificateRole().equals("SELF_SIGNED")) {
+
+            // provera da li je issuer istekao
+            if (getCertificateStatus(issuer.getId())!=CertificateStatus.VALID){
+                throw new InvalidObjectException("Issuer has expired!");
+            }
+
             this.digitalEntityRepository.save(subject);
             this.digitalEntityRepository.flush();
         // SELF SIGNED - snimanje novog issuera u bazu; on je i issuer i subject, pa treba jednom snimiti
@@ -218,6 +226,15 @@ public class CertificateServiceImpl implements CertificateService {
                 }
             }
         }
+        
+    public CertificateStatus getCertificateStatus(Long id) {
+        CertificateData certData = this.certificateDataRepository.findById(id).orElse(null);
+        Date now = new Date();
+        if (certData.getExpiringDate().before(now)) {
+            certData.setCertificateStatus(CertificateStatus.EXPIRED);
+            this.certificateDataRepository.save(certData);
+        }
+        return certData.getCertificateStatus();
     }
 
 
