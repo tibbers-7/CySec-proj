@@ -10,6 +10,17 @@
     margin-top: 100px;
     border-radius: 10px;
     min-width: 700px;
+    height: fit-content;
 }
 
+.cell-center{
+color: white;
+align-content: center;
+}
 
+.cell-center-header{
+  color: white;
+  font-size: 18px;
+  align-content: center;
+  }
+  
