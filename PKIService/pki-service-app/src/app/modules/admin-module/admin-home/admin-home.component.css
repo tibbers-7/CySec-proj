@@ -8,9 +8,10 @@
 .all-certificates-table{
     background-color: rgb(32, 30, 30);
     display: flex;
-    align-self: center;
-    justify-content: space-evenly;
+    margin-top: 200px;
+    justify-content: space-between;
     border-radius: 10px;
     border-collapse: collapse;
+    min-width: 650px;
 }
 

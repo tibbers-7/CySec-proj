@@ -8,13 +8,12 @@ import { Observable } from "rxjs"
   })
   
   export class CertificateService {
-  //4200
-    apiHost: string = 'http://localhost:4200/api'
+    apiHost: string = 'http://localhost:8080/'
     headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' })
   
     constructor(private http: HttpClient) { }
   
     issueCertificate(certificateData: NewCertificateRequestData, keyStorePassword: string): Observable<any>{
-      return this.http.post<any>(this.apiHost + "/issueCertificate/" + keyStorePassword, certificateData ,{headers: this.headers})
+      return this.http.post<any>(this.apiHost + "issueCertificate/" + keyStorePassword, certificateData ,{headers: this.headers})
     }
   }
