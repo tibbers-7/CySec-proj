@@ -10,6 +10,5 @@ import java.security.cert.CertificateException;
 
 public interface CertificateService {
     void issueCertificate(NewCertificateRequestDataDTO certData, String keyStorePassword) throws NoSuchAlgorithmException, CertificateException, NoSuchProviderException, KeyStoreException, IOException;
-
-
+    void withdrawCertificate(Long certId);
 }

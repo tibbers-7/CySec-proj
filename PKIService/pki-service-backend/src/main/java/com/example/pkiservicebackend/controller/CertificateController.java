@@ -37,6 +37,16 @@ public class CertificateController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PutMapping(value="/withdraw/{certId:.+}")
+    public ResponseEntity<?> withdrawCertificate(@PathVariable("certificateEmail") Long certId){
+        try {
+            this.certificateService.withdrawCertificate(certId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
 }

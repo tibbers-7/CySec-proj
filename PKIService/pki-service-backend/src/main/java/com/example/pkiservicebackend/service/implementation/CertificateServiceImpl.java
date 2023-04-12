@@ -162,5 +162,63 @@ public class CertificateServiceImpl implements CertificateService {
         }
     }
 
+    @Override
+    public void withdrawCertificate(Long certId) {
+
+        // withdraw prvog u lancu
+        CertificateData forWithdraw = this.certificateDataRepository.findById(certId).orElse(null);
+        List<CertificateData> all = this.certificateDataRepository.findAll();
+
+        forWithdraw.setCertificateStatus(CertificateStatus.REVOKED);
+        this.certificateDataRepository.save(forWithdraw);
+//---------------------------------------------------------------------------
+
+        List<CertificateData> intermediate = new ArrayList<>();
+        List<CertificateData> endEntity = new ArrayList<>();
+
+        for (CertificateData certificate : all) {
+            // self signed ne mora
+            if (certificate.getCertificateRole().equals(CertificateRole.INTERMEDIATE)) {
+                intermediate.add(certificate);
+            } else if (certificate.getCertificateRole().equals(CertificateRole.END_ENTITY)) {
+                endEntity.add(certificate);
+            }
+        }
+
+        Set<Long> ids = new HashSet<>();
+        ids.add(forWithdraw.getId());
+
+        // ako nema posle njega onda zavrsava
+        if (forWithdraw.getCertificateRole().equals(CertificateRole.END_ENTITY)) {
+            System.out.println("Certifcate has no children");
+
+        //prolazi kroz sve intermediate ispod njega i revokuje ih
+        } else {
+            for (CertificateData ca : intermediate) {
+                for (Long id : ids) {
+                    if (ca.getParent().equals(id)) {
+                        ca.setCertificateStatus(CertificateStatus.REVOKED);
+                        this.certificateDataRepository.save(ca);
+
+                        // dopisuje da bi nastavio da revokuje nivoe ispod
+                        ids.add(ca.getId());
+                        break;
+                    }
+                }
+            }
+
+            //revokuje end entitije
+            for (CertificateData ee : endEntity) {
+                for (Long id : ids) {
+                    if (ee.getParent().equals(id)) {
+                        ee.setCertificateStatus(CertificateStatus.REVOKED);
+                        this.certificateDataRepository.save(ee);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
 }
