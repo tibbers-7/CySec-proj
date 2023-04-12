@@ -9,7 +9,7 @@ import { Observable } from "rxjs"
   
   export class CertificateService {
   //4200
-    apiHost: string = 'http://localhost:8080/api'
+    apiHost: string = 'http://localhost:4200/api'
     headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' })
   
     constructor(private http: HttpClient) { }

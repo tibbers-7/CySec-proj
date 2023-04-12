@@ -6,9 +6,10 @@ import { AddCertificateComponent } from './add-certificate/add-certificate.compo
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { FormsModule } from '@angular/forms';
 import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialog.component';
+import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 
 const routes: Routes = [
-    {path:'', component: AdminHomeComponent},
+    {path:'admin-home', component: AdminHomeComponent},
     {path:'add-certificate', component: AddCertificateComponent}
   ];
   
@@ -17,7 +18,8 @@ const routes: Routes = [
   declarations: [
     AddCertificateComponent,
     AdminHomeComponent,
-    KSPasswordModalDialog
+    KSPasswordModalDialog,
+    AdminToolbarComponent
   ],
   imports: [
     AppRoutingModule,

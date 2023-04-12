@@ -1,0 +1,16 @@
+.admin-home-main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+.all-certificates-table{
+    background-color: rgb(32, 30, 30);
+    display: flex;
+    align-self: center;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    border-collapse: collapse;
+}
+

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LogInRequestData } from 'src/app/model/logInRequestData';
 
 @Component({
@@ -9,9 +10,9 @@ import { LogInRequestData } from 'src/app/model/logInRequestData';
 export class LoginPageComponent {
 
   logInData : LogInRequestData = new LogInRequestData()
-  constructor() { }
+  constructor(private router: Router) { }
 
   signIn(){
-     console.log('signinnnn')
+    this.router.navigate(['/admin-home'])
   }
 }
