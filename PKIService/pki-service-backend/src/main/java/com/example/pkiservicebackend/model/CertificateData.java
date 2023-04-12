@@ -3,7 +3,7 @@ package com.example.pkiservicebackend.model;
 import com.example.pkiservicebackend.certificate.CertificateRole;
 import com.example.pkiservicebackend.certificate.CertificateStatus;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity

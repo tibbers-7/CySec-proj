@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface DigitalEntityRepository extends JpaRepository<DigitalEntity, Long> {
 
-    @Query("Select u  from digital_entity u where u.email=?1")
+    @Query(value = "SELECT * FROM digital_entity dataa WHERE dataa.email = :email", nativeQuery = true)
     DigitalEntity findByEmail(String email);
 }

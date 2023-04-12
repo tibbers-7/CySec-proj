@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NonUniqueResultException;
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -34,8 +33,6 @@ public class CertificateController {
             e.printStackTrace();
         } catch (KeyStoreException e) {
             return new ResponseEntity<>("Password is incorrect! Please try again.", HttpStatus.BAD_REQUEST);
-        } catch (NonUniqueResultException e) {
-            return new ResponseEntity<>("Certificate with this email already exists. Enter another one.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
