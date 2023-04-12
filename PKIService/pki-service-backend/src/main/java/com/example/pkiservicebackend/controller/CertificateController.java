@@ -47,6 +47,16 @@ public class CertificateController {
         }
     }
 
+    @GetMapping(value = "/getSSAndCA")
+    public ResponseEntity<?> getSSAndCa() {
+        try {
+            return new ResponseEntity<>(this.certificateService.getSSAndCa(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 
 
 }
