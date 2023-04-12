@@ -1,15 +1,12 @@
 package com.example.pkiservicebackend.controller;
 
-import com.example.pkiservicebackend.certificate.CertificateStatus;
-import com.example.pkiservicebackend.model.IssuerAndSubjectData;
+import com.example.pkiservicebackend.dto.NewCertificateRequestDataDTO;
 import com.example.pkiservicebackend.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NonUniqueResultException;
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +23,7 @@ public class CertificateController {
     private CertificateService certificateService;
 
     @PostMapping(value = "/issueCertificate/{keyStorePassword}")
-    public ResponseEntity<?> issueCertificate(@RequestBody NewCertificateRequestData data, @PathVariable("keyStorePassword") String keyStorePassword) {
+    public ResponseEntity<?> issueCertificate(@RequestBody NewCertificateRequestDataDTO data, @PathVariable("keyStorePassword") String keyStorePassword) {
         try {
             this.certificateService.issueCertificate(data, keyStorePassword);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -36,10 +33,18 @@ public class CertificateController {
             e.printStackTrace();
         } catch (KeyStoreException e) {
             return new ResponseEntity<>("Password is incorrect! Please try again.", HttpStatus.BAD_REQUEST);
-        } catch (NonUniqueResultException e) {
-            return new ResponseEntity<>("Certificate with this email already exists. Enter another one.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping(value="/withdraw/{certId:.+}")
+    public ResponseEntity<?> withdrawCertificate(@PathVariable("certificateEmail") Long certId){
+        try {
+            this.certificateService.withdrawCertificate(certId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 

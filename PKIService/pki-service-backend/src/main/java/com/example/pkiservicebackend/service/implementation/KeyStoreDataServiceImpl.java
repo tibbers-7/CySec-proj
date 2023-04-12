@@ -1,15 +1,6 @@
-package com.example.pkiservicebackend.service.impl;
+package com.example.pkiservicebackend.service.implementation;
 
-import com.example.pkiservicebackend.dto.DownloadCertificateDTO;
-import com.example.pkiservicebackend.certificate.CertificateRole;
-import com.example.pkiservicebackend.certificate.CertificateStatus;
-import com.example.pkiservicebackend.repository.IssuerAndSubjectDataRepository;
-import com.example.pkiservicebackend.model.CertificateData;
 import com.example.pkiservicebackend.service.KeyStoreDataService;
-
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.bouncycastle.jcajce.provider.asymmetric.X509;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -26,8 +17,6 @@ import java.util.stream.Stream;
 
 @Service
 public class KeyStoreDataServiceImpl implements KeyStoreDataService {
-
-
 
     @Override
     public boolean doesKeyStoreExist(String certificateRole) {

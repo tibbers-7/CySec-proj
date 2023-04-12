@@ -1,5 +1,6 @@
 package com.example.pkiservicebackend.model;
 
+
 import jakarta.persistence.*;
 
 @Entity

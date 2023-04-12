@@ -1,9 +1,4 @@
-import com.example.pkiservicebackend.certificate.CertificateRole;
-import com.example.pkiservicebackend.certificate.CertificateStatus;
-import com.example.pkiservicebackend.dto.DownloadCertificateDTO;
-import com.example.pkiservicebackend.model.KeyStoreData;
-import com.itextpdf.text.DocumentException;
-import org.bouncycastle.jcajce.provider.asymmetric.X509;
+package com.example.pkiservicebackend.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
