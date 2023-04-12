@@ -1,3 +1,8 @@
+package com.example.pkiservicebackend.model;
+
+
+import javax.persistence.*;
+
 @Entity
 public class DigitalEntity {
     @Id
@@ -15,7 +20,7 @@ public class DigitalEntity {
     private String organizationUnit;
     @Column
     private String country;
-    @Column
+    @Column(unique = true)
     private String email;
 
     public DigitalEntity() {

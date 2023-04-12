@@ -1,12 +1,10 @@
 package com.example.pkiservicebackend.controller;
 
-import com.example.pkiservicebackend.certificate.CertificateStatus;
-import com.example.pkiservicebackend.model.IssuerAndSubjectData;
+import com.example.pkiservicebackend.dto.NewCertificateRequestDataDTO;
 import com.example.pkiservicebackend.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.NonUniqueResultException;
@@ -26,7 +24,7 @@ public class CertificateController {
     private CertificateService certificateService;
 
     @PostMapping(value = "/issueCertificate/{keyStorePassword}")
-    public ResponseEntity<?> issueCertificate(@RequestBody NewCertificateRequestData data, @PathVariable("keyStorePassword") String keyStorePassword) {
+    public ResponseEntity<?> issueCertificate(@RequestBody NewCertificateRequestDataDTO data, @PathVariable("keyStorePassword") String keyStorePassword) {
         try {
             this.certificateService.issueCertificate(data, keyStorePassword);
             return new ResponseEntity<>(HttpStatus.OK);
