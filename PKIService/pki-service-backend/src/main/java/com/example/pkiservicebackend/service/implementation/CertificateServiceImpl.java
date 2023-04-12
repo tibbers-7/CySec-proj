@@ -141,6 +141,7 @@ public class CertificateServiceImpl implements CertificateService {
                 issuer.getOrganization(), issuer.getOrganizationUnit(), issuer.getCountry(), issuer.getEmail());
 
 
+        // ovde ga ne napravi?
         X509Certificate certificate = certificateGenerator.generateCertificate(subjectData, issuerData,new BigInteger(String.valueOf(subjectId)),CertificateRole.valueOf(role));
 
         saveCertificate(certificateRole, "sifra", certificate.getSerialNumber().toString(), keyStorePassword, keyPairIssuer.getPrivate(), certificate);
