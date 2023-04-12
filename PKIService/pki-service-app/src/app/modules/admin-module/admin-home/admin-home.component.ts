@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Certificate } from 'src/app/model/certificate';
 
 @Component({
   selector: 'app-admin-home',
@@ -7,9 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AdminHomeComponent {
 
-  dataSource = [
-    {issuer: 'vedgg', subject:'gsgsg',type: 'sgsgsg', status:' efafea'}
-  ]
+  dataSource : Certificate[] = []
   displayedColumns = ['issuer','subject','type','status','revoke-button']
 
   revokeCertificate(certificate: any){
