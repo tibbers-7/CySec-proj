@@ -11,10 +11,10 @@ public interface DigitalEntityRepository extends JpaRepository<DigitalEntity, Lo
     @Query(value = "SELECT * FROM digital_entity data WHERE data.email = :email", nativeQuery = true)
     DigitalEntity findByEmail(String email);
 
-    @Query(value = "SELECT * FROM digital_entity dataa " +
-            "WHERE dataa.certificate_role = 'SELF_SIGNED' " +
-            "OR dataa.certificate_role = 'INTERMEDIATE'" +
-            " AND dataa.certificate_status = 'VALID'", nativeQuery = true)
+    @Query(value = "SELECT * FROM digital_entity data " +
+            "WHERE data.id = ANY(SELECT subject_id FROM certificate_data WHERE " +
+            "(certificate_role = 'SELF_SIGNED' OR certificate_role = 'INTERMEDIATE') " +
+            "AND certificate_status = 'VALID')", nativeQuery = true)
 
     Collection<DigitalEntity> getSSAndCA();
 }
