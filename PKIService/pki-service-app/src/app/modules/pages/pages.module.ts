@@ -6,7 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
-    {path:'login', component: LoginPageComponent},
+    {path:'', component: LoginPageComponent},
   ];
   
 

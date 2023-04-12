@@ -6,14 +6,23 @@
   }
 
 .add-certificate-mat-card{
-    width: 300px;
+    max-height: 650px;
+    width: 400px;
     border-radius: 8px;
     box-shadow: 0px 0px 20px 10px #a5a1a187;
+    overflow-y: scroll;
 }
 
-.add-certificate-mat-card mat-card-actions{
-    display: flex;
-    justify-content: center;
+.add-certificate-mat-card mat-form-field{
+    height: 70px;
+}
+
+.add-certificate-mat-card form, 
+.add-certificate-mat-card mat-card-content
+{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
 }
 
 .add-certificate-button{
@@ -24,13 +33,11 @@
 
 .add-certificate-mat-card mat-card-header{
     display: flex;
-    color: white;
-    justify-content: center;
-}
-.add-certificate-mat-card mat-card-content{
-    display: flex;
-    flex-direction: column;
+    color: lightgray;
     justify-content: center;
 }
 
-
+.certificate-form-issuer-mat-card{
+    margin-bottom: 10px;
+    color: lightgray;
+}

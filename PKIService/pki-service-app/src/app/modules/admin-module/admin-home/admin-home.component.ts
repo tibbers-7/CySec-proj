@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AdminHomeComponent {
 
+  dataSource = [
+    {issuer: 'vedgg', subject:'gsgsg',type: 'sgsgsg', status:' efafea'}
+  ]
+  displayedColumns = ['issuer','subject','type','status','revoke-button']
+
+  revokeCertificate(certificate: any){
+
+  }
 }

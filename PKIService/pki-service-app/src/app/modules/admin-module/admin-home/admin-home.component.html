@@ -1,1 +1,29 @@
-<p>admin-home works!</p>
+<admin-toolbar></admin-toolbar>
+<div class="admin-home-main-div">
+    <table mat-table [dataSource]="dataSource" class="all-certificates-table">
+        <ng-container matColumnDef="issuer">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Issuer</th>
+            <td mat-cell *matCellDef="let certificate" class="clickable cell-center">ime prezime</td>
+        </ng-container>
+        <ng-container matColumnDef="subject" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Subject</th>
+            <td mat-cell *matCellDef="let certificate" class="clickable cell-center">ime prezime</td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Certificate type</th>
+            <td mat-cell *matCellDef="let certificate" class="clickable cell-center">ovde ce da stoji uloga</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Certificate status</th>
+            <td mat-cell *matCellDef="let certificate" class="clickable cell-center">revoked npr</td>
+        </ng-container>
+        <ng-container matColumnDef="revoke-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let certificate" class="cell-center">
+            <button mat-raised-button (click)="revokeCertificate(certificate)">Revoke</button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
