@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -108,30 +109,48 @@ public class CertificateServiceImpl implements CertificateService {
         SubjectData subjectData = generators.generateSubjectData(subjectId, subject.getFirstName(), subject.getLastName(),subject.getOrganization(),
                 subject.getOrganizationUnit(), subject.getCountry(), subject.getEmail(), certificateRole);
 
-
-        // kreiranje sertifikata
+//-----------------------------------------------------------
+        // KREIRANJE SERTIFIKATA
         CertificateData certificateDataToDB = new CertificateData(issuerId, subjectId, certificateRole, CertificateStatus.VALID, issuerId, null, null);
 
-        certificateDataToDB.setStartDate(subjectData.getStartDate());
-        certificateDataToDB.setExpiringDate(subjectData.getEndDate());
+
+        // dodeljivanje exp perioda
+        Calendar c = Calendar.getInstance();
+        Date startDate = new Date();
+        c.setTime(startDate);
+        if(role.equals(CertificateRole.SELF_SIGNED)) {
+            c.add(Calendar.YEAR, 30);
+        } else if(role.equals(CertificateRole.INTERMEDIATE)){
+            c.add(Calendar.YEAR, 20);
+        } else {
+            c.add(Calendar.YEAR, 10);
+        }
+        certificateDataToDB.setExpiringDate(c.getTime());
+
+        //-------------------------------------------------------------------------------------
+
+        // zapisivanje u bazu
         certificateDataToDB.setParent(issuerId);
 
         this.certificateDataRepository.save(certificateDataToDB);
+
+
+        // ZAPISIVANJE U JKS
 
         IssuerData issuerData = generators.generateIssuerData(issuerId, keyPairIssuer.getPrivate(), issuer.getFirstName(), issuer.getLastName(),
                 issuer.getOrganization(), issuer.getOrganizationUnit(), issuer.getCountry(), issuer.getEmail());
 
 
-        X509Certificate certificate = certificateGenerator.generateCertificate(subjectData, issuerData);
+        X509Certificate certificate = certificateGenerator.generateCertificate(subjectData, issuerData,new BigInteger(String.valueOf(subjectId)),CertificateRole.valueOf(role));
 
         saveCertificate(certificateRole, "sifra", certificate.getSerialNumber().toString(), keyStorePassword, keyPairIssuer.getPrivate(), certificate);
 
         //--------------------------------------------------------------------------------------
-        System.out.println("\n===== Podaci o izdavacu sertifikata =====");
+        System.out.println("\n===== Certificate Issuer =====");
         System.out.println(certificate.getIssuerX500Principal().getName());
-        System.out.println("\n===== Podaci o vlasniku sertifikata =====");
+        System.out.println("\n===== Certificate Owner =====");
         System.out.println(certificate.getSubjectX500Principal().getName());
-        System.out.println("\n===== Sertifikat =====");
+        System.out.println("\n===== Certificate =====");
         System.out.println("-------------------------------------------------------");
         System.out.println(certificate);
         System.out.println("-------------------------------------------------------");
@@ -190,6 +209,7 @@ public class CertificateServiceImpl implements CertificateService {
     public Collection<DigitalEntity> getSSAndCa()  {
         return this.digitalEntityRepository.getSSAndCA();
     }
+
 
 
 

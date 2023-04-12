@@ -13,6 +13,8 @@ public class CertificateData {
     @Column(name = "id")
     private Long id;
 
+    private String serialNumber;
+
     private Long issuerId;
     private Long subjectId;
 

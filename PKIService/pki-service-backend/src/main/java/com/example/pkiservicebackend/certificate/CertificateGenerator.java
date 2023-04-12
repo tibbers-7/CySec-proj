@@ -13,23 +13,40 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CertificateGenerator {
 
     public CertificateGenerator() {
     }
 
-    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData) {
+    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, BigInteger certSerial,CertificateRole role) {
         try {
             JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
             builder = builder.setProvider("BC");
 
             ContentSigner contentSigner = builder.build(issuerData.getPrivateKey());
 
+            Date startDate = new Date();
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(startDate);
+            if(role.equals(CertificateRole.SELF_SIGNED)) {
+                c.add(Calendar.YEAR, 30);
+            } else if(role.equals(CertificateRole.INTERMEDIATE)){
+                c.add(Calendar.YEAR, 20);
+            } else {
+                c.add(Calendar.YEAR, 10);
+            }
+
+            Date endDate = c.getTime();
+
+
             X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(issuerData.getX500name(),
-                    new BigInteger(subjectData.getSerialNumber()),
-                    subjectData.getStartDate(),
-                    subjectData.getEndDate(),
+                    certSerial,
+                    startDate,
+                    endDate,
                     subjectData.getX500name(),
                     subjectData.getPublicKey());
 
