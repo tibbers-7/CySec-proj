@@ -7,44 +7,82 @@
         <mat-form-field>
             <mat-label>Certificate type</mat-label>
             <mat-select [(value)]="selectedCertificateType">
-                <mat-option value="SS">Self-signed</mat-option>
-                <mat-option value="CA">Intermediate entity</mat-option>
-                <mat-option value="End">End entity</mat-option>
+                <mat-option value="SELF_SIGNED">Self-signed</mat-option>
+                <mat-option value="INTERMEDIATE">Intermediate entity</mat-option>
+                <mat-option value="END_ENTITY">End entity</mat-option>
             </mat-select>
         </mat-form-field>
-        <form class="ss-certificate-form" *ngIf="(selectedCertificateType==='SS')">
+        <form class="ss-certificate-form" *ngIf="(selectedCertificateType==='SELF_SIGNED')" name="ss-form">
             <mat-form-field>
                 <mat-label>First name</mat-label>
-                <input matInput>
+                <input matInput [(ngModel)]="SSFormData.subject.firstName" name="firstName">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Last name</mat-label>
-                <input matInput>
+                <input matInput [(ngModel)]="SSFormData.subject.lastName" name="lastName">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput>
+                <input matInput type="email" [(ngModel)]="SSFormData.subject.email" name="email">
             </mat-form-field>
-            <button mat-button class="add-certificate-button">Submit</button>
-        </form>
-        <form class="ca-and-ee-certificate-form" *ngIf="(selectedCertificateType!=='SS' && selectedCertificateType)">
             <mat-form-field>
-            <mat-label>Choose issuer:</mat-label>
-            <mat-select [(value)]="selectedIssuer">
-                <mat-option value="1">1</mat-option>
-                <mat-option value="2">2</mat-option>
-                <mat-option value="3">3</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-card *ngIf="selectedIssuer" class="certificate-form-issuer-mat-card">
-            <mat-card-title>Issuer info</mat-card-title>
-            <mat-card-content>
-                <mat-label>First name: Ime </mat-label>
-                <mat-label>Last name: Prezime </mat-label>
-                <mat-label>Type: Organization</mat-label>
-            </mat-card-content>
-        </mat-card>
-        <button mat-button class="add-certificate-button">Submit</button>
+                <mat-label>Organization</mat-label>
+                <input matInput type="text" [(ngModel)]="SSFormData.subject.organization" name="organization">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Organization unit</mat-label>
+                <input matInput type="text" [(ngModel)]="SSFormData.subject.organizationUnit" name="organizationUnit">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Country</mat-label>
+                <input matInput type="text" [(ngModel)]="SSFormData.subject.country" name="country">
+            </mat-form-field>
+            <button mat-button class="add-certificate-button" (click)="submitSSForm()">Submit</button>
+        </form>
+        <form class="ca-and-ee-certificate-form" *ngIf="(selectedCertificateType!=='SELF_SIGNED' && selectedCertificateType)" name="ca-ee-form">
+            <mat-form-field>
+                <mat-label>Choose issuer:</mat-label>
+                <mat-select [(value)]="selectedIssuer">
+                    <mat-option value="1">1</mat-option>
+                    <mat-option value="2">2</mat-option>
+                    <mat-option value="3">3</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-card *ngIf="selectedIssuer" class="certificate-form-issuer-mat-card">
+                <mat-card-header>
+                    <h3> Issuer info</h3>
+                </mat-card-header>
+                <mat-card-content>
+                    <h4>First name: Ime </h4>
+                    <h4>Last name: Prezime </h4>
+                    <h4>Type: Organization</h4>
+                </mat-card-content>
+            </mat-card>
+            <mat-form-field>
+                <mat-label>First name</mat-label>
+                <input matInput [(ngModel)]="EEAndCAFormData.subject.firstName" name="firstName">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Last name</mat-label>
+                <input matInput [(ngModel)]="EEAndCAFormData.subject.lastName" name="lastName">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="EEAndCAFormData.subject.email" name="email">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Organization</mat-label>
+                <input matInput type="text" [(ngModel)]="EEAndCAFormData.subject.organization" name="organization">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Organization unit</mat-label>
+                <input matInput type="text" [(ngModel)]="EEAndCAFormData.subject.organizationUnit" name="organizationUnit">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Country</mat-label>
+                <input matInput type="text" [(ngModel)]="EEAndCAFormData.subject.country" name="country">
+            </mat-form-field>
+        <button mat-button class="add-certificate-button" (click)="submitCAEEForm()">Submit</button>
         </form>
     </mat-card-content>
 </mat-card>

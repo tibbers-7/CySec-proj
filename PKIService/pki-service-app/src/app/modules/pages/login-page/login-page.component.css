@@ -3,9 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../../../assets/geometric1.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
   }
 
 .login-mat-card{

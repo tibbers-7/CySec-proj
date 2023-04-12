@@ -4,6 +4,7 @@ import { MaterialModule } from '../material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {path:'', component: AdminHomeComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
   imports: [
     AppRoutingModule,
     MaterialModule,
+    FormsModule,
     RouterModule.forChild(routes)
   ]
 })
