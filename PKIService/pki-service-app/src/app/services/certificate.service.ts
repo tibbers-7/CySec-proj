@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core"
 import { NewCertificateRequestData } from "../model/newCertificateRequestData"
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { Observable } from "rxjs"
+import { Certificate } from "../model/certificate"
 
 @Injectable({
     providedIn: 'root'
@@ -22,10 +23,10 @@ import { Observable } from "rxjs"
     }
 
     getIssuers(): Observable<any>{
-      return this.http.get<any>(this.apiHost + "", {headers:this.headers})
+      return this.http.get<any>(this.apiHost + "getSSAndCA", {headers:this.headers})
     }
 
-    revokeCertificate(): Observable<any>{
-      return this.http.post<any>(this.apiHost + "", {headers: this.headers})
+    revokeCertificate(certificateId : number): Observable<any>{
+      return this.http.put<any>(this.apiHost + "withdraw/" + certificateId, {headers: this.headers})
     }
   }

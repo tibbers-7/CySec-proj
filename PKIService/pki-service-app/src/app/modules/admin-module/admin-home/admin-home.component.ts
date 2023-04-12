@@ -20,8 +20,8 @@ export class AdminHomeComponent {
   }
 
   revokeCertificate(certificate: Certificate){
-  this.certificateService.revokeCertificate().subscribe(res=>{
+  this.certificateService.revokeCertificate(certificate.id).subscribe(res=>{
   console.log(res)
-})
+  })
   }
 }

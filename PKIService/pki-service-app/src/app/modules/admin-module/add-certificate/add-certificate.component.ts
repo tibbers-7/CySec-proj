@@ -77,10 +77,10 @@ export class AddCertificateComponent {
       else{
         if(this.selectedCertificateType === 'SELF_SIGNED') 
           this.certificateService.issueCertificate(this.SSFormData, this.keyStorePassword).subscribe(res=>{
-            console.log(res)
+           this.toast.success('Successfully issued certificate!')
         })
         else this.certificateService.issueCertificate(this.EEAndCAFormData, this.keyStorePassword).subscribe(res=>{
-          console.log(res)
+          this.toast.success('Successfully issued certificate!')
         })
       }
     })
