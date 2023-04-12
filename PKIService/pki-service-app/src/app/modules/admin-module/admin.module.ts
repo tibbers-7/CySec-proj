@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { FormsModule } from '@angular/forms';
+import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialog.component';
 
 const routes: Routes = [
     {path:'', component: AdminHomeComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AddCertificateComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    KSPasswordModalDialog
   ],
   imports: [
     AppRoutingModule,

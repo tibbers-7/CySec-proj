@@ -1,0 +1,10 @@
+<div mat-dialog-content class="mat-dialog-main-div">
+  <h4>Please enter the key store password</h4>
+  <mat-form-field>
+    <input matInput type="password" [(ngModel)]="data.keyStorePass">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="mat-dialog-buttons">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.keyStorePass" cdkFocusInitial>Confirm</button>
+</div>

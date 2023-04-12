@@ -7,6 +7,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { PagesModule } from './modules/pages/pages.module';
 import { AdminModule } from './modules/admin-module/admin.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    ToastrModule.forRoot(),
     PagesModule,
     AdminModule
   ],
