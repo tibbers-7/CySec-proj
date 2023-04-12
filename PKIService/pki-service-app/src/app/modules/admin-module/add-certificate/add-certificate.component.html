@@ -6,25 +6,46 @@
     <mat-card-content>
         <mat-form-field>
             <mat-label>Certificate type</mat-label>
-            <mat-select>
-                <mat-option value="Root">Self-signed</mat-option>
+            <mat-select [(value)]="selectedCertificateType">
+                <mat-option value="SS">Self-signed</mat-option>
                 <mat-option value="CA">Intermediate entity</mat-option>
                 <mat-option value="End">End entity</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field>
-            <mat-label> Issuer</mat-label>
-            <mat-select>
-                <mat-option>root</mat-option>
+        <form class="ss-certificate-form" *ngIf="(selectedCertificateType==='SS')">
+            <mat-form-field>
+                <mat-label>First name</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Last name</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput>
+            </mat-form-field>
+            <button mat-button class="add-certificate-button">Submit</button>
+        </form>
+        <form class="ca-and-ee-certificate-form" *ngIf="(selectedCertificateType!=='SS' && selectedCertificateType)">
+            <mat-form-field>
+            <mat-label>Choose issuer:</mat-label>
+            <mat-select [(value)]="selectedIssuer">
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field>
-            <mat-label> Subject</mat-label>
-            <input matInput>
-        </mat-form-field>
+        <mat-card *ngIf="selectedIssuer" class="certificate-form-issuer-mat-card">
+            <mat-card-title>Issuer info</mat-card-title>
+            <mat-card-content>
+                <mat-label>First name: Ime </mat-label>
+                <mat-label>Last name: Prezime </mat-label>
+                <mat-label>Type: Organization</mat-label>
+            </mat-card-content>
+        </mat-card>
+        <button mat-button class="add-certificate-button">Submit</button>
+        </form>
     </mat-card-content>
-    <mat-card-actions>
-        <button mat-button class="add-certificate-button">Create</button>
-    </mat-card-actions>
 </mat-card>
 </div>

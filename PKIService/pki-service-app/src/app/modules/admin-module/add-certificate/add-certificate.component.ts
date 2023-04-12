@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DigitalEntity } from 'src/app/model/digitalEntity';
 
 @Component({
   selector: 'app-add-certificate',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-certificate.component.css']
 })
 export class AddCertificateComponent {
+
+  selectedCertificateType : string = ''
+  selectedIssuer : DigitalEntity | undefined
+  public constructor(){}
+
+  onInit(){
+  }
 
 }
