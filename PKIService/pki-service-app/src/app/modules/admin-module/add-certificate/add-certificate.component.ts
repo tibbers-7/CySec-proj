@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DigitalEntity } from 'src/app/model/digitalEntity';
@@ -11,7 +11,7 @@ import { KSPasswordModalDialog } from '../ks-password-modal-dialog/ks-modal-dial
   templateUrl: './add-certificate.component.html',
   styleUrls: ['./add-certificate.component.css']
 })
-export class AddCertificateComponent {
+export class AddCertificateComponent implements OnInit {
 
   selectedCertificateType : string = ''
   allIssuers : DigitalEntity[] = []
@@ -22,9 +22,9 @@ export class AddCertificateComponent {
 
   public constructor(private certificateService: CertificateService, private toast: ToastrService, public dialog: MatDialog){}
 
-  onInit(){
+  ngOnInit(){
     this.certificateService.getIssuers().subscribe(res=>{
-      console.log(res,res.data)
+      console.log(res)
       this.allIssuers = res.data
     })
   }
