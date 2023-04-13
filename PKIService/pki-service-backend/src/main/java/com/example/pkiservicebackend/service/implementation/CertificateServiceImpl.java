@@ -211,7 +211,10 @@ public class CertificateServiceImpl implements CertificateService {
         return this.digitalEntityRepository.getSSAndCA();
     }
 
-
+    @Override
+    public Collection<CertificateData> getCertificates() {
+        return this.certificateDataRepository.findAll();
+    }
 
 
 }

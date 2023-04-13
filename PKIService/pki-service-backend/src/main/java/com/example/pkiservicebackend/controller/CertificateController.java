@@ -57,6 +57,16 @@ public class CertificateController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping(value = "/getCertificates")
+    public ResponseEntity<?> getCertificates() {
+        try {
+            return new ResponseEntity<>(this.certificateService.getCertificates(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 
 
 }

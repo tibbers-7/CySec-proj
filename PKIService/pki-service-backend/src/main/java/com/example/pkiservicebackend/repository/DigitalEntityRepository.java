@@ -15,6 +15,5 @@ public interface DigitalEntityRepository extends JpaRepository<DigitalEntity, Lo
             "WHERE data.id = ANY(SELECT subject_id FROM certificate_data WHERE " +
             "(certificate_role = 'SELF_SIGNED' OR certificate_role = 'INTERMEDIATE') " +
             "AND certificate_status = 'VALID')", nativeQuery = true)
-
     Collection<DigitalEntity> getSSAndCA();
 }

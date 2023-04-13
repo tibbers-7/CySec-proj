@@ -11,6 +11,7 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import java.math.BigInteger;
+import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
@@ -24,6 +25,8 @@ public class CertificateGenerator {
     public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, BigInteger certSerial,CertificateRole role) {
         try {
             JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+
             builder = builder.setProvider("BC");
 
             ContentSigner contentSigner = builder.build(issuerData.getPrivateKey());
@@ -53,12 +56,15 @@ public class CertificateGenerator {
             X509CertificateHolder certHolder = certGen.build(contentSigner);
 
             JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
+
+            // OVDE JE GRESKA
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+
             certConverter = certConverter.setProvider("BC");
 
             //Konvertuje objekat u sertifikat
             return certConverter.getCertificate(certHolder);
         } catch (OperatorCreationException | CertificateException e) {
-            e.printStackTrace();
         }
         return null;
     }

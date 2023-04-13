@@ -2,6 +2,7 @@ package com.example.pkiservicebackend.service;
 
 import com.example.pkiservicebackend.certificate.CertificateStatus;
 import com.example.pkiservicebackend.dto.NewCertificateRequestDataDTO;
+import com.example.pkiservicebackend.model.CertificateData;
 import com.example.pkiservicebackend.model.DigitalEntity;
 
 import java.io.IOException;
@@ -19,4 +20,5 @@ public interface CertificateService {
     Collection<DigitalEntity> getSSAndCa();
 
 
+    Collection<CertificateData> getCertificates();
 }
