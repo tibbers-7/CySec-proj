@@ -50,6 +50,7 @@ public class CertificateController {
     @GetMapping(value = "/getSSAndCA")
     public ResponseEntity<?> getSSAndCa() {
         try {
+            var nesto = this.certificateService.getSSAndCa();
             return new ResponseEntity<>(this.certificateService.getSSAndCa(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
