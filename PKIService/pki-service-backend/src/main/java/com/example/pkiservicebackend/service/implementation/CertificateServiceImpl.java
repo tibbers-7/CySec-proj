@@ -78,10 +78,6 @@ public class CertificateServiceImpl implements CertificateService {
         // Nije SELF_SIGED issuer postoji u bazi, a subjecta treba snimiti
         if (!certData.getCertificateRole().equals("SELF_SIGNED")) {
 
-            // provera da li je issuer istekao
-            if (getCertificateStatus(issuer.getId())!=CertificateStatus.VALID){
-                throw new InvalidObjectException("Issuer has expired!");
-            }
 
             this.digitalEntityRepository.save(subject);
             this.digitalEntityRepository.flush();
@@ -92,6 +88,8 @@ public class CertificateServiceImpl implements CertificateService {
 
         }
 
+
+
         //---------------------------------------------------------------------------------
         // podesavanje id entiteta u cert
 
@@ -100,6 +98,12 @@ public class CertificateServiceImpl implements CertificateService {
             subjectId = issuerId;
         } else {
             subjectId = digitalEntityRepository.findByEmail(subject.getEmail()).getId();
+
+            // provera da li je issuer istekao
+            if (getCertificateStatus(issuer.getId())!=CertificateStatus.VALID){
+                throw new InvalidObjectException("Issuer has expired!");
+            }
+
         }
 
         KeyPair keyPairIssuer = generators.generateKeyPair();

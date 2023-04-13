@@ -46,6 +46,7 @@ export class AddCertificateComponent implements OnInit {
       return false
     }
     this.EEAndCAFormData.certificateRole = this.selectedCertificateType
+    this.EEAndCAFormData.issuer = this.selectedIssuer
     return true
   }
  
@@ -63,6 +64,7 @@ export class AddCertificateComponent implements OnInit {
     }
     this.SSFormData.issuer = this.SSFormData.subject
     this.SSFormData.certificateRole = this.selectedCertificateType
+    
     return true
   }
 
