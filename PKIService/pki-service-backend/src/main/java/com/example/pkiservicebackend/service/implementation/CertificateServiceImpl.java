@@ -57,7 +57,7 @@ public class CertificateServiceImpl implements CertificateService {
             try {
                 System.out.println("File found");
                 KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
-                keyStore.load(new FileInputStream("keystores/" + role + ".jks"), keyStorePassword.toCharArray());
+                keyStore.load(new FileInputStream("src/main/resources/keystores/" + role + ".jks"), keyStorePassword.toCharArray());
             } catch (IOException e) {
                 System.out.println("Wrong password");
                 throw new KeyStoreException();
@@ -165,7 +165,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     public void saveCertificate(CertificateRole role, String keyPassword, String alias, String keyStorePassword, PrivateKey privateKey, X509Certificate certificate) throws NoSuchProviderException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         String type = role.toString().toLowerCase();
-        String file = ("keystores/" + type + ".jks");
+        String file = ("src/main/resources/keystores/" + type + ".jks");
         KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
 
         try {
@@ -186,7 +186,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     private void createKeyStore(String type, String keyStorePassword, KeyStore keyStore) {
-        String file = ("keystores/" + type + ".jks");
+        String file = ("src/main/resources/keystores/" + type + ".jks");
         try {
             keyStore.load(null, keyStorePassword.toCharArray());
             keyStore.store(new FileOutputStream(file), keyStorePassword.toCharArray());
