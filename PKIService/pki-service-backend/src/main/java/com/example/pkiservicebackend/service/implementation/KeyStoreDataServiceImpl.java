@@ -21,7 +21,7 @@ public class KeyStoreDataServiceImpl implements KeyStoreDataService {
     @Override
     public boolean doesKeyStoreExist(String certificateRole) {
         String name = certificateRole.toLowerCase();
-        File file = new File("keystores/" + name + ".jks");
+        File file = new File("src/main/resources/keystores/" + name + ".jks");
         return file.exists();
     }
 
@@ -30,7 +30,7 @@ public class KeyStoreDataServiceImpl implements KeyStoreDataService {
         //kreira instancu KeyStore
         KeyStore ks = KeyStore.getInstance("JKS", "SUN");
         //ucitava podatke
-        String keyStoreFile = "keystores/" + role.toLowerCase() + ".jks";
+        String keyStoreFile = "src/main/resources/keystores/" + role.toLowerCase() + ".jks";
         ks.load(new FileInputStream(keyStoreFile), password.toCharArray());
 
         System.out.println("Key storage size: " + ks.size());
