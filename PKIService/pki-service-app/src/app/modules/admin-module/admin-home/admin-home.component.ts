@@ -18,6 +18,7 @@ export class AdminHomeComponent implements OnInit {
  
   ngOnInit(): void{
     this.certificateService.getAllCertificates().subscribe(res=>{
+      console.log(res)
       this.dataSource = res
     })
   }

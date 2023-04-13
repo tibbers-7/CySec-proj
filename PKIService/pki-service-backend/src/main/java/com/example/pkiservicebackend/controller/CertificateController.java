@@ -37,8 +37,8 @@ public class CertificateController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping(value="/withdraw/{certId:.+}")
-    public ResponseEntity<?> withdrawCertificate(@PathVariable("certificateEmail") Long certId){
+    @PutMapping(value="/withdraw/{certId}")
+    public ResponseEntity<?> withdrawCertificate(@PathVariable("certId") Long certId){
         try {
             this.certificateService.withdrawCertificate(certId);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -50,7 +50,6 @@ public class CertificateController {
     @GetMapping(value = "/getSSAndCA")
     public ResponseEntity<?> getSSAndCa() {
         try {
-            var nesto = this.certificateService.getSSAndCa();
             return new ResponseEntity<>(this.certificateService.getSSAndCa(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

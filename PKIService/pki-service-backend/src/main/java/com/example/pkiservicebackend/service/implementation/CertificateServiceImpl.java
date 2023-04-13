@@ -268,13 +268,18 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public Collection<GetAllCertificatesDTO> getCertificates() {
         Collection<CertificateData> certificates = this.certificateDataRepository.findAll();
-        Collection<GetAllCertificatesDTO> dtos=new ArrayList<>();
+        Collection<GetAllCertificatesDTO> dtos=new ArrayList<GetAllCertificatesDTO>();
         for (CertificateData cert:certificates) {
-            GetAllCertificatesDTO dto=new GetAllCertificatesDTO(cert.getId(),cert.getSerialNumber(),cert.getCertificateRole().toString(),cert.getCertificateStatus().toString(),cert.getExpiringDate());
+            GetAllCertificatesDTO dto=new GetAllCertificatesDTO();
             DigitalEntity issuer=digitalEntityRepository.findById(cert.getIssuerId()).orElse(null);
             DigitalEntity subject=digitalEntityRepository.findById(cert.getSubjectId()).orElse(null);
             dto.setIssuer(issuer);
             dto.setSubject(subject);
+            dto.setCertificateRole(cert.getCertificateRole().toString());
+            dto.setId(cert.getId());
+            dto.setSerialNumber(cert.getSerialNumber());
+            dto.setExpiringDate(cert.getExpiringDate());
+            dto.setCertificateStatus(cert.getCertificateStatus().toString());
 
             dtos.add(dto);
 

@@ -25,7 +25,7 @@ export class CertificateService {
       return this.http.get<any>(this.apiHost + "getSSAndCA", {headers:this.headers})
     }
 
-    revokeCertificate(certificateId : number): Observable<any>{
-      return this.http.put<any>(this.apiHost + "withdraw/" + certificateId, {headers: this.headers})
+    revokeCertificate(certId : number): Observable<any>{
+      return this.http.put<any>(this.apiHost + "withdraw/" + certId, {headers: this.headers})
     }
   }
