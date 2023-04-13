@@ -5,10 +5,9 @@ import { Observable } from "rxjs"
 import { Certificate } from "../model/certificate"
 
 @Injectable({
-    providedIn: 'root'
-  })
-  
-  export class CertificateService {
+  providedIn: 'root'
+})
+export class CertificateService {
     apiHost: string = 'http://localhost:8080/api/certificates/'
     headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' })
   

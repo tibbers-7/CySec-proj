@@ -25,7 +25,7 @@ export class AddCertificateComponent implements OnInit {
   ngOnInit(){
     this.certificateService.getIssuers().subscribe(res=>{
       console.log(res)
-      this.allIssuers = res.data
+      this.allIssuers = res
     })
   }
 
