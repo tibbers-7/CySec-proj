@@ -23,6 +23,10 @@ export class AddCertificateComponent implements OnInit {
   public constructor(private certificateService: CertificateService, private toast: ToastrService, public dialog: MatDialog){}
 
   ngOnInit(){
+  this.loadIssuers()
+  }
+
+  loadIssuers(){
     this.certificateService.getIssuers().subscribe(res=>{
       console.log(res)
       this.allIssuers = res
@@ -80,9 +84,11 @@ export class AddCertificateComponent implements OnInit {
         if(this.selectedCertificateType === 'SELF_SIGNED') 
           this.certificateService.issueCertificate(this.SSFormData, this.keyStorePassword).subscribe(res=>{
            this.toast.success('Successfully issued certificate!')
+           this.loadIssuers()
         })
         else this.certificateService.issueCertificate(this.EEAndCAFormData, this.keyStorePassword).subscribe(res=>{
           this.toast.success('Successfully issued certificate!')
+          this.loadIssuers()
         })
       }
     })

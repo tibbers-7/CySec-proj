@@ -17,6 +17,10 @@ export class AdminHomeComponent implements OnInit {
   public constructor(private certificateService: CertificateService, private toast: ToastrService){}
  
   ngOnInit(): void{
+    this.loadCertificates()
+  }
+
+  loadCertificates(): void {
     this.certificateService.getAllCertificates().subscribe(res=>{
       console.log(res)
       this.dataSource = res
@@ -27,7 +31,7 @@ export class AdminHomeComponent implements OnInit {
   this.certificateService.revokeCertificate(certificate.id).subscribe(res=>{
   console.log(res)
   this.toast.success('Certificate successfully revoked!')
-  this.dataSource.data = this.dataSource.data.filter(c=> c.id!==certificate.id)
+  this.loadCertificates()
   })
   }
 }
