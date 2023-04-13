@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Certificate } from 'src/app/model/certificate';
 import { CertificateService } from 'src/app/services/certificate.service';
@@ -10,8 +11,8 @@ import { CertificateService } from 'src/app/services/certificate.service';
 })
 export class AdminHomeComponent implements OnInit {
 
-  dataSource : Certificate[] = []
-  displayedColumns = ['issuer','subject','type','status','revoke-button']
+  dataSource = new MatTableDataSource<Certificate>()
+  displayedColumns = ['issuer','subject','type','status','expiration','revoke-button']
   
   public constructor(private certificateService: CertificateService, private toast: ToastrService){}
  
@@ -25,9 +26,7 @@ export class AdminHomeComponent implements OnInit {
   this.certificateService.revokeCertificate(certificate.id).subscribe(res=>{
   console.log(res)
   this.toast.success('Certificate successfully revoked!')
-  this.dataSource = this.dataSource.filter(c=> c.id!==certificate.id)
- 
-
+  this.dataSource.data = this.dataSource.data.filter(c=> c.id!==certificate.id)
   })
   }
 }
