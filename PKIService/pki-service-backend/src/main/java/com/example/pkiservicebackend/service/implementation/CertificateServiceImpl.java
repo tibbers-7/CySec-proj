@@ -4,6 +4,7 @@ import com.example.pkiservicebackend.certificate.CertificateGenerator;
 import com.example.pkiservicebackend.certificate.CertificateRole;
 import com.example.pkiservicebackend.certificate.CertificateStatus;
 import com.example.pkiservicebackend.certificate.Generators;;
+import com.example.pkiservicebackend.dto.GetAllCertificatesDTO;
 import com.example.pkiservicebackend.dto.NewCertificateRequestDataDTO;
 import com.example.pkiservicebackend.model.CertificateData;
 import com.example.pkiservicebackend.model.DigitalEntity;
@@ -265,8 +266,21 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public Collection<CertificateData> getCertificates() {
-        return this.certificateDataRepository.findAll();
+    public Collection<GetAllCertificatesDTO> getCertificates() {
+        Collection<CertificateData> certificates = this.certificateDataRepository.findAll();
+        Collection<GetAllCertificatesDTO> dtos=new ArrayList<>();
+        for (CertificateData cert:certificates) {
+            GetAllCertificatesDTO dto=new GetAllCertificatesDTO(cert.getId(),cert.getSerialNumber(),cert.getCertificateRole().toString(),cert.getCertificateStatus().toString(),cert.getExpiringDate());
+            DigitalEntity issuer=digitalEntityRepository.findById(cert.getIssuerId()).orElse(null);
+            DigitalEntity subject=digitalEntityRepository.findById(cert.getSubjectId()).orElse(null);
+            dto.setIssuer(issuer);
+            dto.setSubject(subject);
+
+            dtos.add(dto);
+
+        }
+
+        return dtos;
     }
 
 

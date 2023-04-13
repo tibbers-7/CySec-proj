@@ -18,6 +18,14 @@ public class CertificateData {
     private Long issuerId;
     private Long subjectId;
 
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
     @Enumerated(value = EnumType.STRING)
     private CertificateRole certificateRole;
 

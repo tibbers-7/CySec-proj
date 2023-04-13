@@ -13,10 +13,8 @@ public class GetAllCertificatesDTO {
         private String certificateStatus;
         private Date expiringDate;
 
-    public GetAllCertificatesDTO(Long id, DigitalEntity issuer, DigitalEntity subject, String serialNumber, String certificateRole, String certificateStatus, Date expiringDate) {
+    public GetAllCertificatesDTO(Long id, String serialNumber, String certificateRole, String certificateStatus, Date expiringDate) {
         this.id = id;
-        this.issuer = issuer;
-        this.subject = subject;
         this.serialNumber = serialNumber;
         this.certificateRole = certificateRole;
         this.certificateStatus = certificateStatus;
@@ -24,5 +22,19 @@ public class GetAllCertificatesDTO {
     }
     public GetAllCertificatesDTO(){}
 
+    public DigitalEntity getIssuer() {
+        return issuer;
+    }
 
+    public void setIssuer(DigitalEntity issuer) {
+        this.issuer = issuer;
+    }
+
+    public DigitalEntity getSubject() {
+        return subject;
+    }
+
+    public void setSubject(DigitalEntity subject) {
+        this.subject = subject;
+    }
 }
