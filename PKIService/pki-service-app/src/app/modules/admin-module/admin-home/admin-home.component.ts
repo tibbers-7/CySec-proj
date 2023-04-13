@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Certificate } from 'src/app/model/certificate';
 import { CertificateService } from 'src/app/services/certificate.service';
 
@@ -12,17 +13,21 @@ export class AdminHomeComponent implements OnInit {
   dataSource : Certificate[] = []
   displayedColumns = ['issuer','subject','type','status','revoke-button']
   
-  public constructor(private certificateService: CertificateService){}
+  public constructor(private certificateService: CertificateService, private toast: ToastrService){}
  
   ngOnInit(): void{
     this.certificateService.getAllCertificates().subscribe(res=>{
-      this.dataSource = res.data
+      this.dataSource = res
     })
   }
 
   revokeCertificate(certificate: Certificate){
   this.certificateService.revokeCertificate(certificate.id).subscribe(res=>{
   console.log(res)
+  this.toast.success('Certificate successfully revoked!')
+  this.dataSource = this.dataSource.filter(c=> c.id!==certificate.id)
+ 
+
   })
   }
 }

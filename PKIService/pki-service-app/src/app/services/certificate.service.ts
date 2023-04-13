@@ -18,7 +18,7 @@ export class CertificateService {
     }
 
     getAllCertificates(): Observable<any>{
-      return this.http.get<any>(this.apiHost + "" ,{headers: this.headers})
+      return this.http.get<any>(this.apiHost + "getCertificates" ,{headers: this.headers})
     }
 
     getIssuers(): Observable<any>{
