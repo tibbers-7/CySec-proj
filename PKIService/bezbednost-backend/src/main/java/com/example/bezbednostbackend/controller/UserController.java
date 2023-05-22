@@ -32,7 +32,7 @@ private AuthenticationService authenticationService;
     }
 
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> sendRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<String> sendRegistrationRequest(@RequestBody RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
         RegistrationResponseDTO response = authenticationService.makeRegistrationRequest(dto);
         if(response.isValid()) return new ResponseEntity<>(response.getResponse(), HttpStatus.OK);
         return new ResponseEntity<>(response.getResponse(), HttpStatus.BAD_REQUEST);

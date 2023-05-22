@@ -19,6 +19,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -55,15 +56,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if(usernameExists(username)) return new RegistrationResponseDTO("Username is already used!", false);
         if(!workTitleIsValid(workTitle)) return new RegistrationResponseDTO("Invalid work title entered!", false);
-        //ovo zapravo treba da vraca listu requestova
-        RegistrationRequest request = registrationRequestRepository.findByUsername(username);
-        //ako ne postoji vec zahtev za ovog korisnika superiska
-        if(request == null) return new RegistrationResponseDTO("Username is valid for use!", true);
-        //true ce biti ako zahtev postoji, i isResolved = false, znaci da je na cekanju
-        else if(!request.isResolved()) new RegistrationResponseDTO("A request with this username already exists!", false);
-        //isto ce biti true ako resolved = true i isCancelled = true
-        else if(request.isCancelled() && request.getRequestCreated().plusDays(3).isAfter(LocalDateTime.now())) new RegistrationResponseDTO("This registration request has been blocked! Try again in a few days", false);
-        return new RegistrationResponseDTO("NEZ", true);
+        List<RegistrationRequest> requests = registrationRequestRepository.findByUsername(username);
+        if(requests.isEmpty()) return new RegistrationResponseDTO("Username is valid for use!", true);
+
+        RegistrationResponseDTO responseDTO = new RegistrationResponseDTO("Sve ok", true);
+        for (RegistrationRequest request: requests
+             ) {
+               //true ce biti ako zahtev postoji, i isResolved = false, znaci da je na cekanju
+            if(!request.isResolved()) {
+                responseDTO = new RegistrationResponseDTO("A request with this username already exists!", false);
+                break;
+            }
+            else if(request.isCancelled() && request.getRequestCreated().plusDays(3).isAfter(LocalDateTime.now())){
+                responseDTO = new RegistrationResponseDTO("This registration request has been blocked! Try again in a few days", false);
+                break;
+            }
+            }
+        return responseDTO;
+
     }
     @Override
     public String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -96,6 +106,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void approveRegistrationRequest(RegistrationCancellationDTO dto){
         //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
         Optional<RegistrationRequest> request = registrationRequestRepository.findById(dto.getIdOfRequest());
+        //kad se odobri mora se dodati u usere
         if(request.isEmpty()) return;
         request.get().setCancelled(true);
         request.get().setResolved(true);
