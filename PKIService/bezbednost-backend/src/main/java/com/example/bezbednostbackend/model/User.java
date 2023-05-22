@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -25,6 +28,7 @@ public class User {
     private String phoneNumber;
     public String workTitle;
     public boolean isActive;
+    public LocalDateTime timeOfBlocking;
 
 
     public User(String name, String surname, String username, String password, Address address, String phoneNumber, String workTitle, boolean isActive) {
@@ -108,5 +112,13 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public LocalDateTime getTimeOfBlocking() {
+        return timeOfBlocking;
+    }
+
+    public void setTimeOfBlocking(LocalDateTime timeOfBlocking) {
+        this.timeOfBlocking = timeOfBlocking;
     }
 }

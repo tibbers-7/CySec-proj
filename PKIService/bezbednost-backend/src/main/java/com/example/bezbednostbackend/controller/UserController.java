@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
@@ -19,7 +21,7 @@ public class UserController{
 private UserService userService;
 
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> register(RegistrationDTO dto){
+    public ResponseEntity<String> register(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         String response = userService.registerUser(dto);
         return new ResponseEntity<String>(response, HttpStatus.OK);

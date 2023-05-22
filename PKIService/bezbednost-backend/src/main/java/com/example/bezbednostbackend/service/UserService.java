@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -23,19 +24,30 @@ public class UserService {
 
 
     public String registerUser(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if(usernameExists(dto.getUsername())) return "vec postoji";
+        if(!usernameIsValidForRegistration(dto.getUsername()) ) return "vec postoji ili je blokiran";
         if(!workTitleIsValid(dto.getWorkTitle())) return "nepravilno nazvana pozicija u firmi";
         String hashedPassword = hashPassword(dto.getPassword());
         User user = new User(dto.getName(), dto.getSurname(), dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(), dto.getWorkTitle(), false);
+        //mora se proveriti da li ce se sacuvati preko postojeceg kad mu istekne blok, to nekako da se odradi
         userRepository.save(user);
         return "uspehh";
     }
 
-    public boolean usernameExists(String username) {
+    public boolean usernameIsValidForRegistration(String username) {
 //ovo proveriti sta ce da vrati ako ne postoji
+        //prvo proverimo da li postoji, ako ne odmah true
         User user = userRepository.findByUsername(username);
         if (user != null) return true;
-        return false;
+        //ako je korisnik blokiran ili vec postoji aktivan nalog s tim usernameom nije validan
+        if(userIsBlocked(user) || user.isActive) return false;
+        return true;
+    }
+
+    public boolean userIsBlocked(User user){
+        //ako je istek blokiranja u proslosti, vracamo false jer user nije blokiran
+        //stavila sam da se onemoguci naredna 3 dana registracija ako je blokirn
+        if(user.timeOfBlocking.plusDays(3).isBefore(LocalDateTime.now())) return false;
+        return true;
     }
 
     public String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -59,6 +71,15 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) return user.get();
         return null;
+    }
+
+    public void denyRegistrationOfUser(User user){
+        //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
+        //ovde sad podesavamo u useru vreme blokirajna da bude now tako da kad pokusa da se registruje opet nece moci u naredna tri dana
+        user.setTimeOfBlocking(LocalDateTime.now());
+        //treba da se sacuva korisnik tako u bazu kao za apdejt
+
+
     }
 
 
