@@ -8,6 +8,7 @@ import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -18,7 +19,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
+@Service
 public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
