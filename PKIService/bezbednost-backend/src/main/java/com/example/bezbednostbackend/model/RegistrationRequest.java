@@ -1,21 +1,13 @@
 package com.example.bezbednostbackend.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table
-public class User {
+public class RegistrationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -27,10 +19,11 @@ public class User {
     private Address address;
     private String phoneNumber;
     private String workTitle;
-    private boolean isActive;
+    private LocalDateTime requestCreated;
+    private boolean isCancelled;
+    private boolean isResolved;
 
-
-    public User(String name, String surname, String username, String password, Address address, String phoneNumber, String workTitle) {
+    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String workTitle, LocalDateTime requestCreated, boolean isCancelled, boolean isResolved) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -38,14 +31,9 @@ public class User {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.workTitle = workTitle;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+        this.requestCreated = requestCreated;
+        this.isCancelled = isCancelled;
+        this.isResolved = isResolved;
     }
 
     public Integer getId() {
@@ -112,4 +100,27 @@ public class User {
         this.workTitle = workTitle;
     }
 
+    public LocalDateTime getRequestCreated() {
+        return requestCreated;
+    }
+
+    public void setRequestCreated(LocalDateTime requestCreated) {
+        this.requestCreated = requestCreated;
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        isCancelled = cancelled;
+    }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        isResolved = resolved;
+    }
 }
