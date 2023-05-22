@@ -62,6 +62,36 @@
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.70</version>
 		</dependency>
+        <dependency>
+            <groupId>com.sap.cloud.security</groupId>
+            <artifactId>java-security</artifactId>
+            <version>2.13.7</version>
+        </dependency>
+		<dependency>
+			<groupId>com.sap.cloud.security</groupId>
+			<artifactId>java-security</artifactId>
+			<version>2.13.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.cloud.security</groupId>
+			<artifactId>java-security</artifactId>
+			<version>2.13.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.cloud.security</groupId>
+			<artifactId>java-security</artifactId>
+			<version>2.13.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.cloud.security</groupId>
+			<artifactId>java-security</artifactId>
+			<version>2.13.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.cloud.security</groupId>
+			<artifactId>java-security</artifactId>
+			<version>2.13.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>

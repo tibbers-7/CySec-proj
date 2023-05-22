@@ -1,13 +1,18 @@
 package com.example.bezbednostbackend.service;
 
 import com.example.bezbednostbackend.dto.RegistrationDTO;
-import com.example.bezbednostbackend.model.Person;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import javax.crypto.SecretKeyFactory;
 
-import java.util.List;
+import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.Optional;
 
 @Service
@@ -17,7 +22,7 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public String registerUser(RegistrationDTO dto){
+    public String registerUser(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if(usernameExists(dto.getUsername())) return "vec postoji";
         if(!workTitleIsValid(dto.getWorkTitle())) return "nepravilno nazvana pozicija u firmi";
         String hashedPassword = hashPassword(dto.getPassword());
@@ -33,9 +38,17 @@ public class UserService {
         return false;
     }
 
-    public String hashPassword(String password){
-        //neka biblioteka za hash
-        return "privremeno";
+    public String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        //koristimo PBKDF2 hashing algoritam
+        //kreiramo salt za hashovanje
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        //instanciramo, 65536 je strength, tj koliko iteracija traje algoritam
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = factory.generateSecret(spec).getEncoded();
+        return new String(hash, StandardCharsets.UTF_8);
     }
 
     public boolean workTitleIsValid(String workTitle){
