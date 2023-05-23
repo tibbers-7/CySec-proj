@@ -6,8 +6,7 @@ import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.UserService;
-import com.example.bezbednostbackend.service.implementation.AuthenticationServiceImpl;
-import com.example.bezbednostbackend.service.implementation.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,17 +18,13 @@ import java.security.spec.InvalidKeySpecException;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController{
 
 @Autowired
-private UserService userService;
+private final UserService userService;
 @Autowired
-private AuthenticationService authenticationService;
-
-    public UserController(UserService userService, AuthenticationService authenticationService) {
-        this.userService = userService;
-        this.authenticationService = authenticationService;
-    }
+private final AuthenticationService authenticationService;
 
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> sendRegistrationRequest(@RequestBody RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {

@@ -8,6 +8,8 @@ import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
+import com.example.bezbednostbackend.service.EmailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +23,15 @@ import java.security.spec.KeySpec;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-@Service
+@Service @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     @Autowired
-    private RegistrationRequestRepository registrationRequestRepository;
-
-    public AuthenticationServiceImpl(RegistrationRequestRepository registrationRequestRepository, UserRepository userRepository) {
-        this.registrationRequestRepository = registrationRequestRepository;
-        this.userRepository = userRepository;
-    }
-
+    private final RegistrationRequestRepository registrationRequestRepository;
+    @Autowired
+    private final EmailService emailService;
+    
     @Override
     public RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
