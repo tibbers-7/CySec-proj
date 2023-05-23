@@ -29,10 +29,11 @@ public class RegistrationRequest {
     private String phoneNumber;
     private String workTitle;
     private LocalDateTime requestCreated;
+    private LocalDateTime requestUpdated;
     private boolean isCancelled;
     private boolean isResolved;
 
-    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String workTitle, LocalDateTime requestCreated, boolean isCancelled, boolean isResolved) {
+    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String workTitle, LocalDateTime requestCreated, LocalDateTime requestUpdated, boolean isCancelled, boolean isResolved) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -43,6 +44,15 @@ public class RegistrationRequest {
         this.requestCreated = requestCreated;
         this.isCancelled = isCancelled;
         this.isResolved = isResolved;
+        this.requestUpdated = requestUpdated;
+    }
+
+    public LocalDateTime getRequestUpdated() {
+        return requestUpdated;
+    }
+
+    public void setRequestUpdated(LocalDateTime requestUpdated) {
+        this.requestUpdated = requestUpdated;
     }
 
     public Integer getId() {

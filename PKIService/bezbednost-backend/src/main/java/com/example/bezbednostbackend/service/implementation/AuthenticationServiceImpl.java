@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         RegistrationResponseDTO validity = requestIsValid(dto.getUsername(), dto.getWorkTitle());
         if(!validity.isValid()) return validity;
         String hashedPassword = hashPassword(dto.getPassword());
-        RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(), dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(), dto.getWorkTitle(), LocalDateTime.now(), false, false);
+        RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(), dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(), dto.getWorkTitle(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
         registrationRequestRepository.save(request);
         return new RegistrationResponseDTO("Request sent!", true);
     }
@@ -67,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 responseDTO = new RegistrationResponseDTO("A request with this username already exists!", false);
                 break;
             }
-            else if(request.isCancelled() && request.getRequestCreated().plusDays(3).isAfter(LocalDateTime.now())){
+            else if(request.isCancelled() && request.getRequestUpdated().plusDays(3).isAfter(LocalDateTime.now())){
                 responseDTO = new RegistrationResponseDTO("This registration request has been blocked! Try again in a few days", false);
                 break;
             }
@@ -95,19 +95,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void cancelRegistrationRequest(RegistrationCancellationDTO dto){
         //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
-        Optional<RegistrationRequest> request = registrationRequestRepository.findById(dto.getIdOfRequest());
-        if(request.isEmpty()) return;
-        request.get().setCancelled(true);
-        request.get().setResolved(true);
-        registrationRequestRepository.save(request.get());
+        Optional<RegistrationRequest> optionalRequest = registrationRequestRepository.findById(dto.getIdOfRequest());
+        if(optionalRequest.isEmpty()) return;
+        RegistrationRequest request = optionalRequest.get();
+        request.setCancelled(true);
+        request.setResolved(true);
+        request.setRequestUpdated(LocalDateTime.now());
+        String emailContent = "Hello " + request.getName() + "," + "\r\n" +
+                "Unfortunately, the registration request that you sent has been denied. "+
+                "This means that you will not be able to send another request for the next three days. "+
+                "The reason for the request denial was: " + dto.getCancellationDescription();
+        String emailSubject = "Registration request cancellation";
+        emailService.sendSimpleEmail( request.getUsername(), emailSubject, emailContent );
+        registrationRequestRepository.save(request);
     }
     @Override
     public void approveRegistrationRequest(RegistrationApprovalDTO dto){
-        //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
         Optional<RegistrationRequest> request = registrationRequestRepository.findById(dto.getIdOfRequest());
         //kad se odobri mora se dodati u usere
         if(request.isEmpty()) return;
-        request.get().setCancelled(true);
+        request.get().setCancelled(false);
         request.get().setResolved(true);
         registrationRequestRepository.save(request.get());
     }
