@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.service;
 
+import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
@@ -19,5 +20,5 @@ public interface AuthenticationService {
     boolean workTitleIsValid(String workTitle);
     void cancelRegistrationRequest(RegistrationCancellationDTO dto);
 
-    void approveRegistrationRequest(RegistrationCancellationDTO dto);
+    void approveRegistrationRequest(RegistrationApprovalDTO dto);
 }

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.io.File;
+
 @Service @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
@@ -20,6 +22,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendSimpleEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("sec.system.adi@gmail.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
@@ -31,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendMIMEEmail(String to, String subject, String htmlContent) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
+        helper.setFrom("sec.system.adi@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
         message.setContent(htmlContent, "text/html; charset=utf-8");
@@ -40,14 +43,17 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendEmailWithAttachment(String to, String subject, String body, FileSystemResource attachment) throws MessagingException {
+    public void sendEmailWithAttachment(String to, String subject, String body, String pathToAttachment) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
+        helper.setFrom("sec.system.adi@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(body);
 
+        FileSystemResource attachment
+                = new FileSystemResource(new File(pathToAttachment));
+        helper.addAttachment(pathToAttachment, attachment);
         helper.addAttachment(attachment.getPath(), attachment);
 
         mailSender.send(message);

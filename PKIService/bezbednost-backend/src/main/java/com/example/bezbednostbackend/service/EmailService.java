@@ -7,5 +7,5 @@ public interface EmailService {
 
     void sendSimpleEmail(String to, String subject, String body);
     void sendMIMEEmail(String to, String subject, String htmlContent) throws MessagingException;
-    void sendEmailWithAttachment(String to, String subject, String body, FileSystemResource attachment) throws MessagingException;
+    void sendEmailWithAttachment(String to, String subject, String body, String pathToAttachment) throws MessagingException;
 }

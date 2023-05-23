@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.service.implementation;
 
+import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
@@ -101,8 +102,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         registrationRequestRepository.save(request.get());
     }
     @Override
-    //novi dto za approval
-    public void approveRegistrationRequest(RegistrationCancellationDTO dto){
+    public void approveRegistrationRequest(RegistrationApprovalDTO dto){
         //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
         Optional<RegistrationRequest> request = registrationRequestRepository.findById(dto.getIdOfRequest());
         //kad se odobri mora se dodati u usere
