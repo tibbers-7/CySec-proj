@@ -17,6 +17,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private final JavaMailSender mailSender;
 
+    @Override
     public void sendSimpleEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -26,6 +27,7 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
     }
 
+    @Override
     public void sendMIMEEmail(String to, String subject, String htmlContent) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -37,6 +39,7 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
     }
 
+    @Override
     public void sendEmailWithAttachment(String to, String subject, String body, FileSystemResource attachment) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);

@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RegistrationRequestRepository registrationRequestRepository;
     @Autowired
     private final EmailService emailService;
-    
+
     @Override
     public RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
