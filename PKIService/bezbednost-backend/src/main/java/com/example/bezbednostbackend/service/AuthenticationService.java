@@ -4,20 +4,22 @@ import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
+import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
+import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
+import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public interface AuthenticationService {
-    RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException;
+    RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException, UserIsBannedException, UserAlreadyExistsException, RequestAlreadyPendingException;
 
     boolean usernameExists(String username);
 
-    RegistrationResponseDTO requestIsValid(String username, String workTitle);
+    void checkUsernameValidity(String username) throws UserAlreadyExistsException, RequestAlreadyPendingException, UserIsBannedException;
 
     public String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
 
-    boolean workTitleIsValid(String workTitle);
     void cancelRegistrationRequest(RegistrationCancellationDTO dto);
 
     void approveRegistrationRequest(RegistrationApprovalDTO dto);

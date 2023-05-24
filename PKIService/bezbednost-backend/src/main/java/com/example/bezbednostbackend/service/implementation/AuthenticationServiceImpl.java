@@ -4,6 +4,9 @@ import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
+import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
+import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
+import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
@@ -34,47 +37,44 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailService emailService;
 
     @Override
-    public RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException,
+            InvalidKeySpecException, UserIsBannedException,
+            UserAlreadyExistsException, RequestAlreadyPendingException {
 
-        RegistrationResponseDTO validity = requestIsValid(dto.getUsername(), dto.getWorkTitle());
-        if(!validity.isValid()) return validity;
+        checkUsernameValidity(dto.getUsername());
         String hashedPassword = hashPassword(dto.getPassword());
-        RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(), dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(), dto.getWorkTitle(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
+
+        RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
+                dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(),
+                dto.getWorkTitle(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
+
         registrationRequestRepository.save(request);
         return new RegistrationResponseDTO("Request sent!", true);
     }
 
     @Override
     public boolean usernameExists(String username) {
-        //proveriti usere, ne sme da postoji s tim usernameom
-        User user = userRepository.findByUsername(username);
-        if (user != null) return true;
-        return false;
+        return userRepository.findByUsername(username) != null;
     }
+
     @Override
-    public RegistrationResponseDTO requestIsValid(String username, String workTitle){
+    public void checkUsernameValidity(String username) throws UserAlreadyExistsException,
+            RequestAlreadyPendingException, UserIsBannedException {
 
-        if(usernameExists(username)) return new RegistrationResponseDTO("Username is already used!", false);
-        if(!workTitleIsValid(workTitle)) return new RegistrationResponseDTO("Invalid work title entered!", false);
+        if(usernameExists(username))
+            throw new UserAlreadyExistsException("Username: " + username + " is already being used!");
+
         List<RegistrationRequest> requests = registrationRequestRepository.findByUsername(username);
-        if(requests.isEmpty()) return new RegistrationResponseDTO("Username is valid for use!", true);
+        if(requests.isEmpty()) return;
 
-        RegistrationResponseDTO responseDTO = new RegistrationResponseDTO("Sve ok", true);
-        for (RegistrationRequest request: requests
-             ) {
-               //true ce biti ako zahtev postoji, i isResolved = false, znaci da je na cekanju
-            if(!request.isResolved()) {
-                responseDTO = new RegistrationResponseDTO("A request with this username already exists!", false);
-                break;
+        for (RegistrationRequest request: requests) {
+            if(!request.isResolved())
+               throw new RequestAlreadyPendingException("There is already a pending request for username " + username);
+            else if(request.isCancelled() && request.getRequestUpdated().plusDays(3).isAfter(LocalDateTime.now()))
+                throw new UserIsBannedException("User with username "+ username + " has been banned.");
             }
-            else if(request.isCancelled() && request.getRequestUpdated().plusDays(3).isAfter(LocalDateTime.now())){
-                responseDTO = new RegistrationResponseDTO("This registration request has been blocked! Try again in a few days", false);
-                break;
-            }
-            }
-        return responseDTO;
-
     }
+
     @Override
     public String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //koristimo PBKDF2 hashing algoritam
@@ -88,10 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         byte[] hash = factory.generateSecret(spec).getEncoded();
         return new String(hash, StandardCharsets.UTF_8);
     }
-    @Override
-    public boolean workTitleIsValid(String workTitle){
-        return (workTitle.equals("HUMAN_RESOURCES_MANAGER")|| workTitle.equals("ENGINEER") || workTitle.equals("PROJECT_MANAGER"));
-    }
+
     @Override
     public void cancelRegistrationRequest(RegistrationCancellationDTO dto){
         //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
@@ -101,14 +98,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         request.setCancelled(true);
         request.setResolved(true);
         request.setRequestUpdated(LocalDateTime.now());
-        String emailContent = "Hello " + request.getName() + "," + "\r\n" +
-                "Unfortunately, the registration request that you sent has been denied. "+
-                "This means that you will not be able to send another request for the next three days. "+
-                "The reason for the request denial was: " + dto.getCancellationDescription();
-        String emailSubject = "Registration request cancellation";
-        emailService.sendSimpleEmail( request.getUsername(), emailSubject, emailContent );
+        sendRequestCancellationEmail(request.getName(), dto.getCancellationDescription(), request.getUsername());
         registrationRequestRepository.save(request);
     }
+
+    public void sendRequestCancellationEmail(String name, String cancellationDescription, String username ){
+        String emailContent = "Hello " + name + "," + "\r\n" +
+                "Unfortunately, the registration request that you sent has been denied. "+
+                "This means that you will not be able to send another request for the next three days. "+
+                "The reason for the request denial was: " + cancellationDescription;
+        String emailSubject = "Registration request cancellation";
+        emailService.sendSimpleEmail( username, emailSubject, emailContent );
+    }
+
     @Override
     public void approveRegistrationRequest(RegistrationApprovalDTO dto){
         Optional<RegistrationRequest> request = registrationRequestRepository.findById(dto.getIdOfRequest());
@@ -117,6 +119,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         request.get().setCancelled(false);
         request.get().setResolved(true);
         registrationRequestRepository.save(request.get());
+    }
+
+    public void sendRequestApprovalEmail(String name, String approvalDescription, String username ){
+        String emailContent = "Hello " + name + "," + "\r\n";
+        String emailSubject = "Registration request acceptance";
+        emailService.sendSimpleEmail( username, emailSubject, emailContent );
     }
 
 
