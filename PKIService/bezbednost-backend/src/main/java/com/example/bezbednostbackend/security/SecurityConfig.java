@@ -1,20 +1,28 @@
 package com.example.bezbednostbackend.security;
 
+import com.example.bezbednostbackend.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import com.example.bezbednostbackend.filters.CustomAuthenticationFilter;
+import org.springframework.security.authentication.AuthenticationManager;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     // ovo se zovu beans btw
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-    @Override
-    protected void configure(AuthentificationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // default je sa cookies
         //super.configure(http);
 
@@ -45,7 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         //check the user when logging in
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter (), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
+
 
 
     @Bean
