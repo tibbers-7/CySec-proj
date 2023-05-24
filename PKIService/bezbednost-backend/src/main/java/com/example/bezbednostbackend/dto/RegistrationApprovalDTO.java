@@ -1,27 +1,16 @@
 package com.example.bezbednostbackend.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class RegistrationApprovalDTO {
-    private String cancellationDescription;
+    private String approvalDescription;
     private Integer idOfRequest;
 
-    public RegistrationApprovalDTO(String cancellationDescription, Integer idOfRequest) {
-        this.cancellationDescription = cancellationDescription;
-        this.idOfRequest = idOfRequest;
-    }
-
-    public String getCancellationDescription() {
-        return cancellationDescription;
-    }
-
-    public void setCancellationDescription(String cancellationDescription) {
-        this.cancellationDescription = cancellationDescription;
-    }
-
-    public Integer getIdOfRequest() {
-        return idOfRequest;
-    }
-
-    public void setIdOfRequest(Integer idOfRequest) {
-        this.idOfRequest = idOfRequest;
-    }
 }

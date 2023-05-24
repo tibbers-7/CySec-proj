@@ -27,6 +27,8 @@ import java.security.spec.KeySpec;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 @Service @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
@@ -91,7 +93,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void cancelRegistrationRequest(RegistrationCancellationDTO dto){
-        //mora se poslati mejl korisniku sa detaljima odbijanja, prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
+        //mora se poslati mejl korisniku sa detaljima odbijanja,
+        // prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
         Optional<RegistrationRequest> optionalRequest = registrationRequestRepository.findById(dto.getIdOfRequest());
         if(optionalRequest.isEmpty()) return;
         RegistrationRequest request = optionalRequest.get();
@@ -113,15 +116,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void approveRegistrationRequest(RegistrationApprovalDTO dto){
-        Optional<RegistrationRequest> request = registrationRequestRepository.findById(dto.getIdOfRequest());
+        Optional<RegistrationRequest> optionalRequest =
+                registrationRequestRepository.findById(dto.getIdOfRequest());
         //kad se odobri mora se dodati u usere
-        if(request.isEmpty()) return;
-        request.get().setCancelled(false);
-        request.get().setResolved(true);
-        registrationRequestRepository.save(request.get());
+        if(optionalRequest.isEmpty()) return;
+        RegistrationRequest request = optionalRequest.get();
+        request.setCancelled(false);
+        request.setResolved(true);
+        registrationRequestRepository.save(request);
+        User registratedUser = new User(1, request.getName(),request.getSurname(),
+                request.getUsername(),request.getPassword(),request.getAddress(),
+                request.getPhoneNumber(),request.getWorkTitle(), false);
+        userRepository.save(registratedUser);
+        sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
     }
 
     public void sendRequestApprovalEmail(String name, String approvalDescription, String username ){
+        String token = UUID.randomUUID().toString();
+        //createVerificationToken(user, token);
         String emailContent = "Hello " + name + "," + "\r\n";
         String emailSubject = "Registration request acceptance";
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
