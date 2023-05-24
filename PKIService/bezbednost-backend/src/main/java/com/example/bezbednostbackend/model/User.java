@@ -8,8 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -31,5 +31,6 @@ public class User {
     private String phoneNumber;
     private String workTitle;
     private boolean isActive;
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles=new ArrayList<>();
 }

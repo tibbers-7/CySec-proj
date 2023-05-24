@@ -126,7 +126,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         registrationRequestRepository.save(request);
         User registratedUser = new User(1, request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(),request.getWorkTitle(), false);
+                request.getPhoneNumber(),request.getWorkTitle(), false,null);
+        //TODO: promeniti iz null u role
         userRepository.save(registratedUser);
         sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
     }
