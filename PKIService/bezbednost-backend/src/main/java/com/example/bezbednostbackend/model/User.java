@@ -27,6 +27,8 @@ public class User {
     private String username;
     private String password;
     @JdbcTypeCode(SqlTypes.JSON)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "addressID")
     private Address address;
     private String phoneNumber;
     private String workTitle;
