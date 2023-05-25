@@ -3,9 +3,20 @@ package com.example.bezbednostbackend.service;
 import com.example.bezbednostbackend.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface UserService {
 
     User getById(Integer id);
-    UserDetails loadUserByUsername(String username);
 
+    List<User> findAll();
+
+    Optional<User> findByUsername(String username);
+
+    void create(User employee);
+
+    void delete(Integer id);
+
+    void update(User employee);
 }
