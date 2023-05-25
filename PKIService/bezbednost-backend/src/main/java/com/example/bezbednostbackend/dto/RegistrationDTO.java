@@ -42,7 +42,7 @@ public class RegistrationDTO {
     private String phoneNumber;
 
     @Valid
-    @Pattern(regexp = "ENGINEER|PROJECT_MANAGER|HUMAN_RESOURCES_MANAGER", message = "Work titles can be either ENGINEER,HUMAN_RESOURCES_MANAGER or PROJECT_MANAGER")
+    @Pattern(regexp = "ENGINEER|PROJECT_MANAGER|HR_MANAGER", message = "Work titles can be either ENGINEER,HR_MANAGER or PROJECT_MANAGER")
     @NotBlank(message = "Work title cannot be empty")
     public String workTitle;
 
