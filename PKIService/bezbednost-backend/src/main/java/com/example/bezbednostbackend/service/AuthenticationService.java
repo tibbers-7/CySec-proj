@@ -7,6 +7,8 @@ import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
+import com.example.bezbednostbackend.model.AuthenticationRequest;
+import com.example.bezbednostbackend.model.AuthenticationResponse;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -23,4 +25,6 @@ public interface AuthenticationService {
     void cancelRegistrationRequest(RegistrationCancellationDTO dto);
 
     void approveRegistrationRequest(RegistrationApprovalDTO dto);
+
+    AuthenticationResponse authenticate(AuthenticationRequest request);
 }

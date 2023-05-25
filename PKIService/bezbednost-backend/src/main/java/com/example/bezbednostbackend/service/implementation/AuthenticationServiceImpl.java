@@ -1,12 +1,16 @@
 package com.example.bezbednostbackend.service.implementation;
 
+import com.example.bezbednostbackend.config.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
+import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
+import com.example.bezbednostbackend.model.AuthenticationRequest;
+import com.example.bezbednostbackend.model.AuthenticationResponse;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
@@ -15,6 +19,9 @@ import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKeyFactory;
@@ -37,6 +44,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RegistrationRequestRepository registrationRequestRepository;
     @Autowired
     private final EmailService emailService;
+    @Autowired
+    private final JwtService jwtService;
+
+
+    private final AuthenticationManager authenticationManager;
+
 
     @Override
     public RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException,
@@ -130,6 +143,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //TODO: promeniti iz null u role
         userRepository.save(registratedUser);
         sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
+    }
+
+    @Override
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                        )
+        );
+        var user=userRepository.findByUsername(request.getUsername());
+        if(user==null) throw(new UsernameNotFoundException("User not found"));
+        var jwtToken=jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+    //@Override
+    public AuthenticationResponse register(AuthenticationRequest request) {
+        /*var user=User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordENcoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
+        userRepository.save(user);*/
+        User user=new User();
+        var jwtToken=jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     public void sendRequestApprovalEmail(String name, String approvalDescription, String username ){
