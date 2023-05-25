@@ -25,7 +25,7 @@ public class RegistrationDTO {
 
     @Valid
     @NotBlank(message = "Username cannot be empty or null")
-    @Email(message = "Username should be valid")
+    @Email(message = "Username should be a valid email address.")
     private String username;
 //Minimum eight characters, at least one letter and one number
     @Valid

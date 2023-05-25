@@ -9,6 +9,7 @@ import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
+import com.example.bezbednostbackend.repository.AddressRepository;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
@@ -38,6 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final RegistrationRequestRepository registrationRequestRepository;
     @Autowired
     private final EmailService emailService;
+    @Autowired
+    private final AddressRepository addressRepository;
 
     @Override
     public void makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException,
@@ -123,18 +126,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.info("AuthenticationService: entered the approveRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest =
                 registrationRequestRepository.findById(dto.getIdOfRequest());
-        //kad se odobri mora se dodati u usere
         if(optionalRequest.isEmpty()) return;
         RegistrationRequest request = optionalRequest.get();
         request.setCancelled(false);
         request.setResolved(true);
         registrationRequestRepository.save(request);
+        createUserFromRegistrationRequest(request);
+        sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
+    }
+
+    public void createUserFromRegistrationRequest(RegistrationRequest request){
         User registratedUser = new User(1, request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
                 request.getPhoneNumber(),request.getWorkTitle(), false);
         userRepository.save(registratedUser);
-        sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
+        addressRepository.save(request.getAddress());
     }
+
+
 
     public void sendRequestApprovalEmail(String name, String approvalDescription, String username ){
         log.info("AuthenticationService: entered the sendRequestApprovalEmail method.");
