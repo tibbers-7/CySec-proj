@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public interface AuthenticationService {
-    RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException, UserIsBannedException, UserAlreadyExistsException, RequestAlreadyPendingException;
+    void makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException, UserIsBannedException, UserAlreadyExistsException, RequestAlreadyPendingException;
 
     boolean usernameExists(String username);
 
