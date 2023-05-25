@@ -1,11 +1,8 @@
 package com.example.bezbednostbackend.controller;
 
+import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
-import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
-import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
-import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
-import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.UserService;
@@ -14,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 @RestController
 @RequestMapping("/user")
@@ -30,11 +26,12 @@ private final UserService userService;
 private final AuthenticationService authenticationService;
 
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> sendRegistrationRequest(@RequestBody @Valid RegistrationDTO dto) {
+    public ResponseEntity<String> sendRegistrationRequest(@RequestBody @Validated RegistrationDTO dto) {
         try{
             authenticationService.makeRegistrationRequest(dto);
-        }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Request sent!", HttpStatus.OK);
     }
@@ -48,9 +45,17 @@ private final AuthenticationService authenticationService;
 
     //ovo samo admin moze
     @PostMapping(value="/register/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> cancelRegistration(RegistrationCancellationDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<String> cancelRegistration(RegistrationCancellationDTO dto) {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.cancelRegistrationRequest(dto);
         return new ResponseEntity<String>("request cancelled", HttpStatus.OK);
+    }
+
+    //ovo samo admin moze
+    @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> approveRegistration(RegistrationApprovalDTO dto) {
+        //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
+        authenticationService.approveRegistrationRequest(dto);
+        return new ResponseEntity<String>("request approve", HttpStatus.OK);
     }
 }
