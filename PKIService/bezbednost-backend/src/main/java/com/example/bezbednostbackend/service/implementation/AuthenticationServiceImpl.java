@@ -17,6 +17,7 @@ import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private final UserRepository userRepository;
@@ -51,19 +52,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public RegistrationResponseDTO makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException,
+    public void makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException,
             InvalidKeySpecException, UserIsBannedException,
             UserAlreadyExistsException, RequestAlreadyPendingException {
-
+        log.info("AuthenticationService: Entered MakeRegistrationRequest method.");
         checkUsernameValidity(dto.getUsername());
+        log.info("AuthenticationService: makeRegistrationRequest - Finished username validity check");
         String hashedPassword = hashPassword(dto.getPassword());
-
+        log.info("AuthenticationService: makeRegistrationRequest - Finished password hashing");
         RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
                 dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(),
                 dto.getWorkTitle(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
-
+        log.info("AuthenticationService: makeRegistrationRequest - Created registration request");
         registrationRequestRepository.save(request);
-        return new RegistrationResponseDTO("Request sent!", true);
+        log.info("AuthenticationService: makeRegistrationRequest - registration request saved to database");
     }
 
     @Override
@@ -80,7 +82,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         List<RegistrationRequest> requests = registrationRequestRepository.findByUsername(username);
         if(requests.isEmpty()) return;
-
         for (RegistrationRequest request: requests) {
             if(!request.isResolved())
                throw new RequestAlreadyPendingException("There is already a pending request for username " + username);
@@ -96,6 +97,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
+        log.info("AuthenticationService: hashPassword - Created hashing salt.");
         //instanciramo, 65536 je strength, tj koliko iteracija traje algoritam
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -107,6 +109,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void cancelRegistrationRequest(RegistrationCancellationDTO dto){
         //mora se poslati mejl korisniku sa detaljima odbijanja,
         // prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
+        log.info("AuthenticationService: entered the cancelRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest = registrationRequestRepository.findById(dto.getIdOfRequest());
         if(optionalRequest.isEmpty()) return;
         RegistrationRequest request = optionalRequest.get();
@@ -118,6 +121,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public void sendRequestCancellationEmail(String name, String cancellationDescription, String username ){
+        log.info("AuthenticationService: entered the sendRequestCancellationEmail method.");
         String emailContent = "Hello " + name + "," + "\r\n" +
                 "Unfortunately, the registration request that you sent has been denied. "+
                 "This means that you will not be able to send another request for the next three days. "+
@@ -128,6 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void approveRegistrationRequest(RegistrationApprovalDTO dto){
+        log.info("AuthenticationService: entered the approveRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest =
                 registrationRequestRepository.findById(dto.getIdOfRequest());
         //kad se odobri mora se dodati u usere
@@ -164,6 +169,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     public void sendRequestApprovalEmail(String name, String approvalDescription, String username ){
+        log.info("AuthenticationService: entered the sendRequestApprovalEmail method.");
         String token = UUID.randomUUID().toString();
         //createVerificationToken(user, token);
         String emailContent = "Hello " + name + "," + "\r\n";
