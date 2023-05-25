@@ -1,9 +1,10 @@
-package com.example.bezbednostbackend.model;
+package com.example.bezbednostbackend.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 
+// CREDENTIALS
 @Entity
 @Builder
 @AllArgsConstructor
@@ -11,7 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name="authentication_requests")
-public class AuthenticationRequest {
+public class AuthenticationRequestDto {
     private String username;
     private String password;
 }

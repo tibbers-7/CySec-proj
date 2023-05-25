@@ -8,5 +8,7 @@ import lombok.Setter;
 
 public enum Role{
     ADMIN,
-    USER
+    ENGINEER,
+    PROJECT_MANAGER,
+    HR_MANAGER
 }

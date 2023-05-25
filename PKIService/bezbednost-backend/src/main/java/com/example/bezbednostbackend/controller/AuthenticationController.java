@@ -1,6 +1,6 @@
 package com.example.bezbednostbackend.controller;
 
-import com.example.bezbednostbackend.model.AuthenticationRequest;
+import com.example.bezbednostbackend.dto.AuthenticationRequestDto;
 import com.example.bezbednostbackend.model.AuthenticationResponse;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.service.AuthenticationService;
@@ -28,7 +28,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
+            @RequestBody AuthenticationRequestDto request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }

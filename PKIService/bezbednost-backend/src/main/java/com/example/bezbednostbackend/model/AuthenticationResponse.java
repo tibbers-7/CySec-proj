@@ -12,5 +12,6 @@ import lombok.*;
 @Setter
 @Table(name="authentication_responses")
 public class AuthenticationResponse {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 }
