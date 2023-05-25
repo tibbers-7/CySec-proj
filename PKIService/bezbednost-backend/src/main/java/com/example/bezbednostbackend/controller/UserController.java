@@ -1,9 +1,12 @@
 package com.example.bezbednostbackend.controller;
 
+import com.example.bezbednostbackend.dto.EmployeeDTO;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
+import com.example.bezbednostbackend.model.Address;
 import com.example.bezbednostbackend.model.User;
+import com.example.bezbednostbackend.service.AddressService;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.UserService;
 import jakarta.validation.Valid;
@@ -15,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +33,8 @@ public class UserController{
 private final UserService userService;
 @Autowired
 private final AuthenticationService authenticationService;
+@Autowired
+private final AddressService addressService;
 
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> sendRegistrationRequest(@RequestBody @Valid RegistrationDTO dto) {
@@ -53,6 +60,82 @@ private final AuthenticationService authenticationService;
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.cancelRegistrationRequest(dto);
         return new ResponseEntity<String>("request cancelled", HttpStatus.OK);
+    }
+
+    @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<EmployeeDTO>> findAllEmployees(){
+        Collection<User> users = userService.findAll();
+        Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
+        for(User user: users){
+            EmployeeDTO dto = new EmployeeDTO(user);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findByUsername/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EmployeeDTO> findEmployeeByUsername(@PathVariable("username") String username){
+        User user = userService.findByUsername(username).orElse(null);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        EmployeeDTO dto = new EmployeeDTO(user);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> create(@RequestBody EmployeeDTO dto){
+        User user = new User();
+        Map(dto, user);
+        try{
+            User userOld = userService.findByUsername(dto.getUsername()).orElse(null);
+            if(userOld == null){
+                userService.create(user);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> update(@RequestBody EmployeeDTO dto){
+        User user = userService.getById(dto.getId());
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Map(dto, user);
+        userService.update(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
+        User user = userService.getById(id);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else{
+            userService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    private void Map(EmployeeDTO dto, User user) {
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setWorkTitle(dto.getWorkTitle());
+        Address address = addressService.findById(dto.getAddressID()).orElse(null);
+        if (address != null) {
+            user.setAddress(address);
+        }
     }
 
     //ovo samo admin moze
