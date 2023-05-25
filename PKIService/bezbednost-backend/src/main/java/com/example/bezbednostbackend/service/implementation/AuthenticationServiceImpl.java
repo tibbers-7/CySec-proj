@@ -4,11 +4,10 @@ import com.example.bezbednostbackend.config.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
-import com.example.bezbednostbackend.dto.RegistrationResponseDTO;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
-import com.example.bezbednostbackend.dto.AuthenticationRequestDto;
+import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.model.AuthenticationResponse;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
@@ -150,7 +149,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequestDto request) {
+    public AuthenticationResponse authenticate(AuthenticationRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

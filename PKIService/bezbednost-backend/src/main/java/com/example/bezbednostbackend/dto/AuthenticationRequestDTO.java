@@ -12,7 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name="authentication_requests")
-public class AuthenticationRequestDto {
+public class AuthenticationRequestDTO {
     private String username;
     private String password;
 }

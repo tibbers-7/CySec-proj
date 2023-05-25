@@ -1,35 +1,58 @@
 package com.example.bezbednostbackend.controller;
 
-import com.example.bezbednostbackend.dto.AuthenticationRequestDto;
+import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
+import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.model.AuthenticationResponse;
-import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationService service;
+    @Autowired
+    private final AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegistrationRequest request
-    ) {
-        //return ResponseEntity.ok(service.makeRegistrationRequest(request));
-        return null;
+    @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> sendRegistrationRequest(@RequestBody @Valid RegistrationDTO dto) {
+        try{
+            authenticationService.makeRegistrationRequest(dto);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Request sent!", HttpStatus.OK);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequestDto request
+            @RequestBody AuthenticationRequestDTO request
     ) {
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

@@ -5,6 +5,7 @@ import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,5 +21,14 @@ public class UserServiceImpl implements UserService {
         if (user.isPresent()) return user.get();
         return null;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username));
+        if (user.isPresent()) return user.get();
+        return null;
+    }
+
+
 
 }

@@ -7,5 +7,5 @@ public interface UserService {
 
     User getById(Integer id);
     UserDetails loadUserByUsername(String username);
-    User saveUser(User user);
+
 }
