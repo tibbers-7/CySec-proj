@@ -15,6 +15,8 @@ public interface UserService extends UserDetailsService {
 
     Optional<User> findByUsername(String username);
 
+    List<User> findAllByRole(String role);
+
     void create(User employee);
 
     void delete(Integer id);

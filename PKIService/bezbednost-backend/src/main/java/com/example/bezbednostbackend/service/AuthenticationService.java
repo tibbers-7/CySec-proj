@@ -4,6 +4,7 @@ import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
+import com.example.bezbednostbackend.exceptions.TokenRefreshException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
@@ -24,4 +25,6 @@ public interface AuthenticationService {
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
     void sendRequestApprovalEmail(String username);
     boolean activateAccount(String username, String token);
+
+    String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;
 }
