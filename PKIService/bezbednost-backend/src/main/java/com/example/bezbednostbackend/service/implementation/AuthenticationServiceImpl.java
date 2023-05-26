@@ -12,21 +12,27 @@ import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
+import com.example.bezbednostbackend.model.token.VerificationToken;
 import com.example.bezbednostbackend.repository.AddressRepository;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
+import com.example.bezbednostbackend.repository.VerificationTokenRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +56,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     @Autowired
     private final RefreshTokenService refreshTokenService;
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
+    @Autowired
+    VerificationTokenRepository verificationTokenRepository;
 
 
 
@@ -128,7 +138,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         request.setResolved(true);
         registrationRequestRepository.save(request);
         createUserFromRegistrationRequest(request);
-       // sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
+        sendRequestApprovalEmail(request.getUsername());
     }
 
     public void createUserFromRegistrationRequest(RegistrationRequest request){
@@ -139,12 +149,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         addressRepository.save(request.getAddress());
     }
 
+    @SneakyThrows
     @Override
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
         myAuthenticationManager.authenticate(authRequest);
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
+        if (!user.isActive()) throw new UserIsBannedException("User not activated");
         var accessToken=jwtService.generateAccessToken(user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponseDTO.builder()
@@ -154,13 +166,37 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
 
-    public void sendRequestApprovalEmail(String name, String approvalDescription, String username ){
+    public void sendRequestApprovalEmail(String username ){
         log.info("AuthenticationService: entered the sendRequestApprovalEmail method.");
         String token = UUID.randomUUID().toString();
-        //createVerificationToken(user, token);
-        String emailContent = "Hello " + name + "," + "\r\n";
+        createVerificationToken(username, token);
+        String emailContent = "Hello " + username + "," + "\r\n" +
+                "Your account was succesfully approved.\n" +
+                "Please activate your account with this link:\n" +
+                "/auth/activateAccount?token="+token+"&username="+username;
         String emailSubject = "Registration request acceptance";
+
+
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
+    }
+
+    private VerificationToken createVerificationToken(String username,String token){
+        VerificationToken verificationToken = new VerificationToken(username, token);
+        verificationTokenRepository.save(verificationToken);
+        return verificationToken;
+    }
+
+    @Override
+    public boolean activateAccount(String username, String token){
+        User user=userRepository.findByUsername(username);
+        Optional<VerificationToken> tokenFromDb=verificationTokenRepository.findByUsername(username);
+        if(tokenFromDb==null) return false;
+        if (tokenFromDb.get().getToken().equals(token)){
+            user.setActive(true);
+            userRepository.save(user);
+            return true;
+        } return false;
+
     }
 
 

@@ -22,4 +22,6 @@ public interface AuthenticationService {
     void approveRegistrationRequest(RegistrationApprovalDTO dto);
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
+    void sendRequestApprovalEmail(String username);
+    boolean activateAccount(String username, String token);
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name="users")
@@ -34,6 +33,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private boolean isActive;
+
+    public User(){
+        super();
+        this.isActive=false;
+    }
 
 
     @Override
