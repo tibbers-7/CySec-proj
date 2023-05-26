@@ -14,10 +14,6 @@ public class BezbednostBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BezbednostBackendApplication.class, args);
 	}
-	@Bean
-	PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
 
 	@Bean
 	CommandLineRunner run(UserService userService) {

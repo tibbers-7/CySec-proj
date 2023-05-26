@@ -1,17 +1,15 @@
-package com.example.bezbednostbackend.model;
+package com.example.bezbednostbackend.dto;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Table(name="authentication_responses")
-public class AuthenticationResponse {
+public class AuthenticationResponseDTO {
     private String accessToken;
     private String refreshToken;
 }

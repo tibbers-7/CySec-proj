@@ -2,7 +2,7 @@ package com.example.bezbednostbackend.controller;
 
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
-import com.example.bezbednostbackend.model.AuthenticationResponse;
+import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));

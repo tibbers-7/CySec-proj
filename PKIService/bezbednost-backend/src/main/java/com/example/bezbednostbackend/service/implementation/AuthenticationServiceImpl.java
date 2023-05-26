@@ -8,7 +8,7 @@ import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
-import com.example.bezbednostbackend.model.AuthenticationResponse;
+import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.AddressRepository;
@@ -22,15 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -46,25 +40,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailService emailService;
     @Autowired
     private final JwtService jwtService;
-
-
+    @Autowired
     private final AuthenticationManager authenticationManager;
-
+    @Autowired
     private final AddressRepository addressRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+
     @Override
-    public void makeRegistrationRequest(RegistrationDTO dto) throws NoSuchAlgorithmException,
-            InvalidKeySpecException, UserIsBannedException,
+    public void makeRegistrationRequest(RegistrationDTO dto) throws UserIsBannedException,
             UserAlreadyExistsException, RequestAlreadyPendingException {
         log.info("AuthenticationService: Entered MakeRegistrationRequest method.");
         checkUsernameValidity(dto.getUsername());
-        log.info("AuthenticationService: makeRegistrationRequest - Finished username validity check");
-        String hashedPassword = hashPassword(dto.getPassword());
-        log.info("AuthenticationService: makeRegistrationRequest - Finished password hashing");
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        createRegistrationRequestForDB(dto);
+    }
+
+    public void createRegistrationRequestForDB(RegistrationDTO dto){
+        log.info("AuthenticationService: entered the createRegistrationRequestForDB");
         RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
-                dto.getUsername(), hashedPassword, dto.getAddress(), dto.getPhoneNumber(),
+                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(),
                 dto.getWorkTitle(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
-        log.info("AuthenticationService: makeRegistrationRequest - Created registration request");
         registrationRequestRepository.save(request);
         log.info("AuthenticationService: makeRegistrationRequest - registration request saved to database");
     }
@@ -89,21 +88,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             else if(request.isCancelled() && request.getRequestUpdated().plusDays(3).isAfter(LocalDateTime.now()))
                 throw new UserIsBannedException("User with username "+ username + " has been banned.");
             }
-    }
-
-    @Override
-    public String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        //koristimo PBKDF2 hashing algoritam
-        //kreiramo salt za hashovanje
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        log.info("AuthenticationService: hashPassword - Created hashing salt.");
-        //instanciramo, 65536 je strength, tj koliko iteracija traje algoritam
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] hash = factory.generateSecret(spec).getEncoded();
-        return new String(hash, StandardCharsets.UTF_8);
     }
 
     @Override
@@ -155,7 +139,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequestDTO request) {
+    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -166,7 +150,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         var accessToken=jwtService.generateToken(user);
         var refreshToken=jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+        return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

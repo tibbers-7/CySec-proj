@@ -5,7 +5,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 // CREDENTIALS
-@Entity
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
