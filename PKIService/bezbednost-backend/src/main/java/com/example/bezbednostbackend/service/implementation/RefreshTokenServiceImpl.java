@@ -5,6 +5,8 @@ import com.example.bezbednostbackend.exceptions.TokenRefreshException;
 import com.example.bezbednostbackend.model.token.RefreshToken;
 import com.example.bezbednostbackend.repository.RefreshTokenRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
+import com.example.bezbednostbackend.service.RefreshTokenService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,8 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class RefreshTokenServiceImpl {
+@Service @RequiredArgsConstructor
+public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Value("${bezbednostbackend.app.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
 

@@ -4,6 +4,7 @@ import com.example.bezbednostbackend.dto.EmployeeDTO;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
+import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.model.Address;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AddressService;
@@ -116,7 +117,7 @@ private final AddressService addressService;
         user.setPassword(dto.getPassword());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
-        user.setWorkTitle(dto.getWorkTitle());
+        user.setRole(Role.valueOf(dto.getRole()));
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
         if (address != null) {
             user.setAddress(address);

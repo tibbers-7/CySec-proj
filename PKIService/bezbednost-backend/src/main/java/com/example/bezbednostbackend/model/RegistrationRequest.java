@@ -27,20 +27,20 @@ public class RegistrationRequest {
     @JdbcTypeCode(SqlTypes.JSON)
     private Address address;
     private String phoneNumber;
-    private String workTitle;
+    private String role;
     private LocalDateTime requestCreated;
     private LocalDateTime requestUpdated;
     private boolean isCancelled;
     private boolean isResolved;
 
-    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String workTitle, LocalDateTime requestCreated, LocalDateTime requestUpdated, boolean isCancelled, boolean isResolved) {
+    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String role, LocalDateTime requestCreated, LocalDateTime requestUpdated, boolean isCancelled, boolean isResolved) {
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.password = password;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.workTitle = workTitle;
+        this.role = role;
         this.requestCreated = requestCreated;
         this.isCancelled = isCancelled;
         this.isResolved = isResolved;
@@ -111,12 +111,12 @@ public class RegistrationRequest {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getWorkTitle() {
-        return workTitle;
+    public String getRole() {
+        return role;
     }
 
-    public void setWorkTitle(String workTitle) {
-        this.workTitle = workTitle;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public LocalDateTime getRequestCreated() {

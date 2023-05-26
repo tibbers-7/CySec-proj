@@ -31,7 +31,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "addressID")
     private Address address;
     private String phoneNumber;
-    private String workTitle;
     @Enumerated(EnumType.STRING)
     private Role role;
     private boolean isActive;

@@ -17,6 +17,7 @@ import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
+import com.example.bezbednostbackend.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AddressRepository addressRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private final RefreshTokenService refreshTokenService;
 
 
 
@@ -62,8 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createRegistrationRequestForDB(RegistrationDTO dto){
         log.info("AuthenticationService: entered the createRegistrationRequestForDB");
         RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
-                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(),
-                dto.getWorkTitle(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
+                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(), dto.getRole(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
         registrationRequestRepository.save(request);
         log.info("AuthenticationService: makeRegistrationRequest - registration request saved to database");
     }
@@ -126,19 +128,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         request.setResolved(true);
         registrationRequestRepository.save(request);
         createUserFromRegistrationRequest(request);
-        sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
+       // sendRequestApprovalEmail(request.getName(), dto.getApprovalDescription(), request.getUsername());
     }
 
     public void createUserFromRegistrationRequest(RegistrationRequest request){
         User registratedUser = new User(1, request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(),request.getWorkTitle(), Role.valueOf(request.getWorkTitle()),false);
+                request.getPhoneNumber(), Role.valueOf(request.getRole()),false);
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }
 
     @Override
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
+        //ovde pukne, kao da se ne sacuva u njega
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -148,11 +151,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         var accessToken=jwtService.generateAccessToken(user);
-        //ispravice se
-        var refreshToken=jwtService.generateAccessToken(user);
+        var refreshToken=refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(refreshToken.getToken())
                 .build();
     }
 

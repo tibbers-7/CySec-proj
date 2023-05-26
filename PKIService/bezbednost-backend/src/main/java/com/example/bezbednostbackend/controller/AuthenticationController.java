@@ -36,7 +36,7 @@ public class AuthenticationController {
         return new ResponseEntity<>("Request sent!", HttpStatus.OK);
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping(value="/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
     ) {
