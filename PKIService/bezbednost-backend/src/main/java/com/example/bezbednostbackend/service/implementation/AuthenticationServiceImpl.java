@@ -43,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private final JwtService jwtService;
     @Autowired
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager myAuthenticationManager;
     @Autowired
     private final AddressRepository addressRepository;
     @Autowired
@@ -141,13 +141,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
-        //ovde pukne, kao da se ne sacuva u njega
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                        )
-        );
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
+        myAuthenticationManager.authenticate(authRequest);
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         var accessToken=jwtService.generateAccessToken(user);

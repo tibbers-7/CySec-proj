@@ -15,9 +15,12 @@ public class BezbednostBackendApplication {
 		SpringApplication.run(BezbednostBackendApplication.class, args);
 	}
 
+	/*
 	@Bean
 	CommandLineRunner run(UserService userService) {
 
 		return null;
 	}
+
+	 */
 }

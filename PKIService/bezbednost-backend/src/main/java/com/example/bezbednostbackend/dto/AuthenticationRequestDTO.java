@@ -11,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="authentication_requests")
 public class AuthenticationRequestDTO {
     private String username;
     private String password;
