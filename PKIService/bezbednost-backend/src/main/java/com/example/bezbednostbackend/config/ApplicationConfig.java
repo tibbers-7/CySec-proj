@@ -2,6 +2,7 @@ package com.example.bezbednostbackend.config;
 
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.UserRepository;
+import com.example.bezbednostbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,25 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository repository;
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user=repository.findByUsername(username);
-                if (user==null) {
-                    throw(new UsernameNotFoundException("User not found"));
-                }
-                return user;
-            }
-        };
-    }
+    @Autowired
+    private final UserService userService;
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

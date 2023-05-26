@@ -1,9 +1,10 @@
 package com.example.bezbednostbackend.service.implementation;
 
-import com.example.bezbednostbackend.config.JwtService;
+import com.example.bezbednostbackend.auth.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
+import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
@@ -44,9 +45,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     @Autowired
     private final AddressRepository addressRepository;
-
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -132,8 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createUserFromRegistrationRequest(RegistrationRequest request){
         User registratedUser = new User(1, request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(),request.getWorkTitle(), false,null);
-        //TODO: promeniti iz null u role
+                request.getPhoneNumber(),request.getWorkTitle(), Role.valueOf(request.getWorkTitle()),false);
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }
@@ -148,8 +147,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
-        var accessToken=jwtService.generateToken(user);
-        var refreshToken=jwtService.generateToken(user);
+        var accessToken=jwtService.generateAccessToken(user);
+        //ispravice se
+        var refreshToken=jwtService.generateAccessToken(user);
         return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

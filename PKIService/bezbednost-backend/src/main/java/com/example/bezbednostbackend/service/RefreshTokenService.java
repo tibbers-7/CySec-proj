@@ -1,6 +1,6 @@
 package com.example.bezbednostbackend.service;
 
-import com.example.bezbednostbackend.model.RefreshToken;
+import com.example.bezbednostbackend.model.token.RefreshToken;
 
 import java.util.Optional;
 

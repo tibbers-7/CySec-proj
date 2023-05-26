@@ -5,7 +5,10 @@ import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +26,14 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user=userRepository.findByUsername(username);
+        if (user==null) {
+            throw(new UsernameNotFoundException("User not found"));
+        }
+        return user;
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();

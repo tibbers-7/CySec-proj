@@ -1,6 +1,6 @@
 package com.example.bezbednostbackend.config;
 
-import jakarta.servlet.Filter;
+import com.example.bezbednostbackend.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                 .disable()
                 //whitelisting pages
                 .authorizeHttpRequests()
-                .requestMatchers("")
+                .requestMatchers("/auth","/user")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

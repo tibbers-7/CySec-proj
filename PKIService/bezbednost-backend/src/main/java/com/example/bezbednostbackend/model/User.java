@@ -2,25 +2,20 @@ package com.example.bezbednostbackend.model;
 
 import com.example.bezbednostbackend.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name="users")
 public class User implements UserDetails {
     @Id
@@ -37,9 +32,10 @@ public class User implements UserDetails {
     private Address address;
     private String phoneNumber;
     private String workTitle;
-    private boolean isActive;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private boolean isActive;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,9 +43,12 @@ public class User implements UserDetails {
     }
 
     @Override
-    public  String getUsername(){
+    public String getUsername(){
         return username;
     }
+
+    @Override
+    public String getPassword(){ return password; }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -68,6 +67,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }

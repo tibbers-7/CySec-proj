@@ -1,5 +1,7 @@
-package com.example.bezbednostbackend.config;
+package com.example.bezbednostbackend.auth;
 
+import com.example.bezbednostbackend.auth.JwtService;
+import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +24,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private final UserService userService;
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -42,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 //TODO extract userEmail from JWT token
                 username=jwtService.extractUsername(jwt);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication()==null ){
-                    UserDetails userDetails=this.userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = this.userService.loadUserByUsername(username);
                     if(jwtService.isTokenValid(jwt,userDetails)){
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 userDetails,

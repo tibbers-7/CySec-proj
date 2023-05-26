@@ -2,7 +2,7 @@ package com.example.bezbednostbackend.service.implementation;
 
 
 import com.example.bezbednostbackend.exceptions.TokenRefreshException;
-import com.example.bezbednostbackend.model.RefreshToken;
+import com.example.bezbednostbackend.model.token.RefreshToken;
 import com.example.bezbednostbackend.repository.RefreshTokenRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

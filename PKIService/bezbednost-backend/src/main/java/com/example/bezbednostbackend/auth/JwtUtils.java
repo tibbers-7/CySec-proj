@@ -1,4 +1,4 @@
-package com.example.bezbednostbackend.tokens;
+package com.example.bezbednostbackend.auth;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 
 import io.jsonwebtoken.*;
-
+//ovo se nigde ne koristi
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);

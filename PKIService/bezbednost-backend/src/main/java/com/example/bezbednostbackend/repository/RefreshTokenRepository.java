@@ -3,7 +3,7 @@ package com.example.bezbednostbackend.repository;
 
 import java.util.Optional;
 
-import com.example.bezbednostbackend.model.RefreshToken;
+import com.example.bezbednostbackend.model.token.RefreshToken;
 import com.example.bezbednostbackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,4 +1,5 @@
-package com.example.bezbednostbackend.model;
+package com.example.bezbednostbackend.model.token;
+import com.example.bezbednostbackend.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
