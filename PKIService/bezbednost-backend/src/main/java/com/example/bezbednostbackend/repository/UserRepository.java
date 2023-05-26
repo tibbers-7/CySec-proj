@@ -7,10 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT * FROM users WHERE username = :username", nativeQuery = true)
     User findByUsername(@Param("username") String username);
+
+    @Query(value = "SELECT * FROM users WHERE role = :role", nativeQuery = true)
+    List<User> findAllByRole(@Param("role") String role);
 
 }
 

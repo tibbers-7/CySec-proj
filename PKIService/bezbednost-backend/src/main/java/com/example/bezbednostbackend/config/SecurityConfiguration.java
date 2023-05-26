@@ -33,6 +33,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**","user/**")
                 .permitAll()
+                //dozvolila sam ove metode zbog testiranja, kad se namesti po rolama izbrisacu
+                .requestMatchers("/address/*").permitAll()
+                .requestMatchers("/user/*").permitAll()
+                .requestMatchers("/project/*").permitAll()
+                .requestMatchers("/project/findByProjectManager/*").permitAll()
                 .anyRequest()
                 .authenticated()
                 //decision management - if user authorized do not store session state

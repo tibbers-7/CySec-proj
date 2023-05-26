@@ -69,6 +69,28 @@ private final AddressService addressService;
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @GetMapping(value="/engineers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<EmployeeDTO>> findAllEngineers(){
+        Collection<User> engineers = userService.findAllByRole("ENGINEER");
+        Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
+        for(User engineer: engineers){
+            EmployeeDTO dto = new EmployeeDTO(engineer);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/projectManagers", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<EmployeeDTO>> findAllProjectManagers(){
+        Collection<User> managers = userService.findAllByRole("PROJECT_MANAGER");
+        Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
+        for(User manager: managers){
+            EmployeeDTO dto = new EmployeeDTO(manager);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody EmployeeDTO dto){
         User user = new User();
