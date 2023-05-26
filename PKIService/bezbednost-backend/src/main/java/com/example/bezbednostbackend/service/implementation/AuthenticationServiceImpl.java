@@ -6,12 +6,14 @@ import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
+import com.example.bezbednostbackend.exceptions.TokenRefreshException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
+import com.example.bezbednostbackend.model.token.RefreshToken;
 import com.example.bezbednostbackend.repository.AddressRepository;
 import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
@@ -21,6 +23,7 @@ import com.example.bezbednostbackend.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -162,6 +165,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String emailSubject = "Registration request acceptance";
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
     }
+
+    public String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException {
+            if(!jwtService.JwtSignatureIsValid(dto.getAccessToken()))
+                throw new TokenRefreshException(dto.getAccessToken(),"Access token is invalid!");
+        //proveri se refresh token iz baze da li je isti kao u dto
+            Optional<RefreshToken> token = refreshTokenService.findByToken(dto.getRefreshToken());
+            if(token.isEmpty()) throw new TokenRefreshException(dto.getRefreshToken(), "No such refresh token exists, access denied");
+            RefreshToken tokenFromDB = token.get();
+            if (refreshTokenService.isExpired(tokenFromDB)) throw new TokenRefreshException(dto.getRefreshToken(), "Refresh token is expired, access denied");
+            Optional<User> user = userRepository.findById(tokenFromDB.getUser().getId());
+            if(user.isEmpty() || !user.get().isActive()) throw new TokenRefreshException(dto.getRefreshToken(), "User not valid, access denied");
+            else return jwtService.generateAccessToken(tokenFromDB.getUser());
+    }
+
+
 
 
 }
