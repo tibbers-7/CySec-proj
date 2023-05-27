@@ -31,6 +31,7 @@ public class ProjectController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    //MANAGER
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectDTO> findProjectById(@PathVariable("id") Integer id){
         Project project = projectService.findById(id).orElse(null);
@@ -41,6 +42,7 @@ public class ProjectController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    // MANAGER
     @GetMapping(value = "/findByProjectManager/{projectManagerID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectDTO>> findProjectsByProjectManagerID(@PathVariable("projectManagerID") Integer projectManagerID){
         Collection<Project> projects = projectService.findAllByProjectManagerID(projectManagerID);
@@ -55,6 +57,7 @@ public class ProjectController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    //ADMIN
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> create(@RequestBody ProjectDTO dto){
         Project project = new Project();

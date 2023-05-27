@@ -1,5 +1,7 @@
 package com.example.bezbednostbackend.service.implementation;
 
+import com.example.bezbednostbackend.model.Privilege;
+import com.example.bezbednostbackend.model.Role;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.repository.PrivilegeRepository;
 import com.example.bezbednostbackend.repository.RoleRepository;
@@ -7,15 +9,14 @@ import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import org.springframework.security.core.GrantedAuthority;
 @Service @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -33,27 +34,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user=userRepository.findByUsername(username);
-        if (user==null) {
-            throw(new UsernameNotFoundException("User not found"));
-        }
-        return (UserDetails) user;
-
-    }
-    @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username);
         if (user == null) {
             return new org.springframework.security.core.userdetails.User(
-                    " ", " ", true, true, true, true,
+                    user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
                     null); //getAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER")
         }
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), user.isEnabled(), true, true,
+                user.getUsername(), user.getPassword(), user.isEnabled(), true, true,
                 true, getAuthorities(user.getRoles()));
     }
 
