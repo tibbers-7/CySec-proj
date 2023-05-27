@@ -13,8 +13,6 @@ export class LoginPageComponent {
 
   isPasswordless = false
   logInData : RegularLogInRequestData = new RegularLogInRequestData()
-  passwordTooltip = "Password has to have at least one letter, one number and 8 characters at least"
-  usernameTooltip = "Username should be a valid email address"
   checkboxTooltip = "If you choose this, an email will be sent for you to log in"
   constructor(private router: Router, private toast: ToastrService, private authService: AuthenticationService) { }
 

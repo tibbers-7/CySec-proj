@@ -4,15 +4,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
+import { RegistrationPageComponent } from './registration-page/registration-page.component';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
+    {path:'registration', component: RegistrationPageComponent}
   ];
   
 
 @NgModule({
   declarations: [
-    LoginPageComponent
+    LoginPageComponent,
+    RegistrationPageComponent
   ],
   imports: [
     AppRoutingModule,

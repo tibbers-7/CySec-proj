@@ -7,6 +7,7 @@ export class RegistrationRequestData{
     password = ""
     address : Address = new Address()
     phoneNumber = ""
+    workTitle = ""
     role = ""
 
     public constructor(obj? : RegistrationRequestData){
@@ -16,6 +17,7 @@ export class RegistrationRequestData{
             this.username = obj.username
             this.password = obj.password
             this.address = obj.address
+            this.workTitle = obj.workTitle
             this.phoneNumber = obj.phoneNumber
             this.role = obj.role
         }
