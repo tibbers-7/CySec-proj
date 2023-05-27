@@ -34,7 +34,7 @@ export class ProjectsViewComponent implements OnInit{
   }
 
   viewProject(id: number){
-
+    this.router.navigate(['projects', id, 'employees']);
   }
 
   deleteProject(id: number){

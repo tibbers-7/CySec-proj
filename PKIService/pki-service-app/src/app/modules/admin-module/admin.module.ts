@@ -10,13 +10,15 @@ import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { ProjectsViewComponent } from './projects-view/projects-view.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
+import { EmployeesOnProjectViewComponent } from './employees-on-project-view/employees-on-project-view.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent},
     {path:'add-certificate', component: AddCertificateComponent},
     {path:'projects', component: ProjectsViewComponent},
     {path: 'projects/create', component: AddProjectComponent},
-    {path: 'projects/:id/update', component: EditProjectComponent}
+    {path: 'projects/:id/update', component: EditProjectComponent},
+    {path: 'projects/:id/employees', component: EmployeesOnProjectViewComponent}
   ];
   
 
@@ -28,7 +30,8 @@ const routes: Routes = [
     AdminToolbarComponent,
     ProjectsViewComponent,
     AddProjectComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    EmployeesOnProjectViewComponent
   ],
   imports: [
     AppRoutingModule,
