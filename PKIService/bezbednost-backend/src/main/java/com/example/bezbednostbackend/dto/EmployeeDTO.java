@@ -29,7 +29,8 @@ public class EmployeeDTO {
         this.password = dto.getPassword();
         this.addressID = dto.getAddress().getId();
         this.phoneNumber = dto.getPhoneNumber();
-        this.role = String.valueOf(dto.getRole());
+        //TODO
+        //this.role = String.valueOf(dto.getRole());
     }
 
 }

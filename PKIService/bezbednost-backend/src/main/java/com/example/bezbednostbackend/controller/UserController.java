@@ -143,7 +143,8 @@ private final AddressService addressService;
         user.setPassword(dto.getPassword());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
-        user.setRole(Role.valueOf(dto.getRole()));
+        //TODO
+        //user.setRole(Role.valueOf(dto.getRole()));
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
         if (address != null) {
             user.setAddress(address);
