@@ -25,4 +25,6 @@ public interface AuthenticationService {
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
 
     String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;
+
+    void passwordlessLogin(String username);
 }
