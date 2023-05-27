@@ -23,4 +23,12 @@ export class ProjectService {
   createProject(project: Project): Observable<Project>{
     return this.http.post<Project>(this.apiHost, project, {headers: this.headers});
   }
+
+  getProjectById(id:number): Observable<Project>{
+    return this.http.get<Project>(this.apiHost + id, {headers: this.headers});
+  }
+
+  updateProject(project: Project): Observable<Project>{
+    return this.http.put<Project>(this.apiHost, project, {headers: this.headers});
+  }
 }

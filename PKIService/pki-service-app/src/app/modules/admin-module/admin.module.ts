@@ -9,12 +9,14 @@ import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialo
 import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { ProjectsViewComponent } from './projects-view/projects-view.component';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { EditProjectComponent } from './edit-project/edit-project.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent},
     {path:'add-certificate', component: AddCertificateComponent},
     {path:'projects', component: ProjectsViewComponent},
-    {path: 'projects/create', component: AddProjectComponent}
+    {path: 'projects/create', component: AddProjectComponent},
+    {path: 'projects/:id/update', component: EditProjectComponent}
   ];
   
 
@@ -25,7 +27,8 @@ const routes: Routes = [
     KSPasswordModalDialog,
     AdminToolbarComponent,
     ProjectsViewComponent,
-    AddProjectComponent
+    AddProjectComponent,
+    EditProjectComponent
   ],
   imports: [
     AppRoutingModule,

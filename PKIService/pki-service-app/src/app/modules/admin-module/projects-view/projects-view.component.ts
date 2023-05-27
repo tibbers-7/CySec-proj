@@ -30,7 +30,7 @@ export class ProjectsViewComponent implements OnInit{
   }
 
   updateProject(id: number){
-
+    this.router.navigate(['projects', id, 'update']);
   }
 
   viewProject(id: number){

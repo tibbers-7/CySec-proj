@@ -1,0 +1,59 @@
+<admin-toolbar></admin-toolbar>
+<div class="add-certificate-main-div">
+    <div class="wrapper">
+        <div class="title">
+            Edit Project 
+        </div>
+        <div class="form">
+          <form [formGroup]="updateProjectForm">
+            
+            <div class="inputfield">
+                <label for="name">Name:</label>
+                <input type="text" name="name" formControlName="name" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="name && name.invalid && name.touched"> This word is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="startDate">Start Date:</label>
+                <input type="date" name="startDate" formControlName="startDate" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="startDate && startDate.invalid && startDate.touched"> This date is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="endDate">End Date:</label>
+                <input type="date" name="endDate" formControlName="endDate" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="endDate && endDate.invalid && endDate.touched"> This date is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label>Project Manager:</label>
+                <mat-select [(value)]="selectedProjectManager">
+                    <mat-option *ngFor="let projectManager of allProjectManagers" [value]="projectManager">{{projectManager.name}} {{projectManager.surname}}</mat-option>
+                </mat-select>
+            </div>
+            
+
+            <div style="color: red; font-size: medium; font: bold;" *ngIf="error.isError">{{error.errorMessage}}</div>
+  
+            <div class="inputfield">
+              <button [disabled]="updateProjectForm.invalid" class="btn" (click)="updateProject()">Submit</button>
+            </div>
+          </form>
+          <br>
+          
+          <div class="inputfield">
+            <button class="btn" (click)="goBack()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    
+</div>

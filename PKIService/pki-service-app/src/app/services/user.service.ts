@@ -17,4 +17,8 @@ export class UserService {
     return this.http.get<EmployeeDTO[]>(this.apiHost + 'projectManagers', {headers: this.headers});
   }
 
+  getEmployeeById(id: number): Observable<EmployeeDTO>{
+    return this.http.get<EmployeeDTO>(this.apiHost + id, {headers: this.headers});
+  }
+
 }
