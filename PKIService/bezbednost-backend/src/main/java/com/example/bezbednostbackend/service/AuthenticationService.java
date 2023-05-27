@@ -27,4 +27,6 @@ public interface AuthenticationService {
     boolean activateAccount(String username, String token);
 
     String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;
+
+    void passwordlessLogin(String username);
 }

@@ -36,6 +36,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpRequest;
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -214,7 +215,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             else return jwtService.generateAccessToken(tokenFromDB.getUser());
     }
 
-
+    @Override
+    public void passwordlessLogin(String username) {
+        log.info("AuthenticationService: entered the passwordlessLogin method.");
+        User user = userRepository.findByUsername(username);
+        if(user == null) throw new UsernameNotFoundException("User with this username doesn't exist");
+        String token = UUID.randomUUID().toString();
+        //createVerificationToken(username, token);
+        String emailContent = "Hello " + user.getName() + "," + "\r\n" +
+                "Use this link to log into your account." + "\r\n" +
+                //ovde ce da bude link
+                "";
+        String emailSubject = "Sign in to your account";
+        emailService.sendSimpleEmail( username, emailSubject, emailContent );
+    }
 
 
 }

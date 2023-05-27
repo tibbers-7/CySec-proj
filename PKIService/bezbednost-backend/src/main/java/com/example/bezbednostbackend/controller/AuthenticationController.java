@@ -37,7 +37,9 @@ public class AuthenticationController {
         return new ResponseEntity<>("Request sent!", HttpStatus.OK);
     }
 
-    @PostMapping(value="/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/authenticate",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
     ) {
@@ -53,6 +55,18 @@ public class AuthenticationController {
 
     }
 
+
+    @PostMapping(value="/authenticate/passwordless",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> passwordlessLogin(@RequestBody String username) {
+       try{
+           authenticationService.passwordlessLogin(username);
+       }catch(Exception e){
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+       }
+       return new ResponseEntity<>("Check your email for the sign in link :)", HttpStatus.OK);
+    }
 
     @PostMapping(value="/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> refreshToken(@RequestBody AuthenticationResponseDTO dto){
