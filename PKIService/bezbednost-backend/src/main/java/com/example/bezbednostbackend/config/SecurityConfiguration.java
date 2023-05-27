@@ -38,6 +38,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/user/*").permitAll()
                 .requestMatchers("/project/*").permitAll()
                 .requestMatchers("/project/findByProjectManager/*").permitAll()
+                .requestMatchers("/projectWork/*").permitAll()
+                .requestMatchers("/projectWork/findByProjectID/*").permitAll()
+                .requestMatchers("/projectWork/findByEngineerID/*").permitAll()
                 .anyRequest()
                 .authenticated()
                 //decision management - if user authorized do not store session state
