@@ -155,7 +155,7 @@ private final AddressService addressService;
 
 
 
-        return new ResponseEntity<String>("request approve", HttpStatus.OK);
+        return new ResponseEntity<String>("request approved", HttpStatus.OK);
     }
 
 }

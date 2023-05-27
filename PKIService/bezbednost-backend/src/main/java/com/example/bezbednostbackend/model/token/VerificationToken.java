@@ -39,8 +39,8 @@ public class VerificationToken {
         return ldt;
     }
 
-    public VerificationToken(String username,String token){
-        this.expiryDate=calculateExpiryDate(1440);
+    public VerificationToken(String username,String token, int expiryTimeInMinutes){
+        this.expiryDate=calculateExpiryDate(expiryTimeInMinutes);
         this.username=username;
         this.token=token;
     }

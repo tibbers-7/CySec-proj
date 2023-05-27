@@ -10,6 +10,9 @@ import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 public interface AuthenticationService {
     void makeRegistrationRequest(RegistrationDTO dto) throws  UserIsBannedException, UserAlreadyExistsException, RequestAlreadyPendingException;
 
@@ -28,5 +31,7 @@ public interface AuthenticationService {
 
     String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;
 
-    void passwordlessLogin(String username);
+    void passwordlessLogin(String username) throws UserIsBannedException, NoSuchAlgorithmException, InvalidKeyException;
+
+    AuthenticationResponseDTO logInWithLink(String token, String username, String hmac) throws Exception;
 }

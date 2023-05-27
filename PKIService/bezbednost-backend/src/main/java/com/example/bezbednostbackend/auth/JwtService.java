@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.auth;
 
+import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -9,8 +10,14 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.Mac;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +98,26 @@ public class JwtService {
         } catch (Exception e) {
             // Signature verification failed
             return false;
+        }
+    }
+
+    public String calculateHMACOfToken(String token) throws NoSuchAlgorithmException, InvalidKeyException {
+        try {
+        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+
+        // Create an instance of the Mac algorithm with HMAC-SHA256
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(keySpec);
+
+        // Calculate the HMAC of the token
+        byte[] hmacBytes = mac.doFinal(token.getBytes(StandardCharsets.UTF_8));
+
+        // Encode the HMAC bytes as a Base64 string
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(hmacBytes);
+    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+        // Handle exceptions
+        e.printStackTrace();
+        return null;
         }
     }
 }

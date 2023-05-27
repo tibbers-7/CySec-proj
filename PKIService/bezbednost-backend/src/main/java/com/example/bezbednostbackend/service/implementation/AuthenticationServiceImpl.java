@@ -22,21 +22,19 @@ import com.example.bezbednostbackend.repository.VerificationTokenRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpRequest;
-import javax.swing.text.html.Option;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -173,7 +171,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void sendRequestApprovalEmail(String username ){
         log.info("AuthenticationService: entered the sendRequestApprovalEmail method.");
         String token = UUID.randomUUID().toString();
-        createVerificationToken(username, token);
+        createVerificationToken(username, token, 1440);
         String emailContent = "Hello " + username + "," + "\r\n" +
                 "Your account was succesfully approved.\n" +
                 "Please activate your account with this link:\n" +
@@ -184,8 +182,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
     }
 
-    private VerificationToken createVerificationToken(String username,String token){
-        VerificationToken verificationToken = new VerificationToken(username, token);
+    private VerificationToken createVerificationToken(String username,String token, int expiryTimeInMinutes){
+        VerificationToken verificationToken = new VerificationToken(username, token, expiryTimeInMinutes);
         verificationTokenRepository.save(verificationToken);
         return verificationToken;
     }
@@ -216,18 +214,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void passwordlessLogin(String username) {
+    public void passwordlessLogin(String username) throws UserIsBannedException, NoSuchAlgorithmException, InvalidKeyException {
         log.info("AuthenticationService: entered the passwordlessLogin method.");
         User user = userRepository.findByUsername(username);
         if(user == null) throw new UsernameNotFoundException("User with this username doesn't exist");
+        else if (!user.isActive()) throw new UserIsBannedException("Account with this username is inactive");
         String token = UUID.randomUUID().toString();
-        //createVerificationToken(username, token);
+        createVerificationToken(username, token, 10);
+        String hmac = jwtService.calculateHMACOfToken(token);
         String emailContent = "Hello " + user.getName() + "," + "\r\n" +
                 "Use this link to log into your account." + "\r\n" +
-                //ovde ce da bude link
-                "";
+                "http://localhost:8082/auth/authenticate/link?token="+token+"&username="+username+"&hmac="+hmac;
         String emailSubject = "Sign in to your account";
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
+    }
+
+    @Override
+    public AuthenticationResponseDTO logInWithLink(String token, String username, String hmac) throws Exception {
+        Optional<VerificationToken> optional = verificationTokenRepository.findByUsername(username);
+        if(optional.isEmpty()) throw new Exception("No token for this user exists!");
+        VerificationToken tokenFromDB = optional.get();
+        //ne treba nam vise ovaj token pa ga brisemo, proveriti da li ce ovo raditi sve
+        verificationTokenRepository.delete(tokenFromDB);
+        if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now())) throw new Exception("This token is expired!");
+        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token)) throw new Exception("This token has been tampered with!");
+        var user=userRepository.findByUsername(username);
+        if(user==null) throw(new UsernameNotFoundException("User not found"));
+        if (!user.isActive()) throw new UserIsBannedException("User not activated");
+        var accessToken=jwtService.generateAccessToken(user);
+        var refreshToken=refreshTokenService.createRefreshToken(user.getId());
+        return AuthenticationResponseDTO.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken.getToken())
+                .build();
     }
 
 

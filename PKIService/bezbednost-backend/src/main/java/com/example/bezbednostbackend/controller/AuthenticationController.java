@@ -68,6 +68,17 @@ public class AuthenticationController {
        return new ResponseEntity<>("Check your email for the sign in link :)", HttpStatus.OK);
     }
 
+    @PostMapping(value="/authenticate/link",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthenticationResponseDTO> logInWithLink(@RequestParam String token, @RequestParam String username, @RequestParam String hmac) {
+        try{
+            AuthenticationResponseDTO response = authenticationService.logInWithLink(token, username, hmac);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping(value="/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> refreshToken(@RequestBody AuthenticationResponseDTO dto){
         try{
