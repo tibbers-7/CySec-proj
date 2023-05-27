@@ -20,7 +20,7 @@ export class EmployeesOnProjectViewComponent implements OnInit{
   public projectManager: EmployeeDTO = new EmployeeDTO();
 
   public dataSource = new MatTableDataSource<ProjectWorkDTO>()
-  public displayedColumns = ['id','projectID', 'engineerID','startDate','endDate', 'update-button', 'delete-button']
+  public displayedColumns = ['id','projectID', 'engineerID','startDate','endDate','responsibility', 'update-button', 'delete-button']
   public projectWorks: ProjectWorkDTO[] = [];
   public projectID: any
 
@@ -52,7 +52,7 @@ export class EmployeesOnProjectViewComponent implements OnInit{
   }
 
   addEngineer(){
-
+    this.router.navigate(['projects', this.projectID, 'employees', 'add']);
   }
 
   updateProjectWork(id: number){

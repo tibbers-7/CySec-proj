@@ -37,7 +37,7 @@
             <div class="inputfield">
                 <label>Project Manager:</label>
                 <mat-select [(value)]="selectedProjectManager">
-                    <mat-option *ngFor="let projectManager of allProjectManagers" [value]="projectManager">{{projectManager.name}} {{projectManager.surname}}</mat-option>
+                    <mat-option *ngFor="let projectManager of allProjectManagers" [value]="projectManager"> {{projectManager.id}} {{projectManager.name}} {{projectManager.surname}}</mat-option>
                 </mat-select>
             </div>
             
