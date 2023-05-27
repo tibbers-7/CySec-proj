@@ -22,6 +22,7 @@ import com.example.bezbednostbackend.repository.VerificationTokenRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +37,7 @@ import org.springframework.stereotype.Service;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service @RequiredArgsConstructor @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -159,12 +158,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         if (!user.isActive()) throw new UserIsBannedException("User not activated");
-        var accessToken=jwtService.generateAccessToken(user);
+        var accessToken=jwtService.generateAccessToken(addClaims(user), user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getToken())
                 .build();
+    }
+
+    public Map<String,Object> addClaims(User user){
+       Map<String,Object> claims = new HashMap<>();
+       claims.put("username", user.getUsername());
+       claims.put("role", String.valueOf(user.getRole()));
+       claims.put("userId", String.valueOf(user.getId()));
+       return claims;
     }
 
 
@@ -247,6 +254,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getToken())
                 .build();
+    }
+
+    @Override
+    public void deleteSession(String refreshToken) throws TokenRefreshException {
+        Optional<RefreshToken> optional = refreshTokenService.findByToken(refreshToken);
+        if(optional.isEmpty()) throw new TokenRefreshException(refreshToken, "No such token in database");
+        refreshTokenService.deleteByUserId(optional.get().getUser().getId());
     }
 
 

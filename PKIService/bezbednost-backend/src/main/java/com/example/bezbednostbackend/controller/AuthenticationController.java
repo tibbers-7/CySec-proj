@@ -89,6 +89,16 @@ public class AuthenticationController {
         return new ResponseEntity("Successfully refreshed token!", HttpStatus.OK);
     }
 
+    @PostMapping(value="/logOut")
+    public ResponseEntity<String> logOut(@RequestBody String refreshToken) {
+        try{
+            authenticationService.deleteSession(refreshToken);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Session ended", HttpStatus.OK);
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(

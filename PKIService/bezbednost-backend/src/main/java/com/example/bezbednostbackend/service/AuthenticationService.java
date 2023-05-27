@@ -34,4 +34,6 @@ public interface AuthenticationService {
     void passwordlessLogin(String username) throws UserIsBannedException, NoSuchAlgorithmException, InvalidKeyException;
 
     AuthenticationResponseDTO logInWithLink(String token, String username, String hmac) throws Exception;
+
+    void deleteSession(String refreshToken) throws TokenRefreshException;
 }

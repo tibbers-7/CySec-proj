@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMomentDateModule } from '@angular/material-moment-adapter'
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatDialogModule,
     MatDatepickerModule,
     MatSelectModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatCheckboxModule
   ],
   exports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatSelectModule,
     MatSortModule,
     MatToolbarModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule {}
