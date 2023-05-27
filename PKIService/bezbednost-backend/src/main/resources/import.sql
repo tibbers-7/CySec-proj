@@ -68,6 +68,44 @@ insert into roles_privileges(role_id, privilege_id) values (1,30);
 insert into roles_privileges(role_id, privilege_id) values (1,31);
 
 
+insert into roles_privileges(role_id, privilege_id) values (2,1);
+insert into roles_privileges(role_id, privilege_id) values (2,2);
+insert into roles_privileges(role_id, privilege_id) values (2,3);
+insert into roles_privileges(role_id, privilege_id) values (2,4);
+insert into roles_privileges(role_id, privilege_id) values (2,5);
+insert into roles_privileges(role_id, privilege_id) values (2,6);
+insert into roles_privileges(role_id, privilege_id) values (2,7);
+insert into roles_privileges(role_id, privilege_id) values (2,8);
+insert into roles_privileges(role_id, privilege_id) values (2,9);
+insert into roles_privileges(role_id, privilege_id) values (2,10);
+insert into roles_privileges(role_id, privilege_id) values (2,11);
+
+
+insert into roles_privileges(role_id, privilege_id) values (3,1);
+insert into roles_privileges(role_id, privilege_id) values (3,2);
+insert into roles_privileges(role_id, privilege_id) values (3,3);
+insert into roles_privileges(role_id, privilege_id) values (3,4);
+insert into roles_privileges(role_id, privilege_id) values (3,5);
+insert into roles_privileges(role_id, privilege_id) values (3,6);
+insert into roles_privileges(role_id, privilege_id) values (3,12);
+insert into roles_privileges(role_id, privilege_id) values (3,13);
+insert into roles_privileges(role_id, privilege_id) values (3,14);
+insert into roles_privileges(role_id, privilege_id) values (3,15);
+
+insert into roles_privileges(role_id, privilege_id) values (4,1);
+insert into roles_privileges(role_id, privilege_id) values (4,2);
+insert into roles_privileges(role_id, privilege_id) values (4,3);
+insert into roles_privileges(role_id, privilege_id) values (4,4);
+insert into roles_privileges(role_id, privilege_id) values (4,5);
+insert into roles_privileges(role_id, privilege_id) values (4,6);
+insert into roles_privileges(role_id, privilege_id) values (4,7);
+insert into roles_privileges(role_id, privilege_id) values (4,16);
+insert into roles_privileges(role_id, privilege_id) values (4,17);
+
+
+
+
+
 
 
 
