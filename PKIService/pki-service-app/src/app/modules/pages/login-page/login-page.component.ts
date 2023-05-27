@@ -24,12 +24,13 @@ export class LoginPageComponent {
       this.authService.passwordlessLogin(this.logInData.username) 
     }else {
       this.authService.logInUserwithCredentials(this.logInData).subscribe(res =>{
-      console.log()
+      this.authService.setSession(res)
     })
   }
   }
 
   validityCheck(){
+    console.log(this.authService.getExpiration(), this.authService.getUserId(), this.authService.getRole(), this.authService.getUsername())
     if(this.logInData.username === ''){
       this.toast.error("Username has to be filled")
       return false

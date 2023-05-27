@@ -35,38 +35,40 @@ export class AuthenticationService {
   public setSession(tokenData: LogInResponseData) {
      localStorage.setItem('accessToken', tokenData.accessToken)
      localStorage.setItem('refreshToken', tokenData.refreshToken)
-     console.log(this.getExpiration());
    }
    
    decodeAccessToken() {
     const accessToken = localStorage.getItem('accessToken')
-    if(accessToken) return jwt_decode(accessToken);
+    if(accessToken) {
+        return jwt_decode(accessToken);
+    }
     return null
    }
  
    getExpiration() {
-    const token = this.decodeAccessToken()
-    if (token) return null
-    const timeStamp: number = Number(token)
+    const token : any = this.decodeAccessToken()
+    console.log(token)
+    if (!token) return null
+    const timeStamp: number = Number(token['exp'])
     return new Date(timeStamp * 1000)
     }
     
    getRole() {
     const token : any = this.decodeAccessToken()
-    if (token) return null
-    return token['claims/role']
+    if (!token) return null
+    return token['role']
    }
    
    getUserId() {
     const token : any = this.decodeAccessToken()
-    if (token) return null
-    return token['claims/userId']
+    if (!token) return null
+    return token['userId']
     }
  
     getUsername() {
         const token : any = this.decodeAccessToken()
-        if (token) return null
-        return token['claims/username']
+        if (!token) return null
+        return token['username']
     }
 
     logout() {
