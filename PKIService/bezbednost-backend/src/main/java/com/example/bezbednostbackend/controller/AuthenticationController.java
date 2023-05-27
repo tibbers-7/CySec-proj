@@ -38,8 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value="/authenticate",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
     ) {

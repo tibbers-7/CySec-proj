@@ -79,7 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createRegistrationRequestForDB(RegistrationDTO dto){
         log.info("AuthenticationService: entered the createRegistrationRequestForDB");
         RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
-                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(), dto.getRole(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
+                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(), dto.getRole(), dto.getWorkTitle(), false, false);
         registrationRequestRepository.save(request);
         log.info("AuthenticationService: makeRegistrationRequest - registration request saved to database");
     }
@@ -146,9 +146,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public void createUserFromRegistrationRequest(RegistrationRequest request){
-        User registratedUser = new User(1, request.getName(),request.getSurname(),
+        User registratedUser = new User(request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(), Role.valueOf(request.getRole()),false);
+                request.getPhoneNumber(), Role.valueOf(request.getRole()), request.getWorkTitle(),false);
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }

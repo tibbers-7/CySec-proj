@@ -21,7 +21,7 @@ export class AuthenticationService {
   }
 
   logInUserwithCredentials(credentials:RegularLogInRequestData): Observable<LogInResponseData> {
-    return this.http.post<LogInResponseData>(this.apiHost + '/authenticate', credentials, { headers: this.headers})
+    return this.http.post<any>(this.apiHost + '/authenticate', credentials, { headers: this.headers})
   }
 
   passwordlessLogin(username : String): Observable<String> {

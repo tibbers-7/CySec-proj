@@ -8,10 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialog.component';
 import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { RegistrationRequestsComponent } from './registration-requests/registration-requests.component';
+import { RoleGuard } from 'src/app/auth/role-guard';
 
 const routes: Routes = [
-    {path:'admin-home', component: AdminHomeComponent},
-    {path:'add-certificate', component: AddCertificateComponent},
+    {path:'admin-home', component: AdminHomeComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' } },
+    {path:'add-certificate', component: AddCertificateComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
     {path:'requests', component: RegistrationRequestsComponent}
   ];
   

@@ -30,7 +30,6 @@ export class LoginPageComponent {
   }
 
   validityCheck(){
-    console.log(this.authService.getExpiration(), this.authService.getUserId(), this.authService.getRole(), this.authService.getUsername())
     if(this.logInData.username === ''){
       this.toast.error("Username has to be filled")
       return false

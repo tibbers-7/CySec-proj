@@ -54,7 +54,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 // token valid for 15 minutes
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 15))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -144,6 +144,8 @@ private final AddressService addressService;
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setRole(Role.valueOf(dto.getRole()));
+        user.setActive(true);
+        user.setWorkTitle(dto.getWorkTitle());
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
         if (address != null) {
             user.setAddress(address);
