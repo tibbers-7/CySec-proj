@@ -3,6 +3,7 @@ package com.example.bezbednostbackend.controller;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
+import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,26 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequestDTO request
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+    @PostMapping(value="/activateAccount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> activateAccount(
+            @RequestBody String token, String username
+    ) {
+        if(authenticationService.activateAccount(username,token)){
+            return ResponseEntity.ok("Account activated");
+        } else return  new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
+
+    }
+
+
+    @PostMapping(value="/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> refreshToken(@RequestBody AuthenticationResponseDTO dto){
+        try{
+            authenticationService.refreshToken(dto);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity("Successfully refreshed token!", HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

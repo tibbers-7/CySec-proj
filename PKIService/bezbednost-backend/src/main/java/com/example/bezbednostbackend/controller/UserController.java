@@ -3,15 +3,16 @@ package com.example.bezbednostbackend.controller;
 import com.example.bezbednostbackend.dto.EmployeeDTO;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
-import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.model.Address;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AddressService;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -148,9 +149,12 @@ private final AddressService addressService;
 
     //ovo samo admin moze
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> approveRegistration(@RequestBody RegistrationApprovalDTO dto) {
+    public ResponseEntity<String> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.approveRegistrationRequest(dto);
+
+
+
         return new ResponseEntity<String>("request approve", HttpStatus.OK);
     }
 
