@@ -81,7 +81,7 @@ public class ProjectWorkController {
             Collection<ProjectWork> projects = projectWorkService.findAllByProjectID(projectWork.getProjectID());
             for(ProjectWork project: projects){
                 if(project.getEngineerID() == projectWork.getEngineerID())
-                    return new ResponseEntity<>(HttpStatus.CONFLICT);;
+                    return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
             projectWorkService.create(projectWork);
             return new ResponseEntity<>(projectWork, HttpStatus.OK);
