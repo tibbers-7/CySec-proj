@@ -17,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -149,7 +152,7 @@ private final AddressService addressService;
 
     //ovo samo admin moze
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) {
+    public ResponseEntity<String> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.approveRegistrationRequest(dto);
 
