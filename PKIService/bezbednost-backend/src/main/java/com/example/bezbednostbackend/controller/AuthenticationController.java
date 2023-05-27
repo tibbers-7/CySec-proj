@@ -45,9 +45,9 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-    @PostMapping(value="/activateAccount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/activateAccount")
     public ResponseEntity<String> activateAccount(
-            @RequestBody String token, String username
+            @RequestParam String token,@RequestParam String username
     ) {
         if(authenticationService.activateAccount(username,token)){
             return ResponseEntity.ok("Account activated");

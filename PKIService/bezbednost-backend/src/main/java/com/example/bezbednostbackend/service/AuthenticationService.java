@@ -23,10 +23,10 @@ public interface AuthenticationService {
 
     void cancelRegistrationRequest(RegistrationCancellationDTO dto);
 
-    void approveRegistrationRequest(RegistrationApprovalDTO dto);
+    void approveRegistrationRequest(RegistrationApprovalDTO dto) throws NoSuchAlgorithmException, InvalidKeyException;
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
-    void sendRequestApprovalEmail(String username);
+    void sendRequestApprovalEmail(String username) throws NoSuchAlgorithmException, InvalidKeyException;
     boolean activateAccount(String username, String token);
 
     String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;

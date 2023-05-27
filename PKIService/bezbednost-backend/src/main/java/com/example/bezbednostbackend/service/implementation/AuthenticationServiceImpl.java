@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.service.implementation;
 
+import com.example.bezbednostbackend.auth.HmacUtils;
 import com.example.bezbednostbackend.auth.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
@@ -62,7 +63,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     VerificationTokenRepository verificationTokenRepository;
 
-
+    private final String hmacSHA256Value = "5b50d80c7dc7ae8bb1b1433cc0b99ecd2ac8397a555c6f75cb8a619ae35a0c35";
+    private final String hmacSHA256Algorithm = "HmacSHA256";
+    private final String key = "879378747292";
 
     @Override
     public void makeRegistrationRequest(RegistrationDTO dto) throws UserIsBannedException,
@@ -129,7 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void approveRegistrationRequest(RegistrationApprovalDTO dto){
+    public void approveRegistrationRequest(RegistrationApprovalDTO dto) throws NoSuchAlgorithmException, InvalidKeyException {
         log.info("AuthenticationService: entered the approveRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest =
                 registrationRequestRepository.findById(dto.getIdOfRequest());
@@ -175,14 +178,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
 
-    public void sendRequestApprovalEmail(String username ){
+    public void sendRequestApprovalEmail(String username ) throws NoSuchAlgorithmException, InvalidKeyException {
         log.info("AuthenticationService: entered the sendRequestApprovalEmail method.");
         String token = UUID.randomUUID().toString();
-        createVerificationToken(username, token, 1440);
+        String hmacToken = HmacUtils.hmacWithJava(hmacSHA256Algorithm, token, key);
+        createVerificationToken(username, hmacToken, 1440);
         String emailContent = "Hello " + username + "," + "\r\n" +
                 "Your account was succesfully approved.\n" +
                 "Please activate your account with this link:\n" +
-                "http://localhost:8082/auth/activateAccount?token="+token+"&username="+username;
+                "http://localhost:8082/auth/activateAccount?token="+hmacToken+"&username="+username;
         String emailSubject = "Registration request acceptance";
 
 
