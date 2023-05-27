@@ -176,7 +176,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String emailContent = "Hello " + username + "," + "\r\n" +
                 "Your account was succesfully approved.\n" +
                 "Please activate your account with this link:\n" +
-                "/auth/activateAccount?token="+token+"&username="+username;
+                "http://localhost:8082/auth/activateAccount?token="+token+"&username="+username;
         String emailSubject = "Registration request acceptance";
 
 
