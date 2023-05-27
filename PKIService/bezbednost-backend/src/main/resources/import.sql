@@ -1,3 +1,1 @@
-INSERT INTO addresses(
-	id, city, country, street_address)
-	VALUES (1, "Novi Sad", "Srbija", "Turgenjeva 1");
+insert into addresses (country, city, street_address) values ('Srbija', 'Novi Sad', 'Turgenjeva 1');
