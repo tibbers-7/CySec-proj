@@ -6,13 +6,13 @@ export class Project {
    projectManagerID: number = 0
 
    public constructor(obj?: any) {
-    if (obj) {
-        this.id = obj.id;
-        this.name = obj.name;
-        this.startDate = obj.startDate;
-        this.endDate = obj.endDate;
-        this.projectManagerID = obj.projectManagerID;      
+        if (obj) {
+            this.id = obj.id;
+            this.name = obj.name;
+            this.startDate = obj.startDate;
+            this.endDate = obj.endDate;
+            this.projectManagerID = obj.projectManagerID;      
+        }
     }
-}
 
 }

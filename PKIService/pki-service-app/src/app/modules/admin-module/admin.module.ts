@@ -8,11 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialog.component';
 import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { ProjectsViewComponent } from './projects-view/projects-view.component';
+import { AddProjectComponent } from './add-project/add-project.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent},
     {path:'add-certificate', component: AddCertificateComponent},
-    {path:'projects', component: ProjectsViewComponent}
+    {path:'projects', component: ProjectsViewComponent},
+    {path: 'projects/create', component: AddProjectComponent}
   ];
   
 
@@ -22,7 +24,8 @@ const routes: Routes = [
     AdminHomeComponent,
     KSPasswordModalDialog,
     AdminToolbarComponent,
-    ProjectsViewComponent
+    ProjectsViewComponent,
+    AddProjectComponent
   ],
   imports: [
     AppRoutingModule,

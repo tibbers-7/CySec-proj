@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/model/project.model';
 import { ProjectService } from 'src/app/services/project.service';
@@ -15,7 +16,7 @@ export class ProjectsViewComponent implements OnInit{
   public displayedColumns = ['id','name','startDate','endDate','projectManagerID', 'update-button', 'view-button', 'delete-button']
   public projects: Project[] = [];
 
-  public constructor(private projectService: ProjectService, private toast: ToastrService){}
+  public constructor(private projectService: ProjectService, private toast: ToastrService, private router: Router, private route: ActivatedRoute){}
 
   ngOnInit(): void {
     this.projectService.getAllProjects().subscribe(res=>{
@@ -25,7 +26,7 @@ export class ProjectsViewComponent implements OnInit{
   }
 
   addProject(): void{
-
+    this.router.navigate(['projects/create']);
   }
 
   updateProject(id: number){

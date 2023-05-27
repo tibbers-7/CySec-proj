@@ -19,4 +19,8 @@ export class ProjectService {
   deleteProject(id: any): Observable<any>{
     return this.http.delete<any>(this.apiHost + id, {headers: this.headers});
   }
+
+  createProject(project: Project): Observable<Project>{
+    return this.http.post<Project>(this.apiHost, project, {headers: this.headers});
+  }
 }

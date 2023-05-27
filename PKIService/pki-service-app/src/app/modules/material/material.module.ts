@@ -12,7 +12,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMomentDateModule } from '@angular/material-moment-adapter'
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -28,6 +29,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatDialogModule,
     MatDatepickerModule,
     MatSelectModule,
+    ReactiveFormsModule,
     MatMomentDateModule
   ],
   exports: [
@@ -44,6 +46,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatSelectModule,
     MatSortModule,
     MatToolbarModule,
+    ReactiveFormsModule,
     MatMomentDateModule
   ]
 })
