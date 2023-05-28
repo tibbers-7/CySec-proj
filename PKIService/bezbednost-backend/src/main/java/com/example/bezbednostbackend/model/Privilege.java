@@ -6,9 +6,11 @@ import lombok.*;
 import java.util.Collection;
 
 @Entity
-@Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Getter
+@Setter
 @Table(name="privileges")
 public class Privilege {
 

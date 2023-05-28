@@ -12,6 +12,7 @@ import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.model.RegistrationRequest;
+import com.example.bezbednostbackend.model.Role;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.model.token.VerificationToken;
 import com.example.bezbednostbackend.model.token.RefreshToken;
@@ -179,7 +180,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Map<String,Object> addClaims(User user){
        Map<String,Object> claims = new HashMap<>();
        claims.put("username", user.getUsername());
-       claims.put("role", String.valueOf(user.getRoles()));
+        for (Role role : user.getRoles()) {
+            claims.put("role"+role.getId(),role.getName());
+        }
        claims.put("userId", String.valueOf(user.getId()));
        return claims;
     }
