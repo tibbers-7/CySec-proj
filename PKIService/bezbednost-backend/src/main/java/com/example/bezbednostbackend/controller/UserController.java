@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidKeyException;
@@ -47,6 +48,7 @@ private final AddressService addressService;
     // ADMIN
     //ovo samo admin moze
     @PostMapping(value="/register/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CANCEL_REGISTRATION')")
     public ResponseEntity<String> cancelRegistration(@RequestBody RegistrationCancellationDTO dto) {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.cancelRegistrationRequest(dto);
@@ -55,6 +57,7 @@ private final AddressService addressService;
 
     // ADMIN, HR
     @GetMapping(value="/employees", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_EMPLOYEES')")
     public ResponseEntity<Collection<EmployeeDTO>> findAllEmployees(){
         Collection<User> users = userService.findAll();
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
@@ -67,6 +70,7 @@ private final AddressService addressService;
 
     //SVI
     @GetMapping(value = "/findByUsername/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_EMPLOYEE')")
     public ResponseEntity<EmployeeDTO> findEmployeeByUsername(@PathVariable("username") String username){
         User user = userService.findByUsername(username).orElse(null);
         if(user == null){
@@ -78,6 +82,7 @@ private final AddressService addressService;
 
     // ADMIN, PROJ_MANAGER
     @GetMapping(value="/engineers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_ENGINEERS')")
     public ResponseEntity<Collection<EmployeeDTO>> findAllEngineers(){
         Collection<User> engineers = userService.findAllByRole("ENGINEER");
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
@@ -90,6 +95,7 @@ private final AddressService addressService;
 
     // HR
     @GetMapping(value="/projectManagers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_PROJECT_MANAGERS')")
     public ResponseEntity<Collection<EmployeeDTO>> findAllProjectManagers(){
         Collection<User> managers = userService.findAllByRole("PROJECT_MANAGER");
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
@@ -102,6 +108,7 @@ private final AddressService addressService;
 
     // ADMIN
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_EMPLOYEE')")
     public ResponseEntity<Void> create(@RequestBody EmployeeDTO dto){
         User user = new User();
         Map(dto, user);
@@ -122,6 +129,7 @@ private final AddressService addressService;
 
     // SVI AUTH
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('UPDATE_USER')")
     public ResponseEntity<Void> update(@RequestBody EmployeeDTO dto){
         User user = userService.getById(dto.getId());
         if(user == null){
@@ -134,6 +142,7 @@ private final AddressService addressService;
 
     // ADMIN
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('DELETE_USER')")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
         User user = userService.getById(id);
         if(user == null){
@@ -162,6 +171,7 @@ private final AddressService addressService;
     // ADMIN
     //ovo samo admin moze
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('APPROVE_REGISTRATION')")
     public ResponseEntity<String> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.approveRegistrationRequest(dto);

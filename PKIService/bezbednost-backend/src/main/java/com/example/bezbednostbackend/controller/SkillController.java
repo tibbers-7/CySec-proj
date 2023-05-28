@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class SkillController {
     private SkillService skillService;
 
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_SKILLS')")
     public ResponseEntity<Collection<SkillDTO>> findSkills(){
         Collection<Skill> skills = skillService.findAll();
         Collection<SkillDTO> dtos = new ArrayList<SkillDTO>();
@@ -32,6 +34,7 @@ public class SkillController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_SKILL')")
     public ResponseEntity<SkillDTO> findSkillById(@PathVariable("id") Integer id){
         Skill skill = skillService.findById(id).orElse(null);
         if(skill == null){
@@ -42,6 +45,7 @@ public class SkillController {
     }
 
     @GetMapping(value = "/findByEngineerID/{engineerID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_SKILLS_ENGINEER')")
     public ResponseEntity<Collection<SkillDTO>> findAllByEngineerID(@PathVariable("engineerID") Integer engineerID){
         Collection<Skill> skills = skillService.findAllByEngineerID(engineerID);
         if(skills.isEmpty()){
@@ -56,6 +60,7 @@ public class SkillController {
     }
 
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADD_SKILL_ENGINEER')")
     public ResponseEntity<Skill> create(@RequestBody SkillDTO dto){
         Skill skill = new Skill();
         Map(dto, skill);
@@ -76,6 +81,7 @@ public class SkillController {
     }
 
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('UPDATE_SKILL')")
     public ResponseEntity<Void> update(@RequestBody SkillDTO dto){
         Skill skill = skillService.findById(dto.getId()).orElse(null);
         if(skill == null){
@@ -87,6 +93,7 @@ public class SkillController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('DELETE_SKILL')")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
         Skill skill = skillService.findById(id).orElse(null);
         if(skill == null){

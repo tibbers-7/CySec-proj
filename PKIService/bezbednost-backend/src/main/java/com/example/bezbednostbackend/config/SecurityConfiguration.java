@@ -6,12 +6,18 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //configures all http security of app
@@ -26,14 +32,19 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
+        var auth1 = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
+        auth1.setRoleHierarchy(roleHierarchy());
+
         http
                 .csrf()
                 .disable()
                 //whitelisting pages
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**","user/**")
+
+                .requestMatchers("/auth/**")
                 .permitAll()
                 //dozvolila sam ove metode zbog testiranja, kad se namesti po rolama izbrisacu
+                .requestMatchers(HttpMethod.GET).access(auth1)
                 .requestMatchers("/address/*").permitAll()
                 .requestMatchers("/user/*").permitAll()
                 .requestMatchers("/project/*").permitAll()
@@ -56,5 +67,21 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+
+    @Bean
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+        return expressionHandler;
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "ADMIN >  PROJECT_MANAGER\n ADMIN > HR_MANAGER\n ADMIN > ENGINEER \n PROJECT_MANAGER > ENGINEER \n HR_MANAGER > PROJECT_MANAGER";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
     }
 }

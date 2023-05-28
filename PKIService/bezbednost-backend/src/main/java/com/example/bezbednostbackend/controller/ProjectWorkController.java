@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class ProjectWorkController {
     private ProjectWorkService projectWorkService;
 
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_PROJECT_WORKS')")
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllProjectWorks(){
         Collection<ProjectWork> projectWorks = projectWorkService.findAll();
         Collection<ProjectWorkDTO> dtos = new ArrayList<ProjectWorkDTO>();
@@ -32,6 +34,7 @@ public class ProjectWorkController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_PROJECT_WORK')")
     public ResponseEntity<ProjectWorkDTO> findProjectWorkById(@PathVariable("id") Integer id){
         ProjectWork projectWork = projectWorkService.findById(id).orElse(null);
         if(projectWork == null){
@@ -43,6 +46,7 @@ public class ProjectWorkController {
 
     //svi inzenjeri na projektu
     @GetMapping(value = "/findByProjectID/{projectID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_PROJECT_WORKS_PROJECT')")
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByProjectID(@PathVariable("projectID") Integer projectID){
         Collection<ProjectWork> projectWorks = projectWorkService.findAllByProjectID(projectID);
         if(projectWorks.isEmpty()){
@@ -58,6 +62,7 @@ public class ProjectWorkController {
 
     //svi projekti od inzenjera
     @GetMapping(value = "/findByEngineerID/{engineerID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_PROJECT_WORK_ENGINEER')")
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByEngineerID(@PathVariable("engineerID") Integer engineerID){
         Collection<ProjectWork> projectWorks = projectWorkService.findAllByEngineerID(engineerID);
         if(projectWorks.isEmpty()){
@@ -73,6 +78,7 @@ public class ProjectWorkController {
 
 
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ADD_ENGINEER_PROJECT')")
     public ResponseEntity<ProjectWork> create(@RequestBody ProjectWorkDTO dto){
         ProjectWork projectWork = new ProjectWork();
         Map(dto, projectWork);
@@ -92,6 +98,7 @@ public class ProjectWorkController {
     }
 
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('UPDATE_PROJECT_WORK')")
     public ResponseEntity<Void> update(@RequestBody ProjectWorkDTO dto){
         ProjectWork projectWork = projectWorkService.findById(dto.getId()).orElse(null);
         if(projectWork == null){
@@ -103,6 +110,7 @@ public class ProjectWorkController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('DELETE_PROJECT_WORK')")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
         ProjectWork projectWork = projectWorkService.findById(id).orElse(null);
         if(projectWork == null){
