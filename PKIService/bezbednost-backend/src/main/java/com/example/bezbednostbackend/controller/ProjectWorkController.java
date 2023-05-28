@@ -45,9 +45,6 @@ public class ProjectWorkController {
     @GetMapping(value = "/findByProjectID/{projectID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByProjectID(@PathVariable("projectID") Integer projectID){
         Collection<ProjectWork> projectWorks = projectWorkService.findAllByProjectID(projectID);
-        if(projectWorks.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Collection<ProjectWorkDTO> dtos = new ArrayList<ProjectWorkDTO>();
         for(ProjectWork projectWork: projectWorks){
             ProjectWorkDTO dto = new ProjectWorkDTO(projectWork);
@@ -60,9 +57,6 @@ public class ProjectWorkController {
     @GetMapping(value = "/findByEngineerID/{engineerID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByEngineerID(@PathVariable("engineerID") Integer engineerID){
         Collection<ProjectWork> projectWorks = projectWorkService.findAllByEngineerID(engineerID);
-        if(projectWorks.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Collection<ProjectWorkDTO> dtos = new ArrayList<ProjectWorkDTO>();
         for(ProjectWork projectWork: projectWorks){
             ProjectWorkDTO dto = new ProjectWorkDTO(projectWork);
