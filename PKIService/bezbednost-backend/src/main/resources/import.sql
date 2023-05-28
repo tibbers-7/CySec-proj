@@ -52,6 +52,12 @@ insert into privileges(name) values ('GET_ADDRESS');
 insert into privileges(name) values ('CREATE_ADDRESS');
 insert into privileges(name) values ('UPDATE_ADDRESS');
 insert into privileges(name) values ('DELETE_ADDRESS');
+insert into privileges(name) values ('GET_PRIVILEGES');
+insert into privileges(name) values ('GET_ROLES');
+insert into privileges(name) values ('GET_PRIVILEGE');
+insert into privileges(name) values ('GET_ROLE');
+
+
 
 
 

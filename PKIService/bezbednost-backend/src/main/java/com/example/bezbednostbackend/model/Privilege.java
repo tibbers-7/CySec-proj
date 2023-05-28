@@ -20,4 +20,8 @@ public class Privilege {
 
     @ManyToMany(mappedBy = "privileges")
     private Collection<Role> roles;
+
+    public Privilege(String privilegeName) {
+        this.name=privilegeName;
+    }
 }
