@@ -8,6 +8,7 @@ import com.example.bezbednostbackend.repository.RoleRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import org.springframework.security.core.GrantedAuthority;
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor @Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -37,11 +38,14 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
+        log.info("UserService: "+username);
+
         User user = userRepository.findByUsername(username);
+        log.info("UserService: "+user.getRoles());
         if (user == null) {
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
-                    null); //getAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER")
+                    getAuthorities(user.getRoles())); //getAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER")
         }
 
         return new org.springframework.security.core.userdetails.User(

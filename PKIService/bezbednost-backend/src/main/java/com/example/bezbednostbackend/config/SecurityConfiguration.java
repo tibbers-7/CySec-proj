@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                 //whitelisting pages
                 .authorizeHttpRequests()
 
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/*").permitAll()
                 // role hierarchy
                 //.requestMatchers(HttpMethod.GET).access(auth1)
                 .anyRequest()

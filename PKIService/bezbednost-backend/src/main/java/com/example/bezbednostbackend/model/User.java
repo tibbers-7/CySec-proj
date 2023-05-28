@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "addressID")
     private Address address;
     private String phoneNumber;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
@@ -45,6 +45,7 @@ public class User implements UserDetails {
     public User(){
         super();
         this.isActive=false;
+
     }
 
     public User(String name, String surname, String username, String password, Address address, String phoneNumber, List<Role> roles, String workTitle, boolean isActive) {

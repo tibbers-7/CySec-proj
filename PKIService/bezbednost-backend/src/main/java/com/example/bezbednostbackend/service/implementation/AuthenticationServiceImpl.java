@@ -157,11 +157,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @SneakyThrows
     @Override
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
+        log.info("AuthenticationService: Entered Authenticate method.");
+
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
+        log.info("AuthenticationService:"+authRequest);
         myAuthenticationManager.authenticate(authRequest);
+        log.info("AuthenticationService:"+request.getUsername());
         var user=userRepository.findByUsername(request.getUsername());
+        log.info("AuthenticationService: Got user.");
+
         if(user==null) throw(new UsernameNotFoundException("User not found"));
-        log.info(user.getUsername());
         if (!user.isActive()) throw new UserIsBannedException("User not activated");
         var accessToken=jwtService.generateAccessToken(addClaims(user), user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());
