@@ -38,4 +38,8 @@ export class LoginPageComponent {
     }
     return true
   }
+
+  clickedOnRegistration(){
+    this.router.navigate(['registration'])
+  }
 }

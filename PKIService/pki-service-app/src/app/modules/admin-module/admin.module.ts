@@ -15,6 +15,8 @@ import { AddEngineerOnProjectComponent } from './add-engineer-on-project/add-eng
 import { EditEngineerOnProjectComponent } from './edit-engineer-on-project/edit-engineer-on-project.component';
 import { RegistrationRequestsComponent } from './registration-requests/registration-requests.component';
 import { RoleGuard } from 'src/app/auth/role-guard';
+import { RolesAndPermissionsComponent } from './roles-and-permissions/roles-and-permissions.component';
+import { RegistrationRequestDialogComponent } from './registration-request-dialog/registration-request-dialog.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent,
@@ -27,7 +29,8 @@ const routes: Routes = [
     {path: 'projects/:id/update', component: EditProjectComponent},
     {path: 'projects/:id/employees', component: EmployeesOnProjectViewComponent},
     {path: 'projects/:id/employees/add', component: AddEngineerOnProjectComponent},
-    {path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent}
+    {path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent},
+    {path:'permissions', component: RolesAndPermissionsComponent}
   ];
   
 
@@ -43,7 +46,9 @@ const routes: Routes = [
     EmployeesOnProjectViewComponent,
     AddEngineerOnProjectComponent,
     EditEngineerOnProjectComponent,
-    RegistrationRequestsComponent
+    RegistrationRequestsComponent,
+    RolesAndPermissionsComponent,
+    RegistrationRequestDialogComponent
   ],
   imports: [
     AppRoutingModule,

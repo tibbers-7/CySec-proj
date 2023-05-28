@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Address } from 'src/app/model/address';
 import { RegistrationFormData } from 'src/app/model/registrationFormData';
@@ -12,24 +13,39 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class RegistrationPageComponent {
 
-selectedRole = ""
 registrationData = new RegistrationFormData()
 registratonRequest = new RegistrationRequestData()
 passwordTooltip = "Password has to have at least one letter, one number and 8 characters at least"
 usernameTooltip = "Username should be a valid email address"
 
-public constructor(private authService : AuthenticationService, private toast : ToastrService){}
+public constructor(private authService : AuthenticationService, private toast : ToastrService, private router: Router){}
 submitRegistrationRequest() {
   if(this.validityChecked()){
     this.createRequest()
+    console.log(this.registratonRequest)
     this.authService.sendRegistrationRequest(this.registratonRequest).subscribe(res => {
-      console.log(res)
+      this.toast.success(res)
     })
   }
   }
 
   validityChecked(){
-    return this.fieldsAreEmpty(this.registrationData) && (this.registrationData.password === this.registrationData.confirmPassword) && (this.selectedRole !=="")
+    if(this.fieldsAreEmpty(this.registrationData)){
+      this.toast.error("All fields have to be filled!")
+      return false
+    }
+    else if(this.registrationData.password !== this.registrationData.confirmPassword){
+      this.toast.error("Passwords have to be matching!")
+      return false
+    }
+    else if(!this.registrationData.password.match(/^(?=.*[a-zA-Z])(?=.*[0-9])/)){
+      this.toast.error("Password has to contain at least one letter and one number, and 8 characters total!")
+      return false
+    }else if(!this.registrationData.username.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)){
+      this.toast.error("Username has to be a valid email address!")
+      return false
+    }
+    return true
   }
 
   createRequest(){
@@ -57,5 +73,9 @@ submitRegistrationRequest() {
         if (value === null || value === '')  return true
         return false
       })
+  }
+
+  clickedOnLogin(){
+    this.router.navigate([''])
   }
 }

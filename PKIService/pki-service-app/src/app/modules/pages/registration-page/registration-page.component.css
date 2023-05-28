@@ -42,3 +42,13 @@
     margin-bottom: 10px;
     color: lightgray;
 }
+
+.registration-referal-link{
+    font-size: 14px;
+    color: lightgray;
+    margin: 0px 10px 10px 10px;
+}
+
+.registration-referal-link:hover{
+    color: white;
+}
