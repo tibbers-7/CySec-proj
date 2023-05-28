@@ -1,0 +1,50 @@
+<app-engineer-toolbar></app-engineer-toolbar>
+<div class="admin-home-main-div">
+
+    <div class="table-header">
+        <p class="table-title">Projects</p>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="all-certificates-table">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">ID</th>
+            <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="projectID">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Project ID</th>
+            <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.projectID}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="engineerID">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Engineer ID</th>
+            <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.engineerID}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Start Date</th>
+            <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.startDate}}</td>
+        </ng-container>
+        <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">End Date</th>
+            <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.endDate}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="responsibility">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Responsibility</th>
+            <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.responsibility}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="update-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let projectWork" class="cell-center">
+                <button mat-icon-button (click)="updateProjectWork(projectWork.id)">
+                    <mat-icon matTooltip="update">edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+

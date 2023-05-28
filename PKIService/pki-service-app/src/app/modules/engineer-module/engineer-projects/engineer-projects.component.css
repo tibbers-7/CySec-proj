@@ -1,0 +1,42 @@
+.admin-home-main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+.all-certificates-table{
+    background-color: rgb(32, 30, 30);
+    margin-top: 100px;
+    border-radius: 10px;
+    min-width: 700px;
+    height: fit-content;
+}
+
+.cell-center{
+color: white;
+font-size: 16px;
+}
+
+.cell-center-header{
+  color: white;
+  font-size: 18px;
+  align-content: center;
+}
+
+.table-title {
+    margin-top: 70px;
+    font-size: 20px;
+    color: white;
+
+}
+
+.add-button {
+    margin-top: 70px;
+    color: black;
+    background-color: #edece5;
+}
+
+p {
+    float: left;
+}

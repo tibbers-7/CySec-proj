@@ -1,0 +1,42 @@
+<app-engineer-toolbar></app-engineer-toolbar>
+<div class="admin-home-main-div">
+    
+    <div class="table-header">
+        <p class="table-title">Skills</p>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="all-certificates-table">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">ID</th>
+            <td mat-cell *matCellDef="let skill" class="clickable cell-center">{{skill.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="name" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Name</th>
+            <td mat-cell *matCellDef="let skill" class="clickable cell-center">{{skill.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="evaluation">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Evaluation</th>
+            <td mat-cell *matCellDef="let skill" class="clickable cell-center">{{skill.evaluation}}</td>
+        </ng-container>
+        <ng-container matColumnDef="update-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let skill" class="cell-center">
+                <button mat-icon-button (click)="updateSkill(skill.id)">
+                    <mat-icon matTooltip="update">edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="delete-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let skill" class="cell-center">
+                <button mat-icon-button (click)="deleteSkill(skill.id)">
+                    <mat-icon matTooltip="delete">delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <button class="add-button" mat-mini-fab matTooltip="New skill" matTooltipPosition="right" (click)="addSkill()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

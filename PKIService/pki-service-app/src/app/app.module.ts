@@ -9,6 +9,7 @@ import { AdminModule } from './modules/admin-module/admin.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './auth/http-interceptor';
+import { EngineerModule } from './modules/engineer-module/engineer.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthInterceptor } from './auth/http-interceptor';
     MaterialModule,
     ToastrModule.forRoot(),
     PagesModule,
-    AdminModule
+    AdminModule,
+    EngineerModule
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,
