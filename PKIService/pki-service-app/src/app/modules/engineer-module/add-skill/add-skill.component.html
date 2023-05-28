@@ -1,0 +1,41 @@
+<app-engineer-toolbar></app-engineer-toolbar>
+<div class="add-certificate-main-div">
+    <div class="wrapper">
+        <div class="title">
+            Add Skill 
+        </div>
+        <div class="form">
+          <form [formGroup]="createSkillForm">
+            
+            <div class="inputfield">
+                <label for="name">Name:</label>
+                <input type="text" name="name" formControlName="name" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="name && name.invalid && name.touched"> This word is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="evaluation">Name:</label>
+                <input type="text" name="evaluation" formControlName="evaluation" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="evaluation && evaluation.invalid && evaluation.touched"> This word is invalid! </span>
+            </div>
+            
+  
+            <div class="inputfield">
+              <button [disabled]="createSkillForm.invalid" class="btn" (click)="createSkill()">Submit</button>
+            </div>
+          </form>
+          <br>
+          
+          <div class="inputfield">
+            <button class="btn" (click)="goBack()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    
+</div>

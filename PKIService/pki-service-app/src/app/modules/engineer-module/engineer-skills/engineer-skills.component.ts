@@ -32,7 +32,7 @@ export class EngineerSkillsComponent implements OnInit{
 
 
   addSkill(){
-
+    this.router.navigate(['engineer/skills/add']);
   }
 
   updateSkill(id: number){
