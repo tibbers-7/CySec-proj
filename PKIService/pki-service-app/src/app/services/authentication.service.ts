@@ -24,8 +24,16 @@ export class AuthenticationService {
     return this.http.post<any>(this.apiHost + '/authenticate', credentials, { headers: this.headers})
   }
 
-  passwordlessLogin(username : String): Observable<String> {
+  passwordlessLoginRequest(username : String): Observable<String> {
     return this.http.post(this.apiHost + '/authenticate/passwordless', username, { headers: this.headers, responseType: 'text'})
+  }
+
+  activateMagicLoginLink(token: String, username: String, hmac: String): Observable<LogInResponseData> {
+    return this.http.post<any>(this.apiHost + '/authenticate/link?token='+token+'&username='+username+'&hmac='+hmac, { headers: this.headers})
+  }
+
+  activateAccount(token: String, username: String, hmac: String): Observable<any> {
+    return this.http.post<any>(this.apiHost + '/activateAccount?token='+token+'&username='+username+'&hmac='+hmac,{ headers: this.headers, responseType: 'text'} )
   }
 
   logOutUser(refreshToken: string): Observable<string> {

@@ -46,9 +46,9 @@ public class AuthenticationController {
     }
     @PostMapping(value="/activateAccount")
     public ResponseEntity<String> activateAccount(
-            @RequestParam String token,@RequestParam String username
-    ) {
-        if(authenticationService.activateAccount(username,token)){
+            @RequestParam String token,@RequestParam String username, @RequestParam String hmac
+    ) throws Exception {
+        if(authenticationService.activateAccount(username,token, hmac)){
             return ResponseEntity.ok("Account activated");
         } else return  new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
 

@@ -18,7 +18,13 @@ const routes: Routes = [
     {path:'add-certificate', component: AddCertificateComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
     {path:'requests', component: RegistrationRequestsComponent},
-    {path:'permissions', component: RolesAndPermissionsComponent}
+    //{path:'projects', component: ProjectsViewComponent},
+    //{path: 'projects/create', component: AddProjectComponent},
+    //{path: 'projects/:id/update', component: EditProjectComponent},
+    //{path: 'projects/:id/employees', component: EmployeesOnProjectViewComponent},
+    //{path: 'projects/:id/employees/add', component: AddEngineerOnProjectComponent},
+    //{path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent},
+    //{path:'permissions', component: RolesAndPermissionsComponent},
   ];
   
 

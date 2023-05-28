@@ -27,7 +27,7 @@ public interface AuthenticationService {
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
     void sendRequestApprovalEmail(String username) throws NoSuchAlgorithmException, InvalidKeyException;
-    boolean activateAccount(String username, String token);
+    boolean activateAccount(String username, String token, String hmac) throws Exception;
 
     String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;
 

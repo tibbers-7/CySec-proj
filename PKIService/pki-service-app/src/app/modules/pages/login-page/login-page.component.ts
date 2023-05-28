@@ -19,7 +19,7 @@ export class LoginPageComponent {
   signIn(){
     if(!this.validityCheck()) return
     if(this.isPasswordless) {
-      this.authService.passwordlessLogin(this.logInData.username) 
+      this.authService.passwordlessLoginRequest(this.logInData.username) 
     }else {
       this.authService.logInUserwithCredentials(this.logInData).subscribe(res =>{
       this.authService.setSession(res)

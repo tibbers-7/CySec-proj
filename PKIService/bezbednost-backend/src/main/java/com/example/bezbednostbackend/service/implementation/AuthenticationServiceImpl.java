@@ -23,7 +23,6 @@ import com.example.bezbednostbackend.repository.VerificationTokenRepository;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -181,12 +180,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void sendRequestApprovalEmail(String username ) throws NoSuchAlgorithmException, InvalidKeyException {
         log.info("AuthenticationService: entered the sendRequestApprovalEmail method.");
         String token = UUID.randomUUID().toString();
-        String hmacToken = HmacUtils.hmacWithJava(hmacSHA256Algorithm, token, key);
-        createVerificationToken(username, hmacToken, 1440);
+        String hmacToken = jwtService.calculateHMACOfToken(token);
+        createVerificationToken(username, token, 1440);
         String emailContent = "Hello " + username + "," + "\r\n" +
                 "Your account was succesfully approved.\n" +
                 "Please activate your account with this link:\n" +
-                "http://localhost:8082/auth/activateAccount?token="+hmacToken+"&username="+username;
+                "http://localhost:4200/activate-account?token="+token+"&username="+username+"&hmac="+hmacToken;
         String emailSubject = "Registration request acceptance";
 
 
@@ -200,15 +199,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean activateAccount(String username, String token){
+    public boolean activateAccount(String username, String token, String hmac) throws Exception {
         User user=userRepository.findByUsername(username);
-        Optional<VerificationToken> tokenFromDb=verificationTokenRepository.findByUsername(username);
-        if(tokenFromDb==null) return false;
-        if (tokenFromDb.get().getToken().equals(token)){
-            user.setActive(true);
-            userRepository.save(user);
-            return true;
-        } return false;
+        Optional<VerificationToken> optionalToken =verificationTokenRepository.findByUsername(username);
+        if(optionalToken==null) return false;
+        VerificationToken tokenFromDB = optionalToken.get();
+        if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now())) throw new Exception("This token is expired!");
+        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token)) throw new Exception("This token has been tampered with!");
+        user.setActive(true);
+        userRepository.save(user);
+        return true;
 
     }
     public String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException {
@@ -235,7 +235,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hmac = jwtService.calculateHMACOfToken(token);
         String emailContent = "Hello " + user.getName() + "," + "\r\n" +
                 "Use this link to log into your account." + "\r\n" +
-                "http://localhost:8082/auth/authenticate/link?token="+token+"&username="+username+"&hmac="+hmac;
+                "http://localhost:4200/login/link?token="+token+"&username="+username+"&hmac="+hmac;
         String emailSubject = "Sign in to your account";
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
     }
