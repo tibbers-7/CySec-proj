@@ -169,6 +169,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         if (!user.isActive()) throw new UserIsBannedException("User not activated");
+        log.info("AuthService: User claims: "+user.getAuthorities());
         var accessToken=jwtService.generateAccessToken(addClaims(user), user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponseDTO.builder()

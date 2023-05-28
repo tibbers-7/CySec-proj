@@ -36,12 +36,13 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
-        var auth1 = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
+        //var auth1 = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
         //auth1.setRoleHierarchy(roleHierarchy());
 
         http
                 .csrf()
                 .disable()
+
                 //whitelisting pages
                 .authorizeHttpRequests()
 
@@ -50,6 +51,7 @@ public class SecurityConfiguration {
                 //.requestMatchers(HttpMethod.GET).access(auth1)
                 .anyRequest()
                 .authenticated()
+
                 //decision management - if user authorized do not store session state
                 //ensures that each request is authenticated
                 .and()
@@ -58,7 +60,8 @@ public class SecurityConfiguration {
                 .and()
                 .authenticationProvider(myAuthenticationProvider)
                 //use filter before UsernamePasswordFilter
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return http.build();
     }
