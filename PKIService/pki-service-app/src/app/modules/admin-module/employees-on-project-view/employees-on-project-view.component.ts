@@ -56,7 +56,7 @@ export class EmployeesOnProjectViewComponent implements OnInit{
   }
 
   updateProjectWork(id: number){
-
+    this.router.navigate(['projects', this.projectID, 'employees', 'update', id]);
   }
 
   deleteProjectWork(id: number){

@@ -12,6 +12,7 @@ import { AddProjectComponent } from './add-project/add-project.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
 import { EmployeesOnProjectViewComponent } from './employees-on-project-view/employees-on-project-view.component';
 import { AddEngineerOnProjectComponent } from './add-engineer-on-project/add-engineer-on-project.component';
+import { EditEngineerOnProjectComponent } from './edit-engineer-on-project/edit-engineer-on-project.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
     {path: 'projects/create', component: AddProjectComponent},
     {path: 'projects/:id/update', component: EditProjectComponent},
     {path: 'projects/:id/employees', component: EmployeesOnProjectViewComponent},
-    {path: 'projects/:id/employees/add', component: AddEngineerOnProjectComponent}
+    {path: 'projects/:id/employees/add', component: AddEngineerOnProjectComponent},
+    {path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent}
   ];
   
 
@@ -34,7 +36,8 @@ const routes: Routes = [
     AddProjectComponent,
     EditProjectComponent,
     EmployeesOnProjectViewComponent,
-    AddEngineerOnProjectComponent
+    AddEngineerOnProjectComponent,
+    EditEngineerOnProjectComponent
   ],
   imports: [
     AppRoutingModule,

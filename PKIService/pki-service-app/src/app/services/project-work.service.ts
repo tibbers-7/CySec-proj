@@ -23,4 +23,12 @@ export class ProjectWorkService {
   createProjectWork(projectWork: ProjectWorkDTO): Observable<ProjectWorkDTO>{
     return this.http.post<ProjectWorkDTO>(this.apiHost, projectWork, {headers: this.headers});
   }
+
+  getProjectWorkById(id:number): Observable<ProjectWorkDTO>{
+    return this.http.get<ProjectWorkDTO>(this.apiHost + id, {headers: this.headers});
+  }
+
+  updateProjectWork(projectWork: ProjectWorkDTO): Observable<ProjectWorkDTO>{
+    return this.http.put<ProjectWorkDTO>(this.apiHost, projectWork, {headers: this.headers});
+  }
 }

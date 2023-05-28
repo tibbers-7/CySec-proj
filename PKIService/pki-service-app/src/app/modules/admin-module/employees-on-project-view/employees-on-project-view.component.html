@@ -8,7 +8,7 @@
                 <p>Name: {{project.name}}</p>
                 <p>Start Date: {{project.startDate}}</p>
                 <p>End Date: {{project.endDate}}</p>
-                <p>Project Manager: {{projectManager.name}} {{projectManager.surname}}</p>
+                <p>Manager: {{projectManager.name}} {{projectManager.surname}}</p>
             </mat-card-content>
         </mat-card>
     </div>
@@ -44,7 +44,7 @@
         </ng-container>
 
         <ng-container matColumnDef="responsibility">
-            <th mat-header-cell *matHeaderCellDef class="cell-center-header">End Date</th>
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Responsibility</th>
             <td mat-cell *matCellDef="let projectWork" class="clickable cell-center">{{projectWork.responsibility}}</td>
         </ng-container>
         
