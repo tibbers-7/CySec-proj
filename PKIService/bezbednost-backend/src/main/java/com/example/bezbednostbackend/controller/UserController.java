@@ -23,7 +23,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
-
+import com.google.common.base.Splitter;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -160,8 +160,9 @@ private final AddressService addressService;
         user.setPassword(dto.getPassword());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
-        //TODO
-        //user.setRole(Role.valueOf(dto.getRole()));
+        user.setRoles( Splitter.on(',').splitToList(dto.getRoles()));
+        user.setActive(true);
+        user.setWorkTitle(dto.getWorkTitle());
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
         if (address != null) {
             user.setAddress(address);

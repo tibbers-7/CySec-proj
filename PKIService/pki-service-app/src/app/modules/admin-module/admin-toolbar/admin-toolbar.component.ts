@@ -17,6 +17,10 @@ export class AdminToolbarComponent {
     this.router.navigate(['/add-certificate']);
   }
 
+  ProjectsClick(){
+    this.router.navigate(['/projects']);
+  }
+
   LogoutClick(){
     this.router.navigate(['/'])
   }

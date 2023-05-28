@@ -46,4 +46,8 @@ public class RegistrationDTO {
     @NotBlank(message = "Role cannot be empty")
     public String role;
 
+    @Valid
+    @NotBlank(message = "Work title cannot be empty")
+    public String workTitle;
+
 }

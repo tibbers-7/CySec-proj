@@ -1,8 +1,8 @@
-export class LogInRequestData {
+export class RegularLogInRequestData {
     username: string  = ''
     password: string = ''
 
-    public constructor(obj? : LogInRequestData){
+    public constructor(obj? : RegularLogInRequestData){
         if(obj){
             this.username = obj?.username
             this.password = obj?.password

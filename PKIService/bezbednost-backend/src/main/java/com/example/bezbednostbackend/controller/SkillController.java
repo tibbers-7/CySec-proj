@@ -48,9 +48,6 @@ public class SkillController {
     @PreAuthorize("hasAuthority('GET_SKILLS_ENGINEER')")
     public ResponseEntity<Collection<SkillDTO>> findAllByEngineerID(@PathVariable("engineerID") Integer engineerID){
         Collection<Skill> skills = skillService.findAllByEngineerID(engineerID);
-        if(skills.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Collection<SkillDTO> dtos = new ArrayList<SkillDTO>();
         for(Skill skill: skills){
             SkillDTO dto = new SkillDTO(skill);

@@ -20,6 +20,7 @@ import com.example.bezbednostbackend.repository.*;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,8 @@ import org.springframework.stereotype.Service;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 
 @Service @RequiredArgsConstructor @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -80,7 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createRegistrationRequestForDB(RegistrationDTO dto){
         log.info("AuthenticationService: entered the createRegistrationRequestForDB");
         RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
-                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(), dto.getRole(), LocalDateTime.now(),  LocalDateTime.now(), false, false);
+                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(), dto.getRole(), dto.getWorkTitle(), false, false);
         registrationRequestRepository.save(request);
         log.info("AuthenticationService: makeRegistrationRequest - registration request saved to database");
     }
@@ -147,10 +146,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public void createUserFromRegistrationRequest(RegistrationRequest request){
-        User registratedUser = new User(1, request.getName(),request.getSurname(),
+        User registratedUser = new User(request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(), Arrays.asList(roleRepository.findByName(request.getRole())),false);
-        //TODO change role
+                request.getPhoneNumber(), Arrays.asList(roleRepository.findByName(request.getRole())),request.getWorkTitle(),false);
+
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }
@@ -163,12 +162,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         if (!user.isActive()) throw new UserIsBannedException("User not activated");
-        var accessToken=jwtService.generateAccessToken(user);
+        var accessToken=jwtService.generateAccessToken(addClaims(user), user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getToken())
                 .build();
+    }
+
+    public Map<String,Object> addClaims(User user){
+       Map<String,Object> claims = new HashMap<>();
+       claims.put("username", user.getUsername());
+       claims.put("role", String.valueOf(user.getRoles()));
+       claims.put("userId", String.valueOf(user.getId()));
+       return claims;
     }
 
 
@@ -252,6 +259,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getToken())
                 .build();
+    }
+
+    @Override
+    public void deleteSession(String refreshToken) throws TokenRefreshException {
+        Optional<RefreshToken> optional = refreshTokenService.findByToken(refreshToken);
+        if(optional.isEmpty()) throw new TokenRefreshException(refreshToken, "No such token in database");
+        refreshTokenService.deleteByUserId(optional.get().getUser().getId());
     }
 
 

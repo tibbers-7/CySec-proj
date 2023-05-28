@@ -29,6 +29,8 @@ public class JwtService {
     //https://allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
     private static final String SECRET_KEY="67556B58703272357538782F413F4428472B4B6250655368566D597133743676";
 
+
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -52,7 +54,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 // token valid for 15 minutes
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 15))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

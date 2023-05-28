@@ -39,11 +39,24 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
+    private String workTitle;
     private boolean isActive;
 
     public User(){
         super();
         this.isActive=false;
+    }
+
+    public User(String name, String surname, String username, String password, Address address, String phoneNumber, List<Role> roles, String workTitle, boolean isActive) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.username = username;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.roles = roles;
+        this.workTitle = workTitle;
+        this.isActive = isActive;
     }
 
 
@@ -81,6 +94,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }

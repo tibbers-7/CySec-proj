@@ -49,9 +49,6 @@ public class ProjectWorkController {
     @PreAuthorize("hasAuthority('GET_PROJECT_WORKS_PROJECT')")
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByProjectID(@PathVariable("projectID") Integer projectID){
         Collection<ProjectWork> projectWorks = projectWorkService.findAllByProjectID(projectID);
-        if(projectWorks.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Collection<ProjectWorkDTO> dtos = new ArrayList<ProjectWorkDTO>();
         for(ProjectWork projectWork: projectWorks){
             ProjectWorkDTO dto = new ProjectWorkDTO(projectWork);
@@ -65,9 +62,6 @@ public class ProjectWorkController {
     @PreAuthorize("hasAuthority('GET_PROJECT_WORK_ENGINEER')")
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByEngineerID(@PathVariable("engineerID") Integer engineerID){
         Collection<ProjectWork> projectWorks = projectWorkService.findAllByEngineerID(engineerID);
-        if(projectWorks.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Collection<ProjectWorkDTO> dtos = new ArrayList<ProjectWorkDTO>();
         for(ProjectWork projectWork: projectWorks){
             ProjectWorkDTO dto = new ProjectWorkDTO(projectWork);

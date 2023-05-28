@@ -12,7 +12,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMomentDateModule } from '@angular/material-moment-adapter'
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -28,7 +30,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatDialogModule,
     MatDatepickerModule,
     MatSelectModule,
-    MatMomentDateModule
+    ReactiveFormsModule,
+    MatMomentDateModule,
+    MatCheckboxModule
   ],
   exports: [
     CommonModule,
@@ -44,7 +48,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter'
     MatSelectModule,
     MatSortModule,
     MatToolbarModule,
-    MatMomentDateModule
+    ReactiveFormsModule,
+    MatMomentDateModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule {}

@@ -50,9 +50,6 @@ public class ProjectController {
     @PreAuthorize("hasAuthority('GET_PROJECTS_MANAGER')")
     public ResponseEntity<Collection<ProjectDTO>> findProjectsByProjectManagerID(@PathVariable("projectManagerID") Integer projectManagerID){
         Collection<Project> projects = projectService.findAllByProjectManagerID(projectManagerID);
-        if(projects.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         Collection<ProjectDTO> dtos = new ArrayList<ProjectDTO>();
         for(Project project: projects){
             ProjectDTO dto = new ProjectDTO(project);
