@@ -25,4 +25,12 @@ export class UserService {
     return this.http.get<EmployeeDTO>(this.apiHost + id, {headers: this.headers});
   }
 
+  getAllEmployees(): Observable<EmployeeDTO[]>{
+    return this.http.get<EmployeeDTO[]>(this.apiHost, {headers: this.headers});
+  }
+
+  createEmployee(employee: EmployeeDTO): Observable<EmployeeDTO>{
+    return this.http.post<EmployeeDTO>(this.apiHost, employee, {headers: this.headers});
+  }
+
 }

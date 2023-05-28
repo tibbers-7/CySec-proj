@@ -1,0 +1,45 @@
+<admin-toolbar></admin-toolbar>
+<div class="admin-home-main-div">
+    
+    <div class="table-header">
+        <p class="table-title">Employees</p>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="all-certificates-table">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">ID</th>
+            <td mat-cell *matCellDef="let employee" class="clickable cell-center">{{employee.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="name" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Name</th>
+            <td mat-cell *matCellDef="let employee" class="clickable cell-center">{{employee.name}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="surname" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Surname</th>
+            <td mat-cell *matCellDef="let employee" class="clickable cell-center">{{employee.surname}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="username" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Username</th>
+            <td mat-cell *matCellDef="let employee" class="clickable cell-center">{{employee.username}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phoneNumber" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Phone Number</th>
+            <td mat-cell *matCellDef="let employee" class="clickable cell-center">{{employee.phoneNumber}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="role" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Work Title</th>
+            <td mat-cell *matCellDef="let employee" class="clickable cell-center">{{employee.role}}</td>
+        </ng-container>
+        
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <button class="add-button" mat-mini-fab matTooltip="New employee" matTooltipPosition="right" (click)="addEmployee()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
