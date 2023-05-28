@@ -18,7 +18,7 @@ export class EngineerToolbarComponent {
   }
 
   SkillsClick(){
-
+    this.router.navigate(['engineer/skills']);
   }
 
   LogoutClick(){

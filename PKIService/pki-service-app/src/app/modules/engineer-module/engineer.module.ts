@@ -8,11 +8,13 @@ import { EngineerToolbarComponent } from './engineer-toolbar/engineer-toolbar.co
 import { EngineerProfileComponent } from './engineer-profile/engineer-profile.component';
 import { EngineerProjectsComponent } from './engineer-projects/engineer-projects.component';
 import { EngineerUpdateProjectComponent } from './engineer-update-project/engineer-update-project.component';
+import { EngineerSkillsComponent } from './engineer-skills/engineer-skills.component';
 
 const routes: Routes = [
   {path: 'engineer/editProfile', component: EngineerProfileComponent},
   {path: 'engineer/projects', component: EngineerProjectsComponent},
-  {path: 'engineer/projects/:idw/update', component: EngineerUpdateProjectComponent}
+  {path: 'engineer/projects/:idw/update', component: EngineerUpdateProjectComponent},
+  {path: 'engineer/skills', component: EngineerSkillsComponent}
 
 ];
 
@@ -21,7 +23,8 @@ const routes: Routes = [
     EngineerToolbarComponent,
     EngineerProfileComponent,
     EngineerProjectsComponent,
-    EngineerUpdateProjectComponent
+    EngineerUpdateProjectComponent,
+    EngineerSkillsComponent
   ],
   imports: [
     AppRoutingModule,
