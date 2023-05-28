@@ -24,7 +24,7 @@ submitRegistrationRequest() {
     this.createRequest()
     console.log(this.registratonRequest)
     this.authService.sendRegistrationRequest(this.registratonRequest).subscribe(res => {
-      this.toast.success(res)
+      this.toast.success("Successful registration!")
     })
   }
   }

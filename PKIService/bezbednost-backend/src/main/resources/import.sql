@@ -1,2 +1,14 @@
 insert into addresses (country, city, street_address) values ('Srbija', 'Novi Sad', 'Turgenjeva 1');
-insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (false, 'Anja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0691442001,'ADMIN', 'Dmitrovic', 'tibbers',1);
+insert into addresses (country, city, street_address) values ('Srbija', 'Novi Sad', 'Futoska 62');
+insert into addresses (country, city, street_address) values ('Srbija', 'Beograd', 'Petra Drapsina 3');
+insert into addresses (country, city, street_address) values ('Srbija', 'Beograd', 'Knjeginje Ljubice 12');
+insert into addresses (country, city, street_address) values ('Srbija', 'Beograd', 'Kralja Petra 2');
+insert into addresses (country, city, street_address) values ('Srbija', 'Beograd', 'Mihajla Pupina 112');
+insert into addresses (country, city, street_address) values ('Srbija', 'Nis', 'Novosadska 33');
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (true, 'Anja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0691442001,'ADMIN', 'Dmitrovic', 'tibbers@gmail.com',1);
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (false, 'Elena', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0623403843,'HR_MANAGER', 'Milanovic', 'mili@gmail.com',2);
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (false, 'Milan', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0645459035,'PROJECT_MANAGER', 'Preradovic', 'enaa@gmail.com',3);
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (false, 'Nemanja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0613985239,'ENGINEER', 'Djordjevic', 'ddgss@gmail.com',4);
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (true, 'Ivana', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0690358205,'ENGINEER', 'Knezevic', 'maliknez@gmail.com',5);
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (false, 'Milos', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0603523525,'HR_MANAGER', 'Ciric', 'tibbbii@gmail.com',6);
+insert into users(is_active, name, password, phone_number, role, surname, username, addressid) values (true, 'Isidora', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', 0662202029,'PROJECT_MANAGER', 'Zelenovic', 'nestonesto@gmail.com',7);

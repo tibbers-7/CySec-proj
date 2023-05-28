@@ -23,6 +23,7 @@ export class LoginPageComponent {
     }else {
       this.authService.logInUserwithCredentials(this.logInData).subscribe(res =>{
       this.authService.setSession(res)
+      if(this.authService.getRole() === 'ADMIN') this.router.navigate(['admin-home'])
     })
   }
   }
