@@ -1,0 +1,22 @@
+.registration-requests-main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registration-requests-table-div{
+    width: 70%;
+}
+
+.registration-requests-button:hover{
+    background-color: rgb(145, 149, 153);
+}
+
+table {
+    width:100%;
+}
+
+.mat-column-username{
+   width: 50px;
+}

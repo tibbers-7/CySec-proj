@@ -10,13 +10,15 @@ import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { RegistrationRequestsComponent } from './registration-requests/registration-requests.component';
 import { RoleGuard } from 'src/app/auth/role-guard';
 import { RolesAndPermissionsComponent } from './roles-and-permissions/roles-and-permissions.component';
+import { RegistrationRequestDialogComponent } from './registration-request-dialog/registration-request-dialog.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' } },
     {path:'add-certificate', component: AddCertificateComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
-    {path:'requests', component: RegistrationRequestsComponent}
+    {path:'requests', component: RegistrationRequestsComponent},
+    {path:'permissions', component: RolesAndPermissionsComponent}
   ];
   
 
@@ -27,7 +29,8 @@ const routes: Routes = [
     KSPasswordModalDialog,
     AdminToolbarComponent,
     RegistrationRequestsComponent,
-    RolesAndPermissionsComponent
+    RolesAndPermissionsComponent,
+    RegistrationRequestDialogComponent
   ],
   imports: [
     AppRoutingModule,
