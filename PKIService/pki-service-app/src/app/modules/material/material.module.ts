@@ -12,7 +12,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMomentDateModule } from '@angular/material-moment-adapter'
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ReactiveFormsModule } from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
@@ -29,6 +30,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDialogModule,
     MatDatepickerModule,
     MatSelectModule,
+    ReactiveFormsModule,
     MatMomentDateModule,
     MatCheckboxModule
   ],
@@ -46,6 +48,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatSortModule,
     MatToolbarModule,
+    ReactiveFormsModule,
     MatMomentDateModule,
     MatCheckboxModule
   ]
