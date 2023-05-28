@@ -34,7 +34,7 @@ export class EngineerProjectsComponent implements OnInit{
   }
 
   updateProjectWork(id: number){
-
+    this.router.navigate(['engineer', 'projects', id, 'update']);
   }
 
 }
