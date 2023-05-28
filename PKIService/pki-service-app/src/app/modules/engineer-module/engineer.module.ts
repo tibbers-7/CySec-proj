@@ -6,16 +6,19 @@ import { FormsModule } from '@angular/forms';
 import { RoleGuard } from 'src/app/auth/role-guard';
 import { EngineerToolbarComponent } from './engineer-toolbar/engineer-toolbar.component';
 import { EngineerProfileComponent } from './engineer-profile/engineer-profile.component';
+import { EngineerProjectsComponent } from './engineer-projects/engineer-projects.component';
 
 const routes: Routes = [
-  {path: 'engineer/editProfile', component: EngineerProfileComponent}
+  {path: 'engineer/editProfile', component: EngineerProfileComponent},
+  {path: 'engineer/projects', component: EngineerProjectsComponent}
 
 ];
 
 @NgModule({
   declarations: [
     EngineerToolbarComponent,
-    EngineerProfileComponent
+    EngineerProfileComponent,
+    EngineerProjectsComponent
   ],
   imports: [
     AppRoutingModule,

@@ -134,7 +134,7 @@ export class EngineerProfileComponent implements OnInit{
       console.log(employee)
 
       this.userService.updateEmployee(employee).subscribe(res=>{
-        //this.router.navigate(['employees']);
+        this.router.navigate(['engineer/projects']);
       })
 
     })
@@ -143,7 +143,7 @@ export class EngineerProfileComponent implements OnInit{
   }
 
   goBack = () => {
-    //this.router.navigate(['employees']);
+    this.router.navigate(['engineer/projects']);
   };
 
 }

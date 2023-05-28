@@ -31,4 +31,8 @@ export class ProjectWorkService {
   updateProjectWork(projectWork: ProjectWorkDTO): Observable<ProjectWorkDTO>{
     return this.http.put<ProjectWorkDTO>(this.apiHost, projectWork, {headers: this.headers});
   }
+
+  getAllByEngineerId(id:number): Observable<ProjectWorkDTO[]>{
+    return this.http.get<ProjectWorkDTO[]>(this.apiHost + 'findByEngineerID/' + id, { headers: this.headers });
+  }
 }

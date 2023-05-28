@@ -10,11 +10,11 @@ export class EngineerToolbarComponent {
   constructor(private router:Router) { }
  
   ProjectsClick(){
-    //this.router.navigate(['/projects']);
+    this.router.navigate(['engineer/projects']);
   }
 
   EditProfileClick(){
-    //this.router.navigate(['/editProfile']);
+    this.router.navigate(['engineer/editProfile']);
   }
 
   SkillsClick(){
