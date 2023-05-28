@@ -5,7 +5,6 @@ import com.example.bezbednostbackend.auth.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
-import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.TokenRefreshException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
@@ -37,6 +36,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
 import java.util.*;
+
 
 @Service @RequiredArgsConstructor @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -161,6 +161,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         myAuthenticationManager.authenticate(authRequest);
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
+        log.info(user.getUsername());
         if (!user.isActive()) throw new UserIsBannedException("User not activated");
         var accessToken=jwtService.generateAccessToken(addClaims(user), user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());

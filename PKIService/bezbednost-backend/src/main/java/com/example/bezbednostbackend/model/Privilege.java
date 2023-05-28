@@ -9,11 +9,11 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @Builder
-@Table(name="priviledges")
+@Table(name="privileges")
 public class Privilege {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

@@ -3,11 +3,12 @@ package com.example.bezbednostbackend.controller;
 import com.example.bezbednostbackend.dto.EmployeeDTO;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
-import com.example.bezbednostbackend.enums.Role;
+import com.example.bezbednostbackend.model.Role;
 import com.example.bezbednostbackend.model.Address;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AddressService;
 import com.example.bezbednostbackend.service.AuthenticationService;
+import com.example.bezbednostbackend.service.PermissionService;
 import com.example.bezbednostbackend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import com.google.common.base.Splitter;
 @RestController
 @RequestMapping("/user")
@@ -35,6 +38,8 @@ private final UserService userService;
 private final AuthenticationService authenticationService;
 @Autowired
 private final AddressService addressService;
+@Autowired
+private final PermissionService permissionService;
 
 
 // SVI
@@ -160,7 +165,13 @@ private final AddressService addressService;
         user.setPassword(dto.getPassword());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
-        user.setRoles( Splitter.on(',').splitToList(dto.getRoles()));
+
+        List<String> roleStrings=Splitter.on(',').splitToList(dto.getRoles());
+        Collection<Role> roles=new ArrayList<>();
+        for (String roleName: roleStrings) {
+            roles.add(permissionService.getRole(roleName));
+        }
+        user.setRoles(roles);
         user.setActive(true);
         user.setWorkTitle(dto.getWorkTitle());
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
