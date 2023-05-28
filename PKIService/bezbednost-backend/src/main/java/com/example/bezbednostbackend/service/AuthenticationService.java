@@ -9,9 +9,11 @@ import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
 import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
+import com.example.bezbednostbackend.model.RegistrationRequest;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public interface AuthenticationService {
     void makeRegistrationRequest(RegistrationDTO dto) throws  UserIsBannedException, UserAlreadyExistsException, RequestAlreadyPendingException;
@@ -36,4 +38,6 @@ public interface AuthenticationService {
     AuthenticationResponseDTO logInWithLink(String token, String username, String hmac) throws Exception;
 
     void deleteSession(String refreshToken) throws TokenRefreshException;
+
+    List<RegistrationRequest> getAllRegistrationRequests();
 }

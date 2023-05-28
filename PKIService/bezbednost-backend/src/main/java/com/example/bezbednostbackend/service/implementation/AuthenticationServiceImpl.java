@@ -1,6 +1,5 @@
 package com.example.bezbednostbackend.service.implementation;
 
-import com.example.bezbednostbackend.auth.HmacUtils;
 import com.example.bezbednostbackend.auth.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
@@ -265,6 +264,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<RefreshToken> optional = refreshTokenService.findByToken(refreshToken);
         if(optional.isEmpty()) throw new TokenRefreshException(refreshToken, "No such token in database");
         refreshTokenService.deleteByUserId(optional.get().getUser().getId());
+    }
+
+    @Override
+    public List<RegistrationRequest> getAllRegistrationRequests() {
+       return registrationRequestRepository.findAll();
     }
 
 

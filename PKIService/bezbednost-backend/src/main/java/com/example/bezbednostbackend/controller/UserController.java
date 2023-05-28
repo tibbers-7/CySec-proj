@@ -3,8 +3,10 @@ package com.example.bezbednostbackend.controller;
 import com.example.bezbednostbackend.dto.EmployeeDTO;
 import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
 import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
+import com.example.bezbednostbackend.dto.StringResponseDTO;
 import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.model.Address;
+import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AddressService;
 import com.example.bezbednostbackend.service.AuthenticationService;
@@ -22,6 +24,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -46,10 +49,10 @@ private final AddressService addressService;
 
     //ovo samo admin moze
     @PostMapping(value="/register/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> cancelRegistration(@RequestBody RegistrationCancellationDTO dto) {
+    public ResponseEntity<StringResponseDTO> cancelRegistration(@RequestBody RegistrationCancellationDTO dto) {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.cancelRegistrationRequest(dto);
-        return new ResponseEntity<String>("request cancelled", HttpStatus.OK);
+        return new ResponseEntity<>(new StringResponseDTO("request cancelled"), HttpStatus.OK);
     }
 
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -154,13 +157,18 @@ private final AddressService addressService;
 
     //ovo samo admin moze
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
+    public ResponseEntity<StringResponseDTO> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.approveRegistrationRequest(dto);
 
-
-
-        return new ResponseEntity<String>("request approved", HttpStatus.OK);
+        return new ResponseEntity<>(new StringResponseDTO("request approved"), HttpStatus.OK);
     }
+
+   @GetMapping(value="/registration-requests", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<RegistrationRequest>> getAllRequests(){
+        List<RegistrationRequest> requests = authenticationService.getAllRegistrationRequests();
+        return new ResponseEntity<>(requests, HttpStatus.OK);
+   }
+
 
 }

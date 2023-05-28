@@ -10,13 +10,22 @@ import { RegistrationRequest } from 'src/app/model/registrationRequest';
 export class RegistrationRequestDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<RegistrationRequestDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {registrationRequest: RegistrationRequest},
+    @Inject(MAT_DIALOG_DATA) public data: {registrationRequest: RegistrationRequest, isDeclined: boolean, isResolved: boolean}
   ) {}
-  declineRequest(){
-
+  cancel(){
+    this.data.isResolved = false
+    this.dialogRef.close()
   }
-  acceptRequest(){
 
+  acceptRequest(){
+    this.data.isResolved = true
+    this.data.isDeclined = false
+    this.dialogRef.close()
+  }
+  declineRequest(){
+    this.data.isResolved = true
+    this.data.isDeclined = true
+    this.dialogRef.close()
   }
   
 }

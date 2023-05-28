@@ -3,6 +3,7 @@ package com.example.bezbednostbackend.controller;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
+import com.example.bezbednostbackend.dto.StringResponseDTO;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +22,21 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class AuthenticationController {
 
     @Autowired
     private final AuthenticationService authenticationService;
 
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> sendRegistrationRequest(@RequestBody @Valid RegistrationDTO dto) {
+    public ResponseEntity<StringResponseDTO> sendRegistrationRequest(@RequestBody @Valid RegistrationDTO dto) {
         try{
             authenticationService.makeRegistrationRequest(dto);
         }
         catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Request sent!", HttpStatus.OK);
+        return new ResponseEntity<>(new StringResponseDTO("Registration request sent!"), HttpStatus.OK);
     }
 
     @PostMapping(value="/authenticate",
@@ -44,13 +46,13 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-    @PostMapping(value="/activateAccount")
-    public ResponseEntity<String> activateAccount(
+    @PostMapping(value="/activateAccount", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StringResponseDTO> activateAccount(
             @RequestParam String token,@RequestParam String username, @RequestParam String hmac
     ) throws Exception {
         if(authenticationService.activateAccount(username,token, hmac)){
-            return ResponseEntity.ok("Account activated");
-        } else return  new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new StringResponseDTO("Account activated!"), HttpStatus.OK);
+        } else return  new ResponseEntity<>(new StringResponseDTO("Invalid token!"), HttpStatus.BAD_REQUEST);
 
     }
 
@@ -58,13 +60,13 @@ public class AuthenticationController {
     @PostMapping(value="/authenticate/passwordless",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> passwordlessLogin(@RequestBody String username) {
+    public ResponseEntity<StringResponseDTO> passwordlessLogin(@RequestBody String username) {
        try{
            authenticationService.passwordlessLogin(username);
        }catch(Exception e){
-           return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+           return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
        }
-       return new ResponseEntity<>("Check your email for the sign in link :)", HttpStatus.OK);
+       return new ResponseEntity<>(new StringResponseDTO("Check your email for the sign in link :)"), HttpStatus.OK);
     }
 
     @PostMapping(value="/authenticate/link",
@@ -79,23 +81,23 @@ public class AuthenticationController {
     }
 
     @PostMapping(value="/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> refreshToken(@RequestBody AuthenticationResponseDTO dto){
+    public ResponseEntity<StringResponseDTO> refreshToken(@RequestBody AuthenticationResponseDTO dto){
         try{
             authenticationService.refreshToken(dto);
         }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity("Successfully refreshed token!", HttpStatus.OK);
+        return new ResponseEntity(new StringResponseDTO("Successfully refreshed token!"), HttpStatus.OK);
     }
 
     @PostMapping(value="/logOut")
-    public ResponseEntity<String> logOut(@RequestBody String refreshToken) {
+    public ResponseEntity<StringResponseDTO> logOut(@RequestBody String refreshToken) {
         try{
             authenticationService.deleteSession(refreshToken);
         }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Session ended", HttpStatus.OK);
+        return new ResponseEntity<>(new StringResponseDTO("Session ended."), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
