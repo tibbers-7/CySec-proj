@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'admin-toolbar',
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-toolbar.component.css']
 })
 export class AdminToolbarComponent {
-  constructor(private router:Router) { }
+  constructor(private router:Router, private authService: AuthenticationService) { }
 
   HomeClick(){
     this.router.navigate(['/admin-home']);
@@ -21,7 +22,12 @@ export class AdminToolbarComponent {
     this.router.navigate(['/projects']);
   }
 
+  RequestsClick(){
+    this.router.navigate(['requests'])
+  }
+
   LogoutClick(){
-    this.router.navigate(['/'])
+    this.authService.logout()
+    this.router.navigate([''])
   }
 }
