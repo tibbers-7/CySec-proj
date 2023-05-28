@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidKeyException;
@@ -35,6 +36,9 @@ private final AuthenticationService authenticationService;
 @Autowired
 private final AddressService addressService;
 
+@Autowired
+private final PasswordEncoder passwordEncoder;
+
 
 
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +54,16 @@ private final AddressService addressService;
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.cancelRegistrationRequest(dto);
         return new ResponseEntity<String>("request cancelled", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EmployeeDTO> findEmployeeById(@PathVariable("id") Integer id){
+        User user = userService.getById(id);
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        EmployeeDTO dto = new EmployeeDTO(user);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -140,7 +154,7 @@ private final AddressService addressService;
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setRole(Role.valueOf(dto.getRole()));

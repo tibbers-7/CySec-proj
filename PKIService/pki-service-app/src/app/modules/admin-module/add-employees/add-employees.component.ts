@@ -86,7 +86,7 @@ export class AddEmployeesComponent implements OnInit{
       id: 0,
       country: country ? country : '',
       city: city ? city : '',
-      streetAddresss: streetAddress ? streetAddress : ''
+      streetAddress: streetAddress ? streetAddress : ''
     }
 
     console.log(address)
@@ -117,7 +117,7 @@ export class AddEmployeesComponent implements OnInit{
         {
           alert("Cannot add employee, username already exists!")
           this.addressService.deleteAddress(this.addressID).subscribe(res=>{
-            
+
           })
         })
       }

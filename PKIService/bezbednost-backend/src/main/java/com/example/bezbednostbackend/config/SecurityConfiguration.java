@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                 //dozvolila sam ove metode zbog testiranja, kad se namesti po rolama izbrisacu
                 .requestMatchers("/address/*").permitAll()
                 .requestMatchers("/user/*").permitAll()
+                .requestMatchers("/user/findById/*").permitAll()
                 .requestMatchers("/project/*").permitAll()
                 .requestMatchers("/project/findByProjectManager/*").permitAll()
                 .requestMatchers("/projectWork/*").permitAll()

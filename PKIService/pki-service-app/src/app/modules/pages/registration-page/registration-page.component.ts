@@ -63,7 +63,7 @@ submitRegistrationRequest() {
     let address = new Address()
     address.country = this.registrationData.country
     address.city = this.registrationData.city
-    address.streetAddresss = this.registrationData.streetAddress
+    address.streetAddress = this.registrationData.streetAddress
     return address
   }
 
