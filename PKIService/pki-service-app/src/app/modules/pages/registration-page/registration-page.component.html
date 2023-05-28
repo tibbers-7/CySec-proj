@@ -6,7 +6,7 @@
         <mat-card-content>
             <mat-form-field>
                 <mat-label>Role</mat-label>
-                <mat-select [(value)]="selectedRole">
+                <mat-select [(value)]="registrationData.role">
                     <mat-option value="ENGINEER">Engineer</mat-option>
                     <mat-option value="HR_MANAGER">HR manager</mat-option>
                     <mat-option value="PROJECT_MANAGER">Project manager</mat-option>
@@ -53,8 +53,10 @@
                     <mat-label>Work title</mat-label>
                     <input matInput type="text" [(ngModel)]="registrationData.workTitle" name="workTitle">
                 </mat-form-field>
+                <p class="registration-referal-link" (click)="clickedOnLogin()">Already have an account? Log in here </p>
                 <button mat-button class="registration-button" (click)="submitRegistrationRequest()">Submit</button>
             </form>
+    
         </mat-card-content>
     </mat-card>
     </div>

@@ -9,6 +9,7 @@ import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialo
 import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { RegistrationRequestsComponent } from './registration-requests/registration-requests.component';
 import { RoleGuard } from 'src/app/auth/role-guard';
+import { RolesAndPermissionsComponent } from './roles-and-permissions/roles-and-permissions.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent,
@@ -25,7 +26,8 @@ const routes: Routes = [
     AdminHomeComponent,
     KSPasswordModalDialog,
     AdminToolbarComponent,
-    RegistrationRequestsComponent
+    RegistrationRequestsComponent,
+    RolesAndPermissionsComponent
   ],
   imports: [
     AppRoutingModule,
