@@ -29,11 +29,11 @@ export class UserService {
   }
 
   acceptRegistrationRequest(registrationApproval : RegistrationApprovalRequest): Observable<any>{
-    return this.http.post(this.apiHost+'register/approve', {headers: this.headers})
+    return this.http.post(this.apiHost+'register/approve', registrationApproval, {headers: this.headers})
   }
 
   declineRegistrationRequest(registrationCancellation : RegistrationCancellationRequest): Observable<any>{
-    return this.http.post(this.apiHost+'register/cancel', {headers: this.headers})
+    return this.http.post(this.apiHost+'register/cancel',registrationCancellation, {headers: this.headers})
   }
 
   getRegistrationRequests(): Observable<RegistrationRequest[]>{

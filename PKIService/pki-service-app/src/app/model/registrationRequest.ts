@@ -10,6 +10,8 @@ export class RegistrationRequest{
     phoneNumber = ""
     workTitle = ""
     role = ""
+    resolved = ""
+    cancelled = ""
 
     public constructor(obj? : RegistrationRequest){
         if(obj){
@@ -22,6 +24,8 @@ export class RegistrationRequest{
             this.workTitle = obj.workTitle
             this.phoneNumber = obj.phoneNumber
             this.role = obj.role
+            this.resolved = obj.resolved
+            this.cancelled = obj.cancelled
         }
     }
 }
