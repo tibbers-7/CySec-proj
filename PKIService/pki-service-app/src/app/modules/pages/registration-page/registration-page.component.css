@@ -1,0 +1,44 @@
+.registration-main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.registration-mat-card{
+    max-height: 620px;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px 10px #a5a1a187;
+    overflow-y: scroll;
+    margin-top: 50px;
+}
+
+.registration-mat-card mat-form-field{
+    height: 70px;
+}
+
+.registration-mat-card form, 
+.registration-mat-card mat-card-content
+{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+
+.registration-button{
+    border: lightgray outset 3px;
+    border-radius: 12px;
+    margin-bottom: 5px;
+}
+
+.registration-mat-card mat-card-header{
+    display: flex;
+    color: lightgray;
+    justify-content: center;
+}
+
+.registration-form-issuer-mat-card{
+    margin-bottom: 10px;
+    color: lightgray;
+}

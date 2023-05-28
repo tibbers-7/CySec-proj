@@ -3,13 +3,14 @@
         <mat-card-content>
             <mat-form-field>
                 <mat-label>Username</mat-label>
-                <input matInput  [(ngModel)]="logInData.username">
+                <input matInput [(ngModel)]="logInData.username">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Password</mat-label>
                 <input matInput type="password" [(ngModel)]="logInData.password">
             </mat-form-field>
         </mat-card-content>
+        <mat-checkbox  class="login-checkbox" [matTooltip]="checkboxTooltip" [checked] = "isPasswordless">Log in without password</mat-checkbox>
         <mat-card-actions>
             <button mat-button class="sign-in-button" (click)='signIn()' > Sign in</button>
         </mat-card-actions>

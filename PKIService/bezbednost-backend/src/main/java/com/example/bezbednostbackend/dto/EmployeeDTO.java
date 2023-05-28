@@ -20,6 +20,7 @@ public class EmployeeDTO {
     private Integer addressID;
     private String phoneNumber;
     private String role;
+    private String workTitle;
 
     public EmployeeDTO(User dto){
         this.id = dto.getId();
@@ -30,6 +31,7 @@ public class EmployeeDTO {
         this.addressID = dto.getAddress().getId();
         this.phoneNumber = dto.getPhoneNumber();
         this.role = String.valueOf(dto.getRole());
+        this.workTitle = dto.getWorkTitle();
     }
 
 }

@@ -13,10 +13,15 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
 import { EmployeesOnProjectViewComponent } from './employees-on-project-view/employees-on-project-view.component';
 import { AddEngineerOnProjectComponent } from './add-engineer-on-project/add-engineer-on-project.component';
 import { EditEngineerOnProjectComponent } from './edit-engineer-on-project/edit-engineer-on-project.component';
+import { RegistrationRequestsComponent } from './registration-requests/registration-requests.component';
+import { RoleGuard } from 'src/app/auth/role-guard';
 
 const routes: Routes = [
-    {path:'admin-home', component: AdminHomeComponent},
-    {path:'add-certificate', component: AddCertificateComponent},
+    {path:'admin-home', component: AdminHomeComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    {path:'add-certificate', component: AddCertificateComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    {path:'requests', component: RegistrationRequestsComponent},
     {path:'projects', component: ProjectsViewComponent},
     {path: 'projects/create', component: AddProjectComponent},
     {path: 'projects/:id/update', component: EditProjectComponent},
@@ -37,7 +42,8 @@ const routes: Routes = [
     EditProjectComponent,
     EmployeesOnProjectViewComponent,
     AddEngineerOnProjectComponent,
-    EditEngineerOnProjectComponent
+    EditEngineerOnProjectComponent,
+    RegistrationRequestsComponent
   ],
   imports: [
     AppRoutingModule,

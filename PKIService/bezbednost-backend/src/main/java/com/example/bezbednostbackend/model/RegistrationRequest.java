@@ -28,12 +28,13 @@ public class RegistrationRequest {
     private Address address;
     private String phoneNumber;
     private String role;
+    private String workTitle;
     private LocalDateTime requestCreated;
     private LocalDateTime requestUpdated;
     private boolean isCancelled;
     private boolean isResolved;
 
-    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String role, LocalDateTime requestCreated, LocalDateTime requestUpdated, boolean isCancelled, boolean isResolved) {
+    public RegistrationRequest(String name, String surname, String username, String password, Address address, String phoneNumber, String role, String workTitle, boolean isCancelled, boolean isResolved) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -41,105 +42,12 @@ public class RegistrationRequest {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.role = role;
-        this.requestCreated = requestCreated;
+        this.workTitle = workTitle;
+        this.requestCreated = LocalDateTime.now();
         this.isCancelled = isCancelled;
         this.isResolved = isResolved;
-        this.requestUpdated = requestUpdated;
+        this.requestUpdated = LocalDateTime.now();
     }
 
-    public LocalDateTime getRequestUpdated() {
-        return requestUpdated;
-    }
 
-    public void setRequestUpdated(LocalDateTime requestUpdated) {
-        this.requestUpdated = requestUpdated;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public LocalDateTime getRequestCreated() {
-        return requestCreated;
-    }
-
-    public void setRequestCreated(LocalDateTime requestCreated) {
-        this.requestCreated = requestCreated;
-    }
-
-    public boolean isCancelled() {
-        return isCancelled;
-    }
-
-    public void setCancelled(boolean cancelled) {
-        isCancelled = cancelled;
-    }
-
-    public boolean isResolved() {
-        return isResolved;
-    }
-
-    public void setResolved(boolean resolved) {
-        isResolved = resolved;
-    }
 }

@@ -32,11 +32,24 @@ public class User implements UserDetails {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String workTitle;
     private boolean isActive;
 
     public User(){
         super();
         this.isActive=false;
+    }
+
+    public User(String name, String surname, String username, String password, Address address, String phoneNumber, Role role, String workTitle, boolean isActive) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.username = username;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.workTitle = workTitle;
+        this.isActive = isActive;
     }
 
 
@@ -70,6 +83,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }

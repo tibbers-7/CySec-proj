@@ -14,6 +14,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -30,7 +31,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDatepickerModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatCheckboxModule
   ],
   exports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSortModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule {}
