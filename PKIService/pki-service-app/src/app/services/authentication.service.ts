@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { RegistrationRequestData } from '../model/registrationRequestData';
 import { RegularLogInRequestData } from '../model/regularLogInRequestData';
 import { LogInResponseData } from '../model/logInResponseData';
+import { Response } from '../model/response';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +18,26 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   sendRegistrationRequest(registrationRequest: RegistrationRequestData): Observable<any> {
-    return this.http.post(this.apiHost + '/register', registrationRequest, { headers: this.headers, responseType: 'text'})
-  }
+    return this.http.post(this.apiHost + '/register', registrationRequest, { headers: this.headers})}
 
   logInUserwithCredentials(credentials:RegularLogInRequestData): Observable<LogInResponseData> {
     return this.http.post<any>(this.apiHost + '/authenticate', credentials, { headers: this.headers})
   }
 
-  passwordlessLogin(username : String): Observable<String> {
-    return this.http.post(this.apiHost + '/authenticate/passwordless', username, { headers: this.headers, responseType: 'text'})
+  passwordlessLoginRequest(username : String): Observable<any> {
+    return this.http.post(this.apiHost + '/authenticate/passwordless', username, { headers: this.headers})
   }
 
-  logOutUser(refreshToken: string): Observable<string> {
-    return this.http.post(this.apiHost + '/logOut', refreshToken, { headers: this.headers, responseType:'text'})
+  activateMagicLoginLink(token: String, username: String, hmac: String): Observable<LogInResponseData> {
+    return this.http.post<any>(this.apiHost + '/authenticate/link?token='+token+'&username='+username+'&hmac='+hmac, { headers: this.headers})
+  }
+
+  activateAccount(token: String, username: String, hmac: String): Observable<any> {
+    return this.http.post(this.apiHost + '/activateAccount?token='+token+'&username='+username+'&hmac='+hmac,{ headers: this.headers})
+  }
+
+  logOutUser(refreshToken: string): Observable<any> {
+    return this.http.post(this.apiHost + '/logOut', refreshToken, { headers: this.headers})
   }
 
   public setSession(tokenData: LogInResponseData) {

@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EmployeeDTO } from '../model/employee-dto';
+import { RegistrationRequest } from '../model/registrationRequest';
+import { RegistrationApprovalRequest } from '../model/registrationApprovalRequest';
+import { RegistrationCancellationRequest } from '../model/registrationCancellationRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +38,18 @@ export class UserService {
 
   updateEmployee(employee: EmployeeDTO): Observable<EmployeeDTO>{
     return this.http.put<EmployeeDTO>(this.apiHost, employee, {headers: this.headers});
+  }
+
+  acceptRegistrationRequest(registrationApproval : RegistrationApprovalRequest): Observable<any>{
+    return this.http.post(this.apiHost+'register/approve', registrationApproval, {headers: this.headers})
+  }
+
+  declineRegistrationRequest(registrationCancellation : RegistrationCancellationRequest): Observable<any>{
+    return this.http.post(this.apiHost+'register/cancel',registrationCancellation, {headers: this.headers})
+  }
+
+  getRegistrationRequests(): Observable<RegistrationRequest[]>{
+    return this.http.get<RegistrationRequest[]>(this.apiHost+'registration-requests', {headers: this.headers})
   }
 
 }

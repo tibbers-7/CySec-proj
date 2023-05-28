@@ -1,11 +1,25 @@
 <div mat-dialog-content class="mat-dialog-main-div">
-    <h4>Request details</h4>
-    <mat-form-field>
-      <p>NIsta</p>
+  <div class="mat-dialog-request-info">
+    <mat-card>
+      <mat-label>Username: {{data.registrationRequest.username}}</mat-label>  
+      <mat-label>Name: {{data.registrationRequest.name}}</mat-label>
+      <mat-label>Surname: {{data.registrationRequest.surname}}</mat-label>
+      <mat-label>Street address: {{data.registrationRequest.address.streetAddress}}</mat-label>
+      <mat-label>City: {{data.registrationRequest.address.city}}</mat-label>
+      <mat-label>Country: {{data.registrationRequest.address.country}}</mat-label>
+      <mat-label>Phone number: {{data.registrationRequest.phoneNumber}}</mat-label>
+      <mat-label>Work title: {{data.registrationRequest.workTitle}}</mat-label>
+      <mat-label>Role: {{data.registrationRequest.role}}</mat-label>
+    </mat-card>
+    <mat-form-field class="mat-dialog-form-field">
+      <mat-label>What do you think about this request?</mat-label>
+      <input matInput type="text" [(ngModel)]="data.reasoning">
     </mat-form-field>
+    
+  </div> 
 </div>
 <div mat-dialog-actions class="mat-dialog-buttons">
     <button mat-button (click)="declineRequest()">Decline</button>
-    <button mat-button [mat-dialog-close]="" >Accept</button>
-    <button mat-button [mat-dialog-close]="" >Cancel</button>
+    <button mat-button (click)="acceptRequest()">Accept</button>
+    <button mat-button (click)="cancel()" >Cancel</button>
 </div>

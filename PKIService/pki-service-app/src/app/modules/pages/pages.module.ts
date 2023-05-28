@@ -5,17 +5,21 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
+import { ActivateAccountPageComponent } from './activate-account-page/activate-account-page.component';
+import { PasswordlessLoginPageComponent } from './passwordless-login-page/passwordless-login-page.component';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
-    {path:'registration', component: RegistrationPageComponent}
+    {path:'registration', component: RegistrationPageComponent},
+    {path:'activate-account', component: ActivateAccountPageComponent},
+    {path:'login/link', component: PasswordlessLoginPageComponent}
   ];
-  
 
 @NgModule({
   declarations: [
     LoginPageComponent,
-    RegistrationPageComponent
+    RegistrationPageComponent,
+    ActivateAccountPageComponent
   ],
   imports: [
     AppRoutingModule,
