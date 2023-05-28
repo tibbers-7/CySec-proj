@@ -2,10 +2,10 @@
 <div class="add-certificate-main-div">
     <div class="wrapper">
         <div class="title">
-            Add Skill 
+            Edit Skill 
         </div>
         <div class="form">
-          <form [formGroup]="createSkillForm">
+          <form [formGroup]="updateSkillForm">
             
             <div class="inputfield">
                 <label for="name">Name:</label>
@@ -27,7 +27,7 @@
             
   
             <div class="inputfield">
-              <button [disabled]="createSkillForm.invalid" class="btn" (click)="createSkill()">Submit</button>
+              <button [disabled]="updateSkillForm.invalid" class="btn" (click)="updateSkill()">Submit</button>
             </div>
           </form>
           <br>

@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SkillDTO } from 'src/app/model/skill-dto.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SkillService } from 'src/app/services/skill.service';
 
 @Component({
-  selector: 'app-add-skill',
-  templateUrl: './add-skill.component.html',
-  styleUrls: ['./add-skill.component.css']
+  selector: 'app-edit-skill',
+  templateUrl: './edit-skill.component.html',
+  styleUrls: ['./edit-skill.component.css']
 })
-export class AddSkillComponent implements OnInit{
+export class EditSkillComponent implements OnInit{
 
-  createSkillForm = new FormGroup({
+  updateSkillForm = new FormGroup({
     name: new FormControl('', Validators.required),
     evaluation: new FormControl('', [Validators.required, Validators.pattern('[0-9]+$')]),
   })
+
+  public skillID: any
 
   public engineerID: any
 
@@ -23,36 +25,49 @@ export class AddSkillComponent implements OnInit{
   constructor(private router: Router, private route: ActivatedRoute, private skillService: SkillService, private authService: AuthenticationService) { }
 
   get name() {
-    return this.createSkillForm.get('name');
+    return this.updateSkillForm.get('name');
   }
 
   get evaluation() {
-    return this.createSkillForm.get('evaluation');
+    return this.updateSkillForm.get('evaluation');
   }
   
 
   ngOnInit(): void {
-    this.engineerID = Number(this.authService.getUserId());
+
+    this.route.params.subscribe((params: Params)=>{
+      this.skillID = params['id'];
+
+      this.skillService.getSkillById(this.skillID).subscribe(res=>{
+
+        this.engineerID = res.engineerID
+
+        this.updateSkillForm.patchValue({
+          name: res.name,
+          evaluation: String(res.evaluation),
+        })
+      })
+
+
+    })
+    
   }
 
-  createSkill(){
+  updateSkill(){
 
-    let name = this.createSkillForm.get("name")?.value
-    let evaluation = this.createSkillForm.get("evaluation")?.value
+    let name = this.updateSkillForm.get("name")?.value
+    let evaluation = this.updateSkillForm.get("evaluation")?.value
 
     let skill: SkillDTO = {
-      id: 0,
+      id: this.skillID,
       engineerID: this.engineerID,
       name: name ? name : '',
       evaluation: Number(evaluation),
     }
 
-    this.skillService.createSkill(skill).subscribe(res=>{
+    this.skillService.updateSkill(skill).subscribe(res=>{
       console.log(res)
       this.router.navigate(['engineer/skills']);
-    }, error => 
-    {
-      alert("Cannot add skill, already exists!")
     })
 
 
@@ -61,5 +76,4 @@ export class AddSkillComponent implements OnInit{
   goBack(){
     this.router.navigate(['engineer/skills']);
   }
-
 }

@@ -36,7 +36,7 @@ export class EngineerSkillsComponent implements OnInit{
   }
 
   updateSkill(id: number){
-
+    this.router.navigate(['engineer', 'skills', id, 'update']);
   }
 
   deleteSkill(id: number){

@@ -10,13 +10,15 @@ import { EngineerProjectsComponent } from './engineer-projects/engineer-projects
 import { EngineerUpdateProjectComponent } from './engineer-update-project/engineer-update-project.component';
 import { EngineerSkillsComponent } from './engineer-skills/engineer-skills.component';
 import { AddSkillComponent } from './add-skill/add-skill.component';
+import { EditSkillComponent } from './edit-skill/edit-skill.component';
 
 const routes: Routes = [
   {path: 'engineer/editProfile', component: EngineerProfileComponent},
   {path: 'engineer/projects', component: EngineerProjectsComponent},
   {path: 'engineer/projects/:idw/update', component: EngineerUpdateProjectComponent},
   {path: 'engineer/skills', component: EngineerSkillsComponent},
-  {path: 'engineer/skills/add', component: AddSkillComponent}
+  {path: 'engineer/skills/add', component: AddSkillComponent},
+  {path: 'engineer/skills/:id/update', component: EditSkillComponent}
 
 ];
 
@@ -27,7 +29,8 @@ const routes: Routes = [
     EngineerProjectsComponent,
     EngineerUpdateProjectComponent,
     EngineerSkillsComponent,
-    AddSkillComponent
+    AddSkillComponent,
+    EditSkillComponent
   ],
   imports: [
     AppRoutingModule,
