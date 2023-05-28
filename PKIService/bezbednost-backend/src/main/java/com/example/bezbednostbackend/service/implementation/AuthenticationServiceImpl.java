@@ -16,10 +16,7 @@ import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.model.token.VerificationToken;
 import com.example.bezbednostbackend.model.token.RefreshToken;
-import com.example.bezbednostbackend.repository.AddressRepository;
-import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
-import com.example.bezbednostbackend.repository.UserRepository;
-import com.example.bezbednostbackend.repository.VerificationTokenRepository;
+import com.example.bezbednostbackend.repository.*;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
@@ -37,6 +34,7 @@ import org.springframework.stereotype.Service;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,6 +61,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     ApplicationEventPublisher eventPublisher;
     @Autowired
     VerificationTokenRepository verificationTokenRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     private final String hmacSHA256Value = "5b50d80c7dc7ae8bb1b1433cc0b99ecd2ac8397a555c6f75cb8a619ae35a0c35";
     private final String hmacSHA256Algorithm = "HmacSHA256";
@@ -149,7 +149,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createUserFromRegistrationRequest(RegistrationRequest request){
         User registratedUser = new User(1, request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(), null,false);
+                request.getPhoneNumber(), Arrays.asList(roleRepository.findByName(request.getRole())),false);
         //TODO change role
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());

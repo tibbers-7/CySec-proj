@@ -12,6 +12,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,6 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true
+)
 public class SecurityConfiguration {
 
     @Autowired
@@ -33,7 +37,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         var auth1 = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
-        auth1.setRoleHierarchy(roleHierarchy());
+        //auth1.setRoleHierarchy(roleHierarchy());
 
         http
                 .csrf()
@@ -41,19 +45,9 @@ public class SecurityConfiguration {
                 //whitelisting pages
                 .authorizeHttpRequests()
 
-                .requestMatchers("/auth/**")
-                .permitAll()
-                //dozvolila sam ove metode zbog testiranja, kad se namesti po rolama izbrisacu
-                .requestMatchers(HttpMethod.GET).access(auth1)
-                .requestMatchers("/address/*").permitAll()
-                .requestMatchers("/user/*").permitAll()
-                .requestMatchers("/project/*").permitAll()
-                .requestMatchers("/project/findByProjectManager/*").permitAll()
-                .requestMatchers("/projectWork/*").permitAll()
-                .requestMatchers("/projectWork/findByProjectID/*").permitAll()
-                .requestMatchers("/projectWork/findByEngineerID/*").permitAll()
-                .requestMatchers("/skill/*").permitAll()
-                .requestMatchers("/skill/findByEngineerID/*").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                // role hierarchy
+                //.requestMatchers(HttpMethod.GET).access(auth1)
                 .anyRequest()
                 .authenticated()
                 //decision management - if user authorized do not store session state
@@ -70,7 +64,7 @@ public class SecurityConfiguration {
     }
 
 
-    @Bean
+   /* @Bean
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
         expressionHandler.setRoleHierarchy(roleHierarchy());
@@ -80,8 +74,8 @@ public class SecurityConfiguration {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ADMIN >  PROJECT_MANAGER\n ADMIN > HR_MANAGER\n ADMIN > ENGINEER \n PROJECT_MANAGER > ENGINEER \n HR_MANAGER > PROJECT_MANAGER";
+        String hierarchy = "ADMIN >  PROJECT_MANAGER\n ADMIN > HR_MANAGER\n ADMIN > ENGINEER \n";
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
-    }
+    }*/
 }
