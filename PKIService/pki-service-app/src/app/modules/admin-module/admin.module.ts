@@ -17,6 +17,9 @@ import { RegistrationRequestsComponent } from './registration-requests/registrat
 import { RoleGuard } from 'src/app/auth/role-guard';
 import { RolesAndPermissionsComponent } from './roles-and-permissions/roles-and-permissions.component';
 import { RegistrationRequestDialogComponent } from './registration-request-dialog/registration-request-dialog.component';
+import { EmployeesViewComponent } from './employees-view/employees-view.component';
+import { AddEmployeesComponent } from './add-employees/add-employees.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
     {path:'admin-home', component: AdminHomeComponent,
@@ -30,7 +33,11 @@ const routes: Routes = [
     {path: 'projects/:id/employees', component: EmployeesOnProjectViewComponent},
     {path: 'projects/:id/employees/add', component: AddEngineerOnProjectComponent},
     {path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent},
-    {path:'permissions', component: RolesAndPermissionsComponent}
+    {path:'permissions', component: RolesAndPermissionsComponent},
+    {path:'employees', component: EmployeesViewComponent},
+    {path:'employees/create', component: AddEmployeesComponent},
+    {path: 'editProfile', component: EditProfileComponent}
+
   ];
   
 
@@ -48,7 +55,10 @@ const routes: Routes = [
     EditEngineerOnProjectComponent,
     RegistrationRequestsComponent,
     RolesAndPermissionsComponent,
-    RegistrationRequestDialogComponent
+    RegistrationRequestDialogComponent,
+    EmployeesViewComponent,
+    AddEmployeesComponent,
+    EditProfileComponent
   ],
   imports: [
     AppRoutingModule,

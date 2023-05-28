@@ -21,6 +21,14 @@ export class AdminToolbarComponent {
     this.router.navigate(['/projects']);
   }
 
+  EmployeesClick(){
+    this.router.navigate(['/employees']);
+  }
+
+  EditProfileClick(){
+    this.router.navigate(['/editProfile']);
+  }
+
   LogoutClick(){
     this.router.navigate(['/'])
   }

@@ -22,7 +22,19 @@ export class UserService {
   }
 
   getEmployeeById(id: number): Observable<EmployeeDTO>{
-    return this.http.get<EmployeeDTO>(this.apiHost + id, {headers: this.headers});
+    return this.http.get<EmployeeDTO>(this.apiHost + 'findById/' + id, {headers: this.headers});
+  }
+
+  getAllEmployees(): Observable<EmployeeDTO[]>{
+    return this.http.get<EmployeeDTO[]>(this.apiHost, {headers: this.headers});
+  }
+
+  createEmployee(employee: EmployeeDTO): Observable<EmployeeDTO>{
+    return this.http.post<EmployeeDTO>(this.apiHost, employee, {headers: this.headers});
+  }
+
+  updateEmployee(employee: EmployeeDTO): Observable<EmployeeDTO>{
+    return this.http.put<EmployeeDTO>(this.apiHost, employee, {headers: this.headers});
   }
 
 }
