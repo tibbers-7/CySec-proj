@@ -11,7 +11,7 @@ export class AdminToolbarComponent {
   constructor(private router:Router, private authService: AuthenticationService) { }
 
   HomeClick(){
-    this.router.navigate(['/admin-home']);
+    this.router.navigate(['/home']);
   }
 
   CreateCertificateClick(){

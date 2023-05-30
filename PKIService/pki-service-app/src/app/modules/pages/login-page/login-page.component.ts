@@ -19,11 +19,11 @@ export class LoginPageComponent {
   signIn(){
     if(!this.validityCheck()) return
     if(this.isPasswordless) {
-      this.authService.passwordlessLoginRequest(this.logInData.username) 
+      this.authService.passwordlessLoginRequest(this.logInData.username).subscribe()
     }else {
       this.authService.logInUserwithCredentials(this.logInData).subscribe(res =>{
       this.authService.setSession(res)
-      if(this.authService.getRole() === 'ADMIN') this.router.navigate(['admin-home'])
+      this.router.navigate(['home'])
     })
   }
   }

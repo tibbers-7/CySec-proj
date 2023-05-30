@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Certificate } from 'src/app/model/certificate';
 import { CertificateService } from 'src/app/services/certificate.service';
 
 @Component({
-  selector: 'app-admin-home',
-  templateUrl: './admin-home.component.html',
-  styleUrls: ['./admin-home.component.css']
+  selector: 'app-certificates',
+  templateUrl: './certificates.component.html',
+  styleUrls: ['./certificates.component.css']
 })
-export class AdminHomeComponent implements OnInit {
-
+export class CertificatesComponent {
   dataSource = new MatTableDataSource<Certificate>()
   displayedColumns = ['issuer','subject','type','status','expiration','revoke-button']
   

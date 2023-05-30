@@ -13,8 +13,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -32,7 +34,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     ReactiveFormsModule,
     MatMomentDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule,
+    FormsModule,
+    MatListModule
   ],
   exports: [
     CommonModule,
@@ -50,7 +55,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatToolbarModule,
     ReactiveFormsModule,
     MatMomentDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule,
+    FormsModule,
+    MatListModule
   ]
 })
 export class MaterialModule {}

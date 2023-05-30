@@ -3,8 +3,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule, Routes } from '@angular/router';
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
-import { AdminHomeComponent } from './admin-home/admin-home.component';
-import { FormsModule } from '@angular/forms';
+import { CertificatesComponent } from './certificates/certificates.component';
 import { KSPasswordModalDialog } from './ks-password-modal-dialog/ks-modal-dialog.component';
 import { AdminToolbarComponent } from './admin-toolbar/admin-toolbar.component';
 import { ProjectsViewComponent } from './projects-view/projects-view.component';
@@ -22,8 +21,7 @@ import { AddEmployeesComponent } from './add-employees/add-employees.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
-    {path:'admin-home', component: AdminHomeComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    {path:'certificates', component: CertificatesComponent},
     {path:'add-certificate', component: AddCertificateComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
     {path:'requests', component: RegistrationRequestsComponent,
@@ -40,8 +38,7 @@ const routes: Routes = [
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
     {path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
-    {path:'permissions', component: RolesAndPermissionsComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    {path:'permissions', component: RolesAndPermissionsComponent},
     {path:'employees', component: EmployeesViewComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
     {path:'employees/create', component: AddEmployeesComponent,
@@ -54,7 +51,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AddCertificateComponent,
-    AdminHomeComponent,
     KSPasswordModalDialog,
     AdminToolbarComponent,
     ProjectsViewComponent,
@@ -68,13 +64,16 @@ const routes: Routes = [
     RegistrationRequestDialogComponent,
     EmployeesViewComponent,
     AddEmployeesComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    CertificatesComponent
   ],
   imports: [
     AppRoutingModule,
     MaterialModule,
-    FormsModule,
     RouterModule.forChild(routes)
+  ],
+  exports: [
+    AdminToolbarComponent
   ]
 })
 export class AdminModule { }
