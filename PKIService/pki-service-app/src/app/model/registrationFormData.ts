@@ -8,7 +8,7 @@ export class RegistrationFormData{
     city = ""
     country = ""
     phoneNumber = ""
-    role = ""
+    userType = ""
     workTitle = ""
 
     public constructor(obj? : RegistrationFormData){
@@ -22,7 +22,7 @@ export class RegistrationFormData{
             this.city = obj.city
             this.country = obj.country
             this.phoneNumber = obj.phoneNumber
-            this.role = obj.role
+            this.userType = obj.userType
             this.workTitle = obj.workTitle
         }
     }

@@ -13,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class EmployeesViewComponent implements OnInit{
 
   public dataSource = new MatTableDataSource<EmployeeDTO>()
-  public displayedColumns = ['id','name', 'surname', 'username', 'phoneNumber', 'role']
+  public displayedColumns = ['id','name', 'surname', 'username', 'phoneNumber', 'userType']
   public employees: EmployeeDTO[] = [];
 
   public constructor(private userService: UserService, private toast: ToastrService, private router: Router, private route: ActivatedRoute){}

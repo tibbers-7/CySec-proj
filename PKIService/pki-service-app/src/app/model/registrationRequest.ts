@@ -9,7 +9,7 @@ export class RegistrationRequest{
     address : Address = new Address()
     phoneNumber = ""
     workTitle = ""
-    role = ""
+    userType = ""
     resolved = ""
     cancelled = ""
 
@@ -23,7 +23,7 @@ export class RegistrationRequest{
             this.address = obj.address
             this.workTitle = obj.workTitle
             this.phoneNumber = obj.phoneNumber
-            this.role = obj.role
+            this.userType = obj.userType
             this.resolved = obj.resolved
             this.cancelled = obj.cancelled
         }

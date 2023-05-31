@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./add-employees.component.css']
 })
 export class AddEmployeesComponent implements OnInit{
-  
+
 
   createEmployeeForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]+$')]),
@@ -102,18 +102,18 @@ export class AddEmployeesComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        role: String(this.selectedRole)
+        userType: String(this.selectedRole)
       }
-  
+
       console.log(employee)
-  
+
       this.isSelected = this.isRoleSelected(this.selectedRole)
-  
+
       if(this.isSelected){
         this.userService.createEmployee(employee).subscribe(res=>{
           console.log(res)
           this.router.navigate(['employees']);
-        }, error => 
+        }, error =>
         {
           alert("Cannot add employee, username already exists!")
           this.addressService.deleteAddress(this.addressID).subscribe(res=>{
@@ -121,11 +121,11 @@ export class AddEmployeesComponent implements OnInit{
           })
         })
       }
-  
+
 
     })
 
-    
+
   }
 
   isRoleSelected(id: any){

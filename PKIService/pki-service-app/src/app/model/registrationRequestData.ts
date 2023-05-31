@@ -8,7 +8,7 @@ export class RegistrationRequestData{
     address : Address = new Address()
     phoneNumber = ""
     workTitle = ""
-    role = ""
+    userType = ""
 
     public constructor(obj? : RegistrationRequestData){
         if(obj){
@@ -19,7 +19,7 @@ export class RegistrationRequestData{
             this.address = obj.address
             this.workTitle = obj.workTitle
             this.phoneNumber = obj.phoneNumber
-            this.role = obj.role
+            this.userType = obj.userType
         }
     }
 }

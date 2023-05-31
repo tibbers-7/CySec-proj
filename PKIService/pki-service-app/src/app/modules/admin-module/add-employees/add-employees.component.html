@@ -6,7 +6,7 @@
         </div>
         <div class="form">
           <form [formGroup]="createEmployeeForm">
-            
+
             <div class="inputfield">
                 <label for="name">Name:</label>
                 <input type="text" name="name" formControlName="name" class="input">
@@ -33,7 +33,7 @@
             <label></label>
             <span style="color: red; font-size: medium; font: bold;" *ngIf="username && username.invalid && username.touched"> This username is invalid! </span>
             </div>
-    
+
             <div class="inputfield">
                 <label>Password:</label>
                 <input type="password" name="password" formControlName="password" placeholder="*********" class="input">
@@ -55,10 +55,10 @@
             <div class="inputfield">
                 <label>Work Title:</label>
                 <mat-select [(value)]="selectedRole">
-                    <mat-option *ngFor="let role of allRoles" [value]="role"> {{role}}</mat-option>
+                    <mat-option *ngFor="let userType of allRoles" [value]="userType"> {{userType}}</mat-option>
                 </mat-select>
             </div>
-            
+
             <div class="inputfield">
                 <label for="country">Country:</label>
                 <input type="text" name="country" formControlName="country" class="input">
@@ -85,19 +85,19 @@
               <label></label>
               <span style="color: red; font-size: medium; font: bold;" *ngIf="streetAddress && streetAddress.invalid && streetAddress.touched"> This streetAddress is invalid! </span>
             </div>
-            
+
             <div style="color: red; font-size: medium; font: bold;" *ngIf="error.isError">{{error.errorMessage}}</div>
-  
+
             <div class="inputfield">
               <button [disabled]="createEmployeeForm.invalid"  class="btn" (click)="createEmployee()">Submit</button>
             </div>
           </form>
           <br>
-          
+
           <div class="inputfield">
             <button class="btn" (click)="goBack()">Cancel</button>
           </div>
         </div>
       </div>
-    
+
 </div>

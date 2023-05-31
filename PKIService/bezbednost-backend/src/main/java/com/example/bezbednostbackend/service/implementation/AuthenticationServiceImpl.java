@@ -1,10 +1,8 @@
 package com.example.bezbednostbackend.service.implementation;
 
 import com.example.bezbednostbackend.auth.JwtService;
-import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
-import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
+import com.example.bezbednostbackend.dto.RegistrationResolveRequestDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
-import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.TokenRefreshException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
@@ -15,17 +13,14 @@ import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.model.token.VerificationToken;
 import com.example.bezbednostbackend.model.token.RefreshToken;
-import com.example.bezbednostbackend.repository.AddressRepository;
-import com.example.bezbednostbackend.repository.RegistrationRequestRepository;
-import com.example.bezbednostbackend.repository.UserRepository;
-import com.example.bezbednostbackend.repository.VerificationTokenRepository;
+import com.example.bezbednostbackend.repository.*;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,32 +33,20 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Service @RequiredArgsConstructor @Slf4j
+@Service @AllArgsConstructor @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-    @Autowired
-    private final UserRepository userRepository;
-    @Autowired
-    private final RegistrationRequestRepository registrationRequestRepository;
-    @Autowired
-    private final EmailService emailService;
-    @Autowired
-    private final JwtService jwtService;
-    @Autowired
-    private final AuthenticationManager myAuthenticationManager;
-    @Autowired
-    private final AddressRepository addressRepository;
-    @Autowired
-    private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private final RefreshTokenService refreshTokenService;
-    @Autowired
-    ApplicationEventPublisher eventPublisher;
-    @Autowired
-    VerificationTokenRepository verificationTokenRepository;
 
-    private final String hmacSHA256Value = "5b50d80c7dc7ae8bb1b1433cc0b99ecd2ac8397a555c6f75cb8a619ae35a0c35";
-    private final String hmacSHA256Algorithm = "HmacSHA256";
-    private final String key = "879378747292";
+    private final UserRepository userRepository;
+    private final RegistrationRequestRepository registrationRequestRepository;
+    private final EmailService emailService;
+    private final JwtService jwtService;
+    private final AuthenticationManager myAuthenticationManager;
+    private final AddressRepository addressRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
+    private final ApplicationEventPublisher eventPublisher;
+    private final VerificationTokenRepository verificationTokenRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public void makeRegistrationRequest(RegistrationDTO dto) throws UserIsBannedException,
@@ -77,7 +60,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createRegistrationRequestForDB(RegistrationDTO dto){
         log.info("AuthenticationService: entered the createRegistrationRequestForDB");
         RegistrationRequest request = new RegistrationRequest(dto.getName(), dto.getSurname(),
-                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(), dto.getRole(), dto.getWorkTitle(), false, false);
+                dto.getUsername(), dto.getPassword(), dto.getAddress(), dto.getPhoneNumber(),
+                dto.getRole(), dto.getWorkTitle(), false, false);
         registrationRequestRepository.save(request);
         log.info("AuthenticationService: makeRegistrationRequest - registration request saved to database");
     }
@@ -105,9 +89,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void cancelRegistrationRequest(RegistrationCancellationDTO dto){
-        //mora se poslati mejl korisniku sa detaljima odbijanja,
-        // prmeniti ulazni parametar na neki dto koji sadrzi opis admina zasto je odbio, vreme blokiranja
+    public void cancelRegistrationRequest(RegistrationResolveRequestDTO dto){
         log.info("AuthenticationService: entered the cancelRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest = registrationRequestRepository.findById(dto.getIdOfRequest());
         if(optionalRequest.isEmpty()) return;
@@ -115,7 +97,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         request.setCancelled(true);
         request.setResolved(true);
         request.setRequestUpdated(LocalDateTime.now());
-        sendRequestCancellationEmail(request.getName(), dto.getCancellationDescription(), request.getUsername());
+        sendRequestCancellationEmail(request.getName(), dto.getReasoning(), request.getUsername());
         registrationRequestRepository.save(request);
     }
 
@@ -130,7 +112,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void approveRegistrationRequest(RegistrationApprovalDTO dto) throws NoSuchAlgorithmException, InvalidKeyException {
+    public void approveRegistrationRequest(RegistrationResolveRequestDTO dto)
+            throws NoSuchAlgorithmException, InvalidKeyException {
         log.info("AuthenticationService: entered the approveRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest =
                 registrationRequestRepository.findById(dto.getIdOfRequest());
@@ -146,7 +129,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createUserFromRegistrationRequest(RegistrationRequest request){
         User registratedUser = new User(request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),request.getAddress(),
-                request.getPhoneNumber(), Role.valueOf(request.getRole()), request.getWorkTitle(),false);
+                request.getPhoneNumber(), roleRepository.findByName(request.getRole()).get() , request.getWorkTitle(),false);
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }
@@ -154,7 +137,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @SneakyThrows
     @Override
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
+        UsernamePasswordAuthenticationToken authRequest =
+                new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
         myAuthenticationManager.authenticate(authRequest);
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
@@ -170,7 +154,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Map<String,Object> addClaims(User user){
        Map<String,Object> claims = new HashMap<>();
        claims.put("username", user.getUsername());
-       claims.put("role", String.valueOf(user.getRole()));
+       claims.put("roleName", user.getRole().getName());
+       claims.put("roleId", user.getRole().getId());
        claims.put("userId", String.valueOf(user.getId()));
        return claims;
     }
@@ -203,8 +188,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<VerificationToken> optionalToken =verificationTokenRepository.findByUsername(username);
         if(optionalToken==null) return false;
         VerificationToken tokenFromDB = optionalToken.get();
-        if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now())) throw new Exception("This token is expired!");
-        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token)) throw new Exception("This token has been tampered with!");
+        verificationTokenRepository.delete(tokenFromDB);
+        if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now()))
+            throw new Exception("This token is expired!");
+        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token))
+            throw new Exception("This token has been tampered with!");
         user.setActive(true);
         userRepository.save(user);
         return true;
@@ -215,11 +203,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 throw new TokenRefreshException(dto.getAccessToken(),"Access token is invalid!");
         //proveri se refresh token iz baze da li je isti kao u dto
             Optional<RefreshToken> token = refreshTokenService.findByToken(dto.getRefreshToken());
-            if(token.isEmpty()) throw new TokenRefreshException(dto.getRefreshToken(), "No such refresh token exists, access denied");
+            if(token.isEmpty())
+                throw new TokenRefreshException(dto.getRefreshToken(), "No such refresh token exists, access denied");
             RefreshToken tokenFromDB = token.get();
-            if (refreshTokenService.isExpired(tokenFromDB)) throw new TokenRefreshException(dto.getRefreshToken(), "Refresh token is expired, access denied");
+            if (refreshTokenService.isExpired(tokenFromDB))
+                throw new TokenRefreshException(dto.getRefreshToken(), "Refresh token is expired, access denied");
             Optional<User> user = userRepository.findById(tokenFromDB.getUser().getId());
-            if(user.isEmpty() || !user.get().isActive()) throw new TokenRefreshException(dto.getRefreshToken(), "User not valid, access denied");
+            if(user.isEmpty() || !user.get().isActive())
+                throw new TokenRefreshException(dto.getRefreshToken(), "User not valid, access denied");
             else return jwtService.generateAccessToken(tokenFromDB.getUser());
     }
 
@@ -247,7 +238,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //ne treba nam vise ovaj token pa ga brisemo, proveriti da li ce ovo raditi sve
         verificationTokenRepository.delete(tokenFromDB);
         if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now())) throw new Exception("This token is expired!");
-        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token)) throw new Exception("This token has been tampered with!");
+        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token))
+            throw new Exception("This token has been tampered with!");
         var user=userRepository.findByUsername(username);
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         if (!user.isActive()) throw new UserIsBannedException("User not activated");

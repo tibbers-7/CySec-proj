@@ -1,7 +1,6 @@
 package com.example.bezbednostbackend.service;
 
-import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
-import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
+import com.example.bezbednostbackend.dto.RegistrationResolveRequestDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.TokenRefreshException;
@@ -23,9 +22,9 @@ public interface AuthenticationService {
     void checkUsernameValidity(String username) throws UserAlreadyExistsException, RequestAlreadyPendingException, UserIsBannedException;
 
 
-    void cancelRegistrationRequest(RegistrationCancellationDTO dto);
+    void cancelRegistrationRequest(RegistrationResolveRequestDTO dto);
 
-    void approveRegistrationRequest(RegistrationApprovalDTO dto) throws NoSuchAlgorithmException, InvalidKeyException;
+    void approveRegistrationRequest(RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException;
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
     void sendRequestApprovalEmail(String username) throws NoSuchAlgorithmException, InvalidKeyException;

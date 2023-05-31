@@ -44,7 +44,7 @@ export class AuthenticationService {
      localStorage.setItem('accessToken', tokenData.accessToken)
      localStorage.setItem('refreshToken', tokenData.refreshToken)
    }
-   
+
    decodeAccessToken() {
     const accessToken = localStorage.getItem('accessToken')
     if(accessToken) {
@@ -52,7 +52,7 @@ export class AuthenticationService {
     }
     return null
    }
- 
+
    getExpiration() {
     const token : any = this.decodeAccessToken()
     console.log(token)
@@ -60,19 +60,19 @@ export class AuthenticationService {
     const timeStamp: number = Number(token['exp'])
     return new Date(timeStamp * 1000)
     }
-    
+
    getRole() {
     const token : any = this.decodeAccessToken()
     if (!token) return null
-    return token['role']
+    return token['userType']
    }
-   
+
    getUserId() {
     const token : any = this.decodeAccessToken()
     if (!token) return null
     return token['userId']
     }
- 
+
     getUsername() {
         const token : any = this.decodeAccessToken()
         if (!token) return null
@@ -84,16 +84,16 @@ export class AuthenticationService {
      if(refreshToken) this.logOutUser(refreshToken).subscribe()
      localStorage.clear();
     }
-     
+
     public isLoggedIn() {
       const expiration = this.getExpiration()
       if(expiration) return (new Date().toISOString()) < expiration.toISOString()
       return false
     }
-     
+
     isLoggedOut() {
       return !this.isLoggedIn();
     }
-     
+
 
 }

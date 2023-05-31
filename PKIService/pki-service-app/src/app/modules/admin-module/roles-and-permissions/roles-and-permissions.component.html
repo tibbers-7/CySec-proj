@@ -5,42 +5,45 @@
             <mat-expansion-panel-header>
                 <mat-panel-title> Software Engineer </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-list>
-                <mat-list-item>Pepper</mat-list-item>
-                <mat-list-item>Salt</mat-list-item>
-                <mat-list-item>Paprika</mat-list-item>
-            </mat-list>
+            <mat-selection-list #engineerPrivileges [multiple]="false">  
+                <mat-list-option *ngFor="let engPrivilege of engineerPermissions" [value]="engPrivilege">  
+                  {{engPrivilege}}  
+                </mat-list-option>  
+              </mat-selection-list>  
             <mat-action-row>
-                <button mat-raised-button>Add permissions</button>
-                <button mat-raised-button>Remove permissions</button>
+                <button mat-raised-button (click)="addDialogForEngineer()">Add</button>
+                <button mat-raised-button [disabled]="!engineerPrivileges.selectedOptions.hasValue()" (click)="removeForEngineer(engineerPrivileges.selectedOptions.selected[0].value)">Remove</button>
+                <button mat-raised-button [disabled]="!engineerPrivileges.selectedOptions.hasValue()" (click)="editDialogForEngineer(engineerPrivileges.selectedOptions.selected[0].value)">Edit</button>
             </mat-action-row>
         </mat-expansion-panel>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title> Project manager </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-list>
-                <mat-list-item>Pepper</mat-list-item>
-                <mat-list-item>Salt</mat-list-item>
-                <mat-list-item>Paprika</mat-list-item>
-            </mat-list>
+            <mat-selection-list #PRPrivileges [multiple]="false">  
+                <mat-list-option *ngFor="let PRPrivilege of PRPermissions" [value]="PRPrivilege">  
+                  {{PRPrivilege}}  
+                </mat-list-option>  
+              </mat-selection-list>  
             <mat-action-row>
-                <button mat-raised-button>Add permissions</button>
-                <button mat-raised-button>Remove permissions</button>
+                <button mat-raised-button (click)="addDialogForPR()">Add</button>
+                <button mat-raised-button [disabled]="!PRPrivileges.selectedOptions.hasValue()" (click)="removeForPR(PRPrivileges.selectedOptions.selected[0].value)">Remove</button>
+                <button mat-raised-button [disabled]="!PRPrivileges.selectedOptions.hasValue()" (click)="editDialogForPR(PRPrivileges.selectedOptions.selected[0].value)">Edit</button>
             </mat-action-row>
         </mat-expansion-panel>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title> HR manager </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-list>
-                <mat-list-item>Pepper</mat-list-item>
-                <mat-list-item>Salt</mat-list-item>
-                <mat-list-item>Paprika</mat-list-item>
-            </mat-list>
+            <mat-selection-list #HRPrivileges [multiple]="false">  
+                <mat-list-option *ngFor="let HRPrivilege of HRPermissions" [value]="HRPrivilege">  
+                  {{HRPrivilege}}  
+                </mat-list-option>  
+              </mat-selection-list>  
             <mat-action-row>
-                <button mat-raised-button>Add permissions</button>
-                <button mat-raised-button>Remove permissions</button>
+                <button mat-raised-button (click)="addDialogForHR()">Add</button>
+                <button mat-raised-button [disabled]="!HRPrivileges.selectedOptions.hasValue()" (click)="removeForHR(HRPrivileges.selectedOptions.selected[0].value)">Remove</button>
+                <button mat-raised-button [disabled]="!HRPrivileges.selectedOptions.hasValue()" (click)="editDialogForHR(HRPrivileges.selectedOptions.selected[0].value)">Edit</button>
             </mat-action-row>
         </mat-expansion-panel>
     </mat-accordion>

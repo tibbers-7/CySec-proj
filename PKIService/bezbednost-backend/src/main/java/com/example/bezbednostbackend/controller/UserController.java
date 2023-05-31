@@ -1,20 +1,17 @@
 package com.example.bezbednostbackend.controller;
 
 import com.example.bezbednostbackend.dto.EmployeeDTO;
-import com.example.bezbednostbackend.dto.RegistrationApprovalDTO;
-import com.example.bezbednostbackend.dto.RegistrationCancellationDTO;
+import com.example.bezbednostbackend.dto.RegistrationResolveRequestDTO;
 import com.example.bezbednostbackend.dto.StringResponseDTO;
-import com.example.bezbednostbackend.enums.Role;
 import com.example.bezbednostbackend.model.Address;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AddressService;
 import com.example.bezbednostbackend.service.AuthenticationService;
+import com.example.bezbednostbackend.service.RolePrivilegeService;
 import com.example.bezbednostbackend.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class UserController{
 
 @Autowired
@@ -38,9 +36,10 @@ private final UserService userService;
 private final AuthenticationService authenticationService;
 @Autowired
 private final AddressService addressService;
-
 @Autowired
 private final PasswordEncoder passwordEncoder;
+@Autowired
+private final RolePrivilegeService rolePrivilegeService;
 
 
 
@@ -48,12 +47,12 @@ private final PasswordEncoder passwordEncoder;
     public ResponseEntity<User> getById(@PathVariable Integer id){
         User user = userService.getById(id);
         if(user == null) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     //ovo samo admin moze
     @PostMapping(value="/register/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StringResponseDTO> cancelRegistration(@RequestBody RegistrationCancellationDTO dto) {
+    public ResponseEntity<StringResponseDTO> cancelRegistration(@RequestBody RegistrationResolveRequestDTO dto) {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.cancelRegistrationRequest(dto);
         return new ResponseEntity<>(new StringResponseDTO("request cancelled"), HttpStatus.OK);
@@ -160,7 +159,7 @@ private final PasswordEncoder passwordEncoder;
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPhoneNumber(dto.getPhoneNumber());
-        user.setRole(Role.valueOf(dto.getRole()));
+        user.setRole(rolePrivilegeService.getRoleByName(dto.getRole()));
         user.setActive(true);
         user.setWorkTitle(dto.getWorkTitle());
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
@@ -169,9 +168,9 @@ private final PasswordEncoder passwordEncoder;
         }
     }
 
-    //ovo samo admin moze
+
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StringResponseDTO> approveRegistration(@RequestBody RegistrationApprovalDTO dto, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
+    public ResponseEntity<StringResponseDTO> approveRegistration(@RequestBody RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.approveRegistrationRequest(dto);
 

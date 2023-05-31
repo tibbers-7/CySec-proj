@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cv")
+@CrossOrigin("http://localhost:4200")
 public class CVController {
     @Autowired
     private CVService cvService;

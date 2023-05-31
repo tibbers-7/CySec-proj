@@ -3,6 +3,7 @@ package com.example.bezbednostbackend.controller;
 import com.example.bezbednostbackend.dto.AddressDTO;
 import com.example.bezbednostbackend.model.Address;
 import com.example.bezbednostbackend.service.AddressService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,10 +15,12 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/address")
+@AllArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class AddressController {
 
     @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
 
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AddressDTO>> findAddresses() {

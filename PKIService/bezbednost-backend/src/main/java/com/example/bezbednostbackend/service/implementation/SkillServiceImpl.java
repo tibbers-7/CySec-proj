@@ -3,6 +3,7 @@ package com.example.bezbednostbackend.service.implementation;
 import com.example.bezbednostbackend.model.Skill;
 import com.example.bezbednostbackend.repository.SkillRepository;
 import com.example.bezbednostbackend.service.SkillService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +11,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SkillServiceImpl implements SkillService {
 
     @Autowired
-    private SkillRepository skillRepository;
+    private final SkillRepository skillRepository;
 
     @Override
     public Optional<Skill> findById(Integer skillID) {

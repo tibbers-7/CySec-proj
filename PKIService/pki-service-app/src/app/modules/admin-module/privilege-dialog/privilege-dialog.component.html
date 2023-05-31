@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Privilege name</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Privilege name</mat-label>
+    <input matInput [(ngModel)]="data.oldPrivilege">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button (clicl)="submit()">Submit</button>
+</div>

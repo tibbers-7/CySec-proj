@@ -15,10 +15,10 @@ username = ''
 public constructor(private authService : AuthenticationService){}
 
 ngOnInit(): void {
-  const role = this.authService.getRole()
-  this.isAdmin = (role === 'ADMIN')
-  this.isEngineer = (role === 'ENGINEER')
-  this.isManager = (role === 'HR_MANAGER' || role === 'PROJECT_MANAGER')
+  const userType = this.authService.getRole()
+  this.isAdmin = (userType === 'ADMIN')
+  this.isEngineer = (userType === 'ENGINEER')
+  this.isManager = (userType === 'HR_MANAGER' || userType === 'PROJECT_MANAGER')
   this.username = this.authService.getUsername()
 }
 }

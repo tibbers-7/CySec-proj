@@ -1,11 +1,11 @@
 export class Permission{
     id = 0
-    roles = ''
+    name = ''
 
     public constructor(obj? : Permission){
       if(obj){
         this.id = obj.id
-        this.roles = obj.roles
+        this.name = obj.name
       }
     }
 }

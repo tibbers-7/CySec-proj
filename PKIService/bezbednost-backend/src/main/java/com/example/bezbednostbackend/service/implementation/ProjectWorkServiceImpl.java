@@ -3,6 +3,7 @@ package com.example.bezbednostbackend.service.implementation;
 import com.example.bezbednostbackend.model.ProjectWork;
 import com.example.bezbednostbackend.repository.ProjectWorkRepository;
 import com.example.bezbednostbackend.service.ProjectWorkService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +11,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ProjectWorkServiceImpl implements ProjectWorkService {
 
     @Autowired
-    private ProjectWorkRepository projectWorkRepository;
+    private final ProjectWorkRepository projectWorkRepository;
 
     @Override
     public Optional<ProjectWork> findById(Integer projectWorkID) {

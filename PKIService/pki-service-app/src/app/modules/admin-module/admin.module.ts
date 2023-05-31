@@ -19,6 +19,7 @@ import { RegistrationRequestDialogComponent } from './registration-request-dialo
 import { EmployeesViewComponent } from './employees-view/employees-view.component';
 import { AddEmployeesComponent } from './add-employees/add-employees.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { PrivilegeDialogComponent } from './privilege-dialog/privilege-dialog.component';
 
 const routes: Routes = [
     {path:'certificates', component: CertificatesComponent},
@@ -46,7 +47,7 @@ const routes: Routes = [
     {path: 'editProfile', component: EditProfileComponent}
 
   ];
-  
+
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ const routes: Routes = [
     EmployeesViewComponent,
     AddEmployeesComponent,
     EditProfileComponent,
-    CertificatesComponent
+    CertificatesComponent,
+    PrivilegeDialogComponent
   ],
   imports: [
     AppRoutingModule,

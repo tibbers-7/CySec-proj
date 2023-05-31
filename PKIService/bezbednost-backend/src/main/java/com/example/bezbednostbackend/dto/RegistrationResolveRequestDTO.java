@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class RegistrationCancellationDTO {
-    private String cancellationDescription;
+public class RegistrationResolveRequestDTO {
+    private String reasoning;
     private Integer idOfRequest;
 }
 

@@ -66,7 +66,7 @@ export class EngineerProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
- 
+
       this.employeeID = Number(this.authService.getUserId());
 
       console.log(this.employeeID)
@@ -128,9 +128,9 @@ export class EngineerProfileComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        role: this.employee.role
+        userType: this.employee.userType
       }
-  
+
       console.log(employee)
 
       this.userService.updateEmployee(employee).subscribe(res=>{

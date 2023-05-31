@@ -1,6 +1,6 @@
 package com.example.bezbednostbackend.model;
 
-import com.example.bezbednostbackend.enums.Role;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -26,11 +26,12 @@ public class User implements UserDetails {
     private String username;
     private String password;
     @JdbcTypeCode(SqlTypes.JSON)
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "addressID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
     private Address address;
     private String phoneNumber;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(name="role_id")
     private Role role;
     private String workTitle;
     private boolean isActive;
@@ -55,7 +56,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
