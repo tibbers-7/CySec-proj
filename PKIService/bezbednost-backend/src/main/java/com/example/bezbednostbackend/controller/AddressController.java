@@ -22,6 +22,7 @@ public class AddressController {
     @Autowired
     private final AddressService addressService;
 
+    //  GET_ADDRESSES
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AddressDTO>> findAddresses() {
         Collection<Address> addresses = addressService.findAll();
@@ -33,6 +34,7 @@ public class AddressController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    // GET_ADDRESS_BY_ID
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDTO> findAddressById(@PathVariable("id") Integer id) {
         Address address = addressService.findById(id).orElse(null);
@@ -43,6 +45,7 @@ public class AddressController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    // CREATE_ADDRESS
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Address> create(@RequestBody AddressDTO dto)  {
         Address address = new Address();
@@ -56,6 +59,7 @@ public class AddressController {
         }
     }
 
+    //UPDATE_ADDRESS
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody AddressDTO dto)  {
         Address address = addressService.findById(dto.getId()).orElse(null);
@@ -68,6 +72,7 @@ public class AddressController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //DELETE_ADDRESS
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         Address address = addressService.findById(id).orElse(null);

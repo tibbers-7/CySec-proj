@@ -30,7 +30,7 @@ public class EmployeeDTO {
         this.password = dto.getPassword();
         this.addressID = dto.getAddress().getId();
         this.phoneNumber = dto.getPhoneNumber();
-        this.role = dto.getRole().getName();
+        this.role = dto.getRoles().toString();
         this.workTitle = dto.getWorkTitle();
     }
 

@@ -8,8 +8,11 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -26,13 +29,18 @@ public class User implements UserDetails {
     private String username;
     private String password;
     @JdbcTypeCode(SqlTypes.JSON)
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
     private String phoneNumber;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name="role_id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
     private String workTitle;
     private boolean isActive;
 
@@ -48,7 +56,9 @@ public class User implements UserDetails {
         this.username = username;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.role = role;
+        var roles = new ArrayList<Role>();
+        roles.add(role);
+        this.roles = roles;
         this.workTitle = workTitle;
         this.isActive = isActive;
     }
@@ -56,8 +66,14 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        ArrayList<GrantedAuthority> allAuthorities = new ArrayList<>();
+        for( Role role : getRoles()){
+            allAuthorities.addAll(role.getPrivileges().stream().map(
+                    privilege -> new SimpleGrantedAuthority(privilege.getName())).collect(Collectors.toList()));
+        }
+        return allAuthorities;
     }
+
 
     @Override
     public String getUsername(){

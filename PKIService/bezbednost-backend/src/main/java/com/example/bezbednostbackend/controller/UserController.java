@@ -42,7 +42,7 @@ private final PasswordEncoder passwordEncoder;
 private final RolePrivilegeService rolePrivilegeService;
 
 
-
+//GET_USER_BY_ID
     @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getById(@PathVariable Integer id){
         User user = userService.getById(id);
@@ -50,7 +50,7 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    //ovo samo admin moze
+    //CANCEL_REGISTRATION_REQUEST
     @PostMapping(value="/register/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StringResponseDTO> cancelRegistration(@RequestBody RegistrationResolveRequestDTO dto) {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
@@ -58,6 +58,7 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(new StringResponseDTO("request cancelled"), HttpStatus.OK);
     }
 
+    //GET_EMPLOYEE_BY_ID
     @GetMapping(value = "/findById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDTO> findEmployeeById(@PathVariable("id") Integer id){
         User user = userService.getById(id);
@@ -68,6 +69,7 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    //GET_ALL_EMPLOYEES
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<EmployeeDTO>> findAllEmployees(){
         Collection<User> users = userService.findAll();
@@ -79,6 +81,7 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    //GET_EMPLOYEE_BY_USERNAME
     @GetMapping(value = "/findByUsername/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDTO> findEmployeeByUsername(@PathVariable("username") String username){
         User user = userService.findByUsername(username).orElse(null);
@@ -88,10 +91,10 @@ private final RolePrivilegeService rolePrivilegeService;
         EmployeeDTO dto = new EmployeeDTO(user);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
-
+    //GET_ALL_ENGINEERS
     @GetMapping(value="/engineers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<EmployeeDTO>> findAllEngineers(){
-        Collection<User> engineers = userService.findAllByRole("ENGINEER");
+        Collection<User> engineers = userService.findAllByRole("ROLE_ENGINEER");
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
         for(User engineer: engineers){
             EmployeeDTO dto = new EmployeeDTO(engineer);
@@ -100,9 +103,10 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    //GET_ALL_PROJECT_MANAGERS
     @GetMapping(value="/projectManagers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<EmployeeDTO>> findAllProjectManagers(){
-        Collection<User> managers = userService.findAllByRole("PROJECT_MANAGER");
+        Collection<User> managers = userService.findAllByRole("ROLE_PROJECT_MANAGER");
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
         for(User manager: managers){
             EmployeeDTO dto = new EmployeeDTO(manager);
@@ -111,6 +115,7 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    //CREATE_EMPLOYEE
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody EmployeeDTO dto){
         User user = new User();
@@ -130,6 +135,7 @@ private final RolePrivilegeService rolePrivilegeService;
         }
     }
 
+    //UPDATE_EMPLOYEE
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody EmployeeDTO dto){
         User user = userService.getById(dto.getId());
@@ -141,6 +147,7 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //DELETE_USER
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
         User user = userService.getById(id);
@@ -153,22 +160,16 @@ private final RolePrivilegeService rolePrivilegeService;
     }
 
     private void Map(EmployeeDTO dto, User user) {
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setRole(rolePrivilegeService.getRoleByName(dto.getRole()));
-        user.setActive(true);
-        user.setWorkTitle(dto.getWorkTitle());
+        user = new User(dto.getName(), dto.getSurname(), dto.getUsername(),
+                passwordEncoder.encode(dto.getPassword()), null, dto.getPhoneNumber(),
+                rolePrivilegeService.getRoleByName(dto.getRole()), dto.getWorkTitle(), true);
         Address address = addressService.findById(dto.getAddressID()).orElse(null);
         if (address != null) {
             user.setAddress(address);
         }
     }
 
-
+//APPROVE_REGISTRATION_REQUEST
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StringResponseDTO> approveRegistration(@RequestBody RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
@@ -176,7 +177,7 @@ private final RolePrivilegeService rolePrivilegeService;
 
         return new ResponseEntity<>(new StringResponseDTO("request approved"), HttpStatus.OK);
     }
-
+//GET_ALL_REGISTRATION_REQUESTS
    @GetMapping(value="/registration-requests", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<RegistrationRequest>> getAllRequests(){
         List<RegistrationRequest> requests = authenticationService.getAllRegistrationRequests();

@@ -16,33 +16,36 @@ export class RolesAndPermissionsComponent implements OnInit {
   engineerPermissions : Permission[] = []
   HRPermissions : Permission[] = []
   PRPermissions : Permission[] = []
+  chosenForEngineer = new Permission()
+  chosenForHR = new Permission()
+  chosenForPR = new Permission()
 
 
   public constructor(public dialog: MatDialog, private privilegeService : PermissionsService){}
 
   ngOnInit(): void {
-
     this.loadInfo()
-     }
+  }
 
   loadInfo(){
     this.privilegeService.getAllPrivileges().subscribe(res => this.allPermissions = res)
     this.privilegeService.getPrivilegesForEngineers().subscribe( res => this.engineerPermissions = res)
     this.privilegeService.getPrivilegesForHRManagers().subscribe( res => this.HRPermissions = res)
     this.privilegeService.getPrivilegesForPRManagers().subscribe( res => this.PRPermissions = res)
- 
+    
   }
 
-
   addDialogForEngineer(){
+    let unusedPrivileges = this.allPermissions.filter(x => !this.engineerPermissions.includes(x))
     const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ oldPrivilege: '', newPrivilege: ''},
+      data:{ unusedPrivileges : unusedPrivileges },
     })
     dialogRef.afterClosed().subscribe(result => {
-        if(result.newPrivilege ==='') return
+      console.log(result)
+        if(!result) return
         let dto = new PrivilegeRoleDTO()
-        dto.roleName = 'ENGINEER'
-        dto.privilegeName = result.newPrivilege
+        dto.roleName = 'ROLE_ENGINEER'
+        dto.privilege = result.chosenPrivilege
         this.privilegeService.addPrivilegeToRole(dto).subscribe(res =>{
           this.loadInfo()
         })
@@ -52,14 +55,15 @@ export class RolesAndPermissionsComponent implements OnInit {
   }
 
   addDialogForHR(){
+    let unusedPrivileges = this.allPermissions.filter(x => !this.HRPermissions.includes(x))
     const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ oldPrivilege: '', newPrivilege: ''},
+      data:{  unusedPrivileges : unusedPrivileges },
     })
     dialogRef.afterClosed().subscribe(result => {
-        if(result.newPrivilege ==='') return
+        if(!result) return
         let dto = new PrivilegeRoleDTO()
-        dto.roleName = 'HR_MANAGER'
-        dto.privilegeName = result.newPrivilege
+        dto.roleName = 'ROLE_HR_MANAGER'
+        dto.privilege = result.chosenPrivilege
         this.privilegeService.addPrivilegeToRole(dto).subscribe(res =>{
           this.loadInfo()
         })
@@ -69,14 +73,15 @@ export class RolesAndPermissionsComponent implements OnInit {
   }
 
   addDialogForPR(){
+    let unusedPrivileges = this.allPermissions.filter( x => !this.PRPermissions.includes(x))
     const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ oldPrivilege: '', newPrivilege: ''},
+      data:{ unusedPrivileges : unusedPrivileges },
     })
     dialogRef.afterClosed().subscribe(result => {
-        if(result.newPrivilege ==='') return
+        if(!result.newPrivilege) return
         let dto = new PrivilegeRoleDTO()
-        dto.roleName = 'PROJECT_MANAGER'
-        dto.privilegeName = result.newPrivilege
+        dto.roleName = 'ROLE_PROJECT_MANAGER'
+        dto.privilege = result.chosenPrivilege
         this.privilegeService.addPrivilegeToRole(dto).subscribe(res =>{
           this.loadInfo()
         })
@@ -85,55 +90,11 @@ export class RolesAndPermissionsComponent implements OnInit {
       })
   }
 
-  editDialogForEngineer(privilege : Permission){
-    const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ oldPrivilege: privilege.name , newPrivilege: ''},
-    })
-    dialogRef.afterClosed().subscribe(result => {
-        if(result.newPrivilege ==='') return
-          privilege.name = result.newPrivilege
-        this.privilegeService.editPrivilege(privilege).subscribe(res =>{
-          this.loadInfo()
-        })
 
-       
-      })
-  }
-
-  editDialogForHR(privilege : Permission){
-    const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ oldPrivilege: privilege.name, newPrivilege: ''},
-    })
-    dialogRef.afterClosed().subscribe(result => {
-        if(result.newPrivilege ==='') return
-          privilege.name = result.newPrivilege
-        this.privilegeService.editPrivilege(privilege).subscribe(res =>{
-          this.loadInfo()
-        })
-
-       
-      })
-  }
-
-  editDialogForPR(privilege : Permission){
-    const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ oldPrivilege: privilege.name, newPrivilege: ''},
-    })
-    dialogRef.afterClosed().subscribe(result => {
-        if(result.newPrivilege ==='') return
-          privilege.name = result.newPrivilege
-        this.privilegeService.editPrivilege(privilege).subscribe(res =>{
-          this.loadInfo()
-        })
-
-       
-      })
-  }
-
-  removeForEngineer(privilege : Permission){
+  removeForEngineer(){
     let dto = new PrivilegeRoleDTO()
-    dto.roleName = 'ENGINEER'
-    dto.privilegeName = privilege.name
+    dto.roleName = 'ROLE_ENGINEER'
+    dto.privilege = this.chosenForEngineer
     this.privilegeService.removePrivilegeFromRole(dto).subscribe(
       res=>
        {
@@ -142,10 +103,10 @@ export class RolesAndPermissionsComponent implements OnInit {
     )
   }
   
-  removeForHR(privilege : Permission){
+  removeForHR(){
     let dto = new PrivilegeRoleDTO()
-    dto.roleName = 'HR_MANAGER'
-    dto.privilegeName = privilege.name
+    dto.roleName = 'ROLE_HR_MANAGER'
+    dto.privilege = this.chosenForHR
     this.privilegeService.removePrivilegeFromRole(dto).subscribe( res=>
       {
        console.log(res)
@@ -153,10 +114,10 @@ export class RolesAndPermissionsComponent implements OnInit {
    )
   }
 
-  removeForPR(privilege : Permission){
+  removeForPR(){
     let dto = new PrivilegeRoleDTO()
-    dto.roleName = 'PROJECT_MANAGER'
-    dto.privilegeName = privilege.name
+    dto.roleName = 'ROLE_PROJECT_MANAGER'
+    dto.privilege = this.chosenForPR
     this.privilegeService.removePrivilegeFromRole(dto).subscribe( res=>
       {
        console.log(res)

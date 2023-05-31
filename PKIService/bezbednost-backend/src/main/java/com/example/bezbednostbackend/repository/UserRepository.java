@@ -12,8 +12,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query(value = "SELECT * FROM users WHERE username = :username", nativeQuery = true)
-    User findByUsername(@Param("username") String username);
+    User findByUsername(String username);
 
     @Query(value = "SELECT * FROM users WHERE role = :role", nativeQuery = true)
     List<User> findAllByRole(@Param("role") String role);

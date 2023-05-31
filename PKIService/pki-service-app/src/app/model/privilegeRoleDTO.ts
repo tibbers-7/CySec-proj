@@ -1,11 +1,13 @@
+import { Permission } from "./permission"
+
 export class PrivilegeRoleDTO{
     roleName = ''
-    privilegeName = ''
+    privilege = new Permission()
 
     public constructor(obj? : PrivilegeRoleDTO){
         if(obj){
             this.roleName = obj.roleName
-            this.privilegeName = obj.privilegeName
+            this.privilege = obj.privilege
         }
     }
 }

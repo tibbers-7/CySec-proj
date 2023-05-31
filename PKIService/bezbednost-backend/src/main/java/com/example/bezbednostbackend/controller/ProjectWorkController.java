@@ -21,6 +21,7 @@ public class ProjectWorkController {
     @Autowired
     private ProjectWorkService projectWorkService;
 
+    //GET_ALL_PROJECT_WORK_EXPERIENCES
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllProjectWorks(){
         Collection<ProjectWork> projectWorks = projectWorkService.findAll();
@@ -32,6 +33,7 @@ public class ProjectWorkController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    //GET_PROJECT_WORK_HISTORY_BY_ID
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectWorkDTO> findProjectWorkById(@PathVariable("id") Integer id){
         ProjectWork projectWork = projectWorkService.findById(id).orElse(null);
@@ -42,6 +44,7 @@ public class ProjectWorkController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    //GET_ALL_ENGINEERS_ON_PROJECT
     //svi inzenjeri na projektu
     @GetMapping(value = "/findByProjectID/{projectID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByProjectID(@PathVariable("projectID") Integer projectID){
@@ -53,7 +56,7 @@ public class ProjectWorkController {
         }
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
-
+//GET_ALL_PROJECTS_FOR_ENGINEER
     //svi projekti od inzenjera
     @GetMapping(value = "/findByEngineerID/{engineerID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectWorkDTO>> findAllByEngineerID(@PathVariable("engineerID") Integer engineerID){
@@ -66,7 +69,7 @@ public class ProjectWorkController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-
+//CREATE_WORK_ON_PROJECT_FOR_ENGINEER
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectWork> create(@RequestBody ProjectWorkDTO dto){
         ProjectWork projectWork = new ProjectWork();
@@ -85,7 +88,7 @@ public class ProjectWorkController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
-
+//UPDATE_WORK_ON_PROJECT_FOR_ENGINNER
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody ProjectWorkDTO dto){
         ProjectWork projectWork = projectWorkService.findById(dto.getId()).orElse(null);
@@ -97,6 +100,7 @@ public class ProjectWorkController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //DELETE_WORK_ON_PROJECT_FOR_ENGINEER
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
         ProjectWork projectWork = projectWorkService.findById(id).orElse(null);

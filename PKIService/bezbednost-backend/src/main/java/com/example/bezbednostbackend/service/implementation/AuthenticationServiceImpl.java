@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final RegistrationRequestRepository registrationRequestRepository;
     private final EmailService emailService;
+    @Autowired
     private final JwtService jwtService;
+    @Autowired
     private final AuthenticationManager myAuthenticationManager;
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
@@ -154,8 +157,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Map<String,Object> addClaims(User user){
        Map<String,Object> claims = new HashMap<>();
        claims.put("username", user.getUsername());
-       claims.put("roleName", user.getRole().getName());
-       claims.put("roleId", user.getRole().getId());
+       claims.put("roleName", user.getRoles().toString());
        claims.put("userId", String.valueOf(user.getId()));
        return claims;
     }

@@ -28,6 +28,7 @@ public class AuthenticationController {
     @Autowired
     private final AuthenticationService authenticationService;
 
+    //NO AUTHORIZATION
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StringResponseDTO> sendRegistrationRequest(@RequestBody @Valid RegistrationDTO dto) {
         try{
@@ -38,7 +39,7 @@ public class AuthenticationController {
         }
         return new ResponseEntity<>(new StringResponseDTO("Registration request sent!"), HttpStatus.OK);
     }
-
+    //NO AUTHORIZATION
     @PostMapping(value="/authenticate",
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
@@ -47,6 +48,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
+    //NO AUTHORIZATION
     @PostMapping(value="/activateAccount", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StringResponseDTO> activateAccount(
             @RequestParam String token,@RequestParam String username, @RequestParam String hmac
@@ -57,7 +59,7 @@ public class AuthenticationController {
 
     }
 
-
+    //NO AUTHORIZATION
     @PostMapping(value="/authenticate/passwordless",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +72,7 @@ public class AuthenticationController {
        return new ResponseEntity<>(new StringResponseDTO("Check your email for the sign in link :)"), HttpStatus.OK);
     }
 
+    //NO AUTHORIZATION
     @PostMapping(value="/authenticate/link",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponseDTO> logInWithLink(@RequestParam String token, @RequestParam String username, @RequestParam String hmac) {
@@ -81,6 +84,7 @@ public class AuthenticationController {
         }
     }
 
+    //NO AUTHORIZATION
     @PostMapping(value="/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StringResponseDTO> refreshToken(@RequestBody AuthenticationResponseDTO dto){
         try{
@@ -91,6 +95,7 @@ public class AuthenticationController {
         return new ResponseEntity(new StringResponseDTO("Successfully refreshed token!"), HttpStatus.OK);
     }
 
+    // LOG_OUT
     @PostMapping(value="/logOut")
     public ResponseEntity<StringResponseDTO> logOut(@RequestBody String refreshToken) {
         try{
@@ -103,7 +108,7 @@ public class AuthenticationController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
+    private Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {

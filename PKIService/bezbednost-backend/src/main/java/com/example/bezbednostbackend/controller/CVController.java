@@ -20,6 +20,7 @@ public class CVController {
     @Autowired
     private CVService cvService;
 
+    //GET_ALL_CVS
     @GetMapping(value="/")
     public String getAll(Model model){
         List<CV> cvs = cvService.getFiles();
@@ -27,12 +28,14 @@ public class CVController {
         return "cv";
     }
 
+    //UPLOAD_CV
     @PostMapping(value="/uploadFile/{engineerID}")
     public String uploadFile(@RequestParam("file")MultipartFile file, @PathVariable("engineerID") Integer engineerID){
         cvService.saveFile(file, engineerID);
         return "ok";
     }
 
+    //DOWNLOAD_CV
     @GetMapping("/downloadFile/{engineerID}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer engineerID){
         CV cv = cvService.getFileByEngineerID(engineerID).get();
