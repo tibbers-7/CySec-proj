@@ -28,13 +28,13 @@ public interface AuthenticationService {
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
     void sendRequestApprovalEmail(String username) throws NoSuchAlgorithmException, InvalidKeyException;
-    boolean activateAccount(String username, String token, String hmac) throws Exception;
+    boolean activateAccount(String username, String tokenWithHash) throws Exception;
 
     String refreshToken(AuthenticationResponseDTO dto) throws TokenRefreshException;
 
     void passwordlessLogin(String username) throws UserIsBannedException, NoSuchAlgorithmException, InvalidKeyException;
 
-    AuthenticationResponseDTO logInWithLink(String token, String username, String hmac) throws Exception;
+    AuthenticationResponseDTO logInWithLink(String tokenWithHash, String username) throws Exception;
 
     void deleteSession(String refreshToken) throws TokenRefreshException;
 

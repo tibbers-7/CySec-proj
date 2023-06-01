@@ -7,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,8 @@ public class CVController {
     @Autowired
     private CVService cvService;
 
-    //GET_ALL_CVS
+
+    @PreAuthorize("hasAuthority('GET_ALL_CVS')")
     @GetMapping(value="/")
     public String getAll(Model model){
         List<CV> cvs = cvService.getFiles();
@@ -28,14 +30,14 @@ public class CVController {
         return "cv";
     }
 
-    //UPLOAD_CV
+    @PreAuthorize("hasAuthority('UPLOAD_CV')")
     @PostMapping(value="/uploadFile/{engineerID}")
     public String uploadFile(@RequestParam("file")MultipartFile file, @PathVariable("engineerID") Integer engineerID){
         cvService.saveFile(file, engineerID);
         return "ok";
     }
 
-    //DOWNLOAD_CV
+    @PreAuthorize("hasAuthority('DOWNLOAD_CV')")
     @GetMapping("/downloadFile/{engineerID}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer engineerID){
         CV cv = cvService.getFileByEngineerID(engineerID).get();

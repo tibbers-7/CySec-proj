@@ -17,8 +17,8 @@ export class ActivateAccountPageComponent implements OnInit{
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
         console.log(params);
-        if(!params['hmac'] || !params['username'] || !params['token']) this.toast.error("Link is not valid!")
-        this.authService.activateAccount(params['token'], params['username'], params['hmac']).subscribe( res =>{
+        if(!params['username'] || !params['token']) this.toast.error("Link is not valid!")
+        this.authService.activateAccount(params['token'], params['username']).subscribe( res =>{
           this.toast.success('Account is activated, you can now log in!');
           this.isEnabled = true;
         })

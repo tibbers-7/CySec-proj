@@ -5,7 +5,7 @@ import { AuthenticationService } from "../services/authentication.service";
 @Injectable({
     providedIn: 'root'
   })
-  class RoleGuardService {
+  class AuthGuardService {
   
     constructor(public authService: AuthenticationService, public router: Router) { }
   
@@ -18,6 +18,6 @@ import { AuthenticationService } from "../services/authentication.service";
   
      }
   
-     export const RoleGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
-      return inject(RoleGuardService).canActivate(next, state)
+     export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+      return inject(AuthGuardService).canActivate(next, state)
      }

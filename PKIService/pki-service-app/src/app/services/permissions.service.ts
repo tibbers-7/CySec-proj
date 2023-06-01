@@ -8,7 +8,7 @@ import { Permission } from "../model/permission";
     providedIn: 'root'
   })
 export class PermissionsService{
-    apiHost: string = 'http://localhost:8080/api/privilege'
+    apiHost: string = 'http://localhost:8082/privilege'
     headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' })
   
     constructor(private http: HttpClient) { }
@@ -22,7 +22,7 @@ export class PermissionsService{
     }
 
     getAllPrivileges() : Observable<Permission[]>{
-        return this.http.get<Permission[]>(this.apiHost, {headers : this.headers})
+        return this.http.get<Permission[]>(this.apiHost + '/', {headers : this.headers})
     }
 
     getPrivilegesForEngineers() : Observable<Permission[]>{
@@ -36,8 +36,4 @@ export class PermissionsService{
     getPrivilegesForPRManagers() : Observable<Permission[]>{
         return this.http.get<Permission[]>(this.apiHost + '/PR', {headers : this.headers})
     } 
-    
-    editPrivilege(privilege : Permission) : Observable<any>{
-        return this.http.put(this.apiHost, privilege, {headers : this.headers})
-    }
 }

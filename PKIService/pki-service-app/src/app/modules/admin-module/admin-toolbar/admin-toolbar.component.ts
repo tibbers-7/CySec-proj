@@ -34,6 +34,10 @@ export class AdminToolbarComponent {
     this.router.navigate(['requests'])
   }
 
+  PermissionsClick(){
+    this.router.navigate(['permissions'])
+  }
+
   LogoutClick(){
     this.authService.logout()
     this.router.navigate([''])

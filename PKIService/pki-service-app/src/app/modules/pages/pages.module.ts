@@ -10,13 +10,15 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ManagerModule } from '../manager-module/manager.module';
 import { AdminModule } from '../admin-module/admin.module';
 import { EngineerModule } from '../engineer-module/engineer.module';
+import { AuthGuard } from 'src/app/auth/auth-guard';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
     {path:'registration', component: RegistrationPageComponent},
     {path:'activate-account', component: ActivateAccountPageComponent},
     {path:'login/link', component: PasswordlessLoginPageComponent},
-    {path:'home', component: HomePageComponent}
+    {path:'home', component: HomePageComponent,
+    canActivate: [AuthGuard]}
   ];
 
 @NgModule({

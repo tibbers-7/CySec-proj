@@ -4,6 +4,7 @@ import { Permission } from 'src/app/model/permission';
 import { PermissionsService } from 'src/app/services/permissions.service';
 import { PrivilegeDialogComponent } from '../privilege-dialog/privilege-dialog.component';
 import { PrivilegeRoleDTO } from 'src/app/model/privilegeRoleDTO';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-roles-and-permissions',
@@ -16,12 +17,12 @@ export class RolesAndPermissionsComponent implements OnInit {
   engineerPermissions : Permission[] = []
   HRPermissions : Permission[] = []
   PRPermissions : Permission[] = []
-  chosenForEngineer = new Permission()
-  chosenForHR = new Permission()
-  chosenForPR = new Permission()
+  chosenForEngineer : Permission[] = []
+  chosenForHR : Permission[] = []
+  chosenForPR : Permission[] = []
 
 
-  public constructor(public dialog: MatDialog, private privilegeService : PermissionsService){}
+  public constructor(public dialog: MatDialog, private toast: ToastrService, private privilegeService : PermissionsService){}
 
   ngOnInit(): void {
     this.loadInfo()
@@ -36,18 +37,18 @@ export class RolesAndPermissionsComponent implements OnInit {
   }
 
   addDialogForEngineer(){
-    let unusedPrivileges = this.allPermissions.filter(x => !this.engineerPermissions.includes(x))
     const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ unusedPrivileges : unusedPrivileges },
+      data:{ unusedPrivileges : this.removeDuplicates(this.engineerPermissions) },
     })
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
         if(!result) return
         let dto = new PrivilegeRoleDTO()
         dto.roleName = 'ROLE_ENGINEER'
-        dto.privilege = result.chosenPrivilege
+        dto.privilege = result[0]
         this.privilegeService.addPrivilegeToRole(dto).subscribe(res =>{
-          this.loadInfo()
+          this.engineerPermissions.push(dto.privilege)
+          this.toast.success('Added permission!')
         })
 
        
@@ -55,17 +56,17 @@ export class RolesAndPermissionsComponent implements OnInit {
   }
 
   addDialogForHR(){
-    let unusedPrivileges = this.allPermissions.filter(x => !this.HRPermissions.includes(x))
     const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{  unusedPrivileges : unusedPrivileges },
+      data:{  unusedPrivileges : this.removeDuplicates(this.HRPermissions) },
     })
     dialogRef.afterClosed().subscribe(result => {
         if(!result) return
         let dto = new PrivilegeRoleDTO()
         dto.roleName = 'ROLE_HR_MANAGER'
-        dto.privilege = result.chosenPrivilege
+        dto.privilege = result[0]
         this.privilegeService.addPrivilegeToRole(dto).subscribe(res =>{
-          this.loadInfo()
+          this.HRPermissions.push(dto.privilege)
+          this.toast.success('Added permission!')
         })
 
        
@@ -75,15 +76,17 @@ export class RolesAndPermissionsComponent implements OnInit {
   addDialogForPR(){
     let unusedPrivileges = this.allPermissions.filter( x => !this.PRPermissions.includes(x))
     const dialogRef = this.dialog.open(PrivilegeDialogComponent, {
-      data:{ unusedPrivileges : unusedPrivileges },
+      data:{ unusedPrivileges : this.removeDuplicates(this.PRPermissions) },
     })
+
     dialogRef.afterClosed().subscribe(result => {
         if(!result.newPrivilege) return
         let dto = new PrivilegeRoleDTO()
         dto.roleName = 'ROLE_PROJECT_MANAGER'
-        dto.privilege = result.chosenPrivilege
+        dto.privilege = result[0]
         this.privilegeService.addPrivilegeToRole(dto).subscribe(res =>{
-          this.loadInfo()
+          this.PRPermissions.push(dto.privilege)
+          this.toast.success('Added permission!')
         })
 
        
@@ -94,11 +97,12 @@ export class RolesAndPermissionsComponent implements OnInit {
   removeForEngineer(){
     let dto = new PrivilegeRoleDTO()
     dto.roleName = 'ROLE_ENGINEER'
-    dto.privilege = this.chosenForEngineer
+    dto.privilege = this.chosenForEngineer[0]
     this.privilegeService.removePrivilegeFromRole(dto).subscribe(
       res=>
        {
-        console.log(res)
+        this.toast.success('successfully removed permission')
+        this.engineerPermissions = this.engineerPermissions.filter(x => x !== dto.privilege)
        }
     )
   }
@@ -106,10 +110,11 @@ export class RolesAndPermissionsComponent implements OnInit {
   removeForHR(){
     let dto = new PrivilegeRoleDTO()
     dto.roleName = 'ROLE_HR_MANAGER'
-    dto.privilege = this.chosenForHR
+    dto.privilege = this.chosenForHR[0]
     this.privilegeService.removePrivilegeFromRole(dto).subscribe( res=>
       {
-       console.log(res)
+       this.toast.success('successfully removed permission')
+       this.HRPermissions = this.HRPermissions.filter(x => x !== dto.privilege)
       }
    )
   }
@@ -117,14 +122,19 @@ export class RolesAndPermissionsComponent implements OnInit {
   removeForPR(){
     let dto = new PrivilegeRoleDTO()
     dto.roleName = 'ROLE_PROJECT_MANAGER'
-    dto.privilege = this.chosenForPR
+    console.log(this.chosenForPR)
+    dto.privilege = this.chosenForPR[0]
     this.privilegeService.removePrivilegeFromRole(dto).subscribe( res=>
       {
-       console.log(res)
+        this.toast.success('successfully removed permission')
+        this.PRPermissions = this.PRPermissions.filter(x=> x!==dto.privilege)
       }
    )
   }
  
-
+removeDuplicates(arr2: Permission[]){
+  return this.allPermissions.filter(obj =>
+    !arr2.some(obj2 => obj.id == obj2.id))
+}
 
 }

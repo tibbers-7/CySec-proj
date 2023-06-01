@@ -19,10 +19,13 @@ export class LoginPageComponent {
   signIn(){
     if(!this.validityCheck()) return
     if(this.isPasswordless) {
-      this.authService.passwordlessLoginRequest(this.logInData.username).subscribe()
+      this.authService.passwordlessLoginRequest(this.logInData.username).subscribe(res=>{
+        this.toast.success('Check your email!')
+      })
     }else {
       this.authService.logInUserwithCredentials(this.logInData).subscribe(res =>{
       this.authService.setSession(res)
+      console.log(this.authService.getRole())
       this.router.navigate(['home'])
     })
   }

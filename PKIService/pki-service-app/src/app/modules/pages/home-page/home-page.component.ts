@@ -16,9 +16,9 @@ public constructor(private authService : AuthenticationService){}
 
 ngOnInit(): void {
   const userType = this.authService.getRole()
-  this.isAdmin = (userType === 'ADMIN')
-  this.isEngineer = (userType === 'ENGINEER')
-  this.isManager = (userType === 'HR_MANAGER' || userType === 'PROJECT_MANAGER')
+  this.isAdmin = userType === 'ROLE_ADMIN'
+  this.isEngineer = userType === 'ROLE_ENGINEER'
+  this.isManager = userType === 'ROLE_PROJECT_MANAGER'
   this.username = this.authService.getUsername()
 }
 }

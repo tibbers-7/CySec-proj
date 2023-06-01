@@ -9,7 +9,7 @@ import { Permission } from 'src/app/model/permission';
 })
 export class PrivilegeDialogComponent {
 
-  chosenPrivilege = new Permission()
+  chosenPrivilege : Permission[] = []
   constructor(
     public dialogRef: MatDialogRef<PrivilegeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {unusedPrivileges : Permission[]}

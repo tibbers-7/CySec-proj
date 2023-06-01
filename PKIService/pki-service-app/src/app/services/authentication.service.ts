@@ -28,12 +28,12 @@ export class AuthenticationService {
     return this.http.post(this.apiHost + '/authenticate/passwordless', username, { headers: this.headers})
   }
 
-  activateMagicLoginLink(token: String, username: String, hmac: String): Observable<LogInResponseData> {
-    return this.http.post<any>(this.apiHost + '/authenticate/link?token='+token+'&username='+username+'&hmac='+hmac, { headers: this.headers})
+  activateMagicLoginLink(token: String, username: String): Observable<LogInResponseData> {
+    return this.http.post<any>(this.apiHost + '/authenticate/link?token='+token+'&username='+username, { headers: this.headers})
   }
 
-  activateAccount(token: String, username: String, hmac: String): Observable<any> {
-    return this.http.post(this.apiHost + '/activateAccount?token='+token+'&username='+username+'&hmac='+hmac,{ headers: this.headers})
+  activateAccount(token: String, username: String): Observable<any> {
+    return this.http.post(this.apiHost + '/activateAccount?token='+token+'&username='+username,{ headers: this.headers})
   }
 
   logOutUser(refreshToken: string): Observable<any> {
@@ -64,7 +64,9 @@ export class AuthenticationService {
    getRole() {
     const token : any = this.decodeAccessToken()
     if (!token) return null
-    return token['userType']
+    let roleToParse : string =  token['roleName']
+    let roles = roleToParse.split(',')
+    return roles[0]
    }
 
    getUserId() {

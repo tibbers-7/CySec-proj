@@ -22,29 +22,32 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { PrivilegeDialogComponent } from './privilege-dialog/privilege-dialog.component';
 
 const routes: Routes = [
-    {path:'certificates', component: CertificatesComponent},
+    {path:'certificates', component: CertificatesComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'add-certificate', component: AddCertificateComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'requests', component: RegistrationRequestsComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'projects', component: ProjectsViewComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path: 'projects/create', component: AddProjectComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path: 'projects/:id/update', component: EditProjectComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path: 'projects/:id/employees', component: EmployeesOnProjectViewComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path: 'projects/:id/employees/add', component: AddEngineerOnProjectComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path: 'projects/:id/employees/update/:idw', component: EditEngineerOnProjectComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
-    {path:'permissions', component: RolesAndPermissionsComponent},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
+    {path:'permissions', component: RolesAndPermissionsComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'employees', component: EmployeesViewComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'employees/create', component: AddEmployeesComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ADMIN' }},
-    {path: 'editProfile', component: EditProfileComponent}
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
+    {path: 'editProfile', component: EditProfileComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }}
 
   ];
 

@@ -15,11 +15,13 @@ export class PasswordlessLoginPageComponent {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
         console.log(params); 
-        if(!params['hmac'] || !params['username'] || !params['token']) this.toast.error("Link is not valid!")
-        this.authService.activateMagicLoginLink(params['token'], params['username'], params['hmac']).subscribe(res=>{
+        if(!params['username'] || !params['token']) this.toast.error("Link is not valid!")
+        this.authService.activateMagicLoginLink(params['token'], params['username']).subscribe(res=>{
           this.authService.setSession(res);
-          this.router.navigate(['requests'])
-        })
+          if(this.authService.isLoggedIn()) this.router.navigate(['home'])
+          else this.toast.error('Something went wrong, try again!')
+        
+      })
       })
     }
  

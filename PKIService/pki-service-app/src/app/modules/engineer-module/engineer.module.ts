@@ -9,14 +9,21 @@ import { EngineerUpdateProjectComponent } from './engineer-update-project/engine
 import { EngineerSkillsComponent } from './engineer-skills/engineer-skills.component';
 import { AddSkillComponent } from './add-skill/add-skill.component';
 import { EditSkillComponent } from './edit-skill/edit-skill.component';
+import { RoleGuard } from 'src/app/auth/role-guard';
 
 const routes: Routes = [
-  {path: 'engineer/editProfile', component: EngineerProfileComponent},
-  {path: 'engineer/projects', component: EngineerProjectsComponent},
-  {path: 'engineer/projects/:idw/update', component: EngineerUpdateProjectComponent},
-  {path: 'engineer/skills', component: EngineerSkillsComponent},
-  {path: 'engineer/skills/add', component: AddSkillComponent},
-  {path: 'engineer/skills/:id/update', component: EditSkillComponent}
+  {path: 'engineer/editProfile', component: EngineerProfileComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ENGINEER' }},
+  {path: 'engineer/projects', component: EngineerProjectsComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ENGINEER' }},
+  {path: 'engineer/projects/:idw/update', component: EngineerUpdateProjectComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ENGINEER' }},
+  {path: 'engineer/skills', component: EngineerSkillsComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ENGINEER' }},
+  {path: 'engineer/skills/add', component: AddSkillComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ENGINEER' }},
+  {path: 'engineer/skills/:id/update', component: EditSkillComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ENGINEER' }}
 
 ];
 

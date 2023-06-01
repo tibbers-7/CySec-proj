@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -51,9 +52,9 @@ public class AuthenticationController {
     //NO AUTHORIZATION
     @PostMapping(value="/activateAccount", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StringResponseDTO> activateAccount(
-            @RequestParam String token,@RequestParam String username, @RequestParam String hmac
+            @RequestParam String token,@RequestParam String username
     ) throws Exception {
-        if(authenticationService.activateAccount(username,token, hmac)){
+        if(authenticationService.activateAccount(username,token)){
             return new ResponseEntity<>(new StringResponseDTO("Account activated!"), HttpStatus.OK);
         } else return  new ResponseEntity<>(new StringResponseDTO("Invalid token!"), HttpStatus.BAD_REQUEST);
 
@@ -75,9 +76,9 @@ public class AuthenticationController {
     //NO AUTHORIZATION
     @PostMapping(value="/authenticate/link",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponseDTO> logInWithLink(@RequestParam String token, @RequestParam String username, @RequestParam String hmac) {
+    public ResponseEntity<AuthenticationResponseDTO> logInWithLink(@RequestParam String token, @RequestParam String username) {
         try{
-            AuthenticationResponseDTO response = authenticationService.logInWithLink(token, username, hmac);
+            AuthenticationResponseDTO response = authenticationService.logInWithLink(token, username);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -95,7 +96,7 @@ public class AuthenticationController {
         return new ResponseEntity(new StringResponseDTO("Successfully refreshed token!"), HttpStatus.OK);
     }
 
-    // LOG_OUT
+    @PreAuthorize("hasAuthority('LOG_OUT')")
     @PostMapping(value="/logOut")
     public ResponseEntity<StringResponseDTO> logOut(@RequestBody String refreshToken) {
         try{

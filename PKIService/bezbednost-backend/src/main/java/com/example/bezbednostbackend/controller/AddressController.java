@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class AddressController {
     @Autowired
     private final AddressService addressService;
 
-    //  GET_ADDRESSES
+    @PreAuthorize("hasAuthority('GET_ADDRESSES')")
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AddressDTO>> findAddresses() {
         Collection<Address> addresses = addressService.findAll();
@@ -34,7 +35,7 @@ public class AddressController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    // GET_ADDRESS_BY_ID
+    @PreAuthorize("hasAuthority('GET_ADDRESS_BY_ID')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDTO> findAddressById(@PathVariable("id") Integer id) {
         Address address = addressService.findById(id).orElse(null);
@@ -45,7 +46,8 @@ public class AddressController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    // CREATE_ADDRESS
+
+    @PreAuthorize("hasAuthority('CREATE_ADDRESS')")
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Address> create(@RequestBody AddressDTO dto)  {
         Address address = new Address();
@@ -59,7 +61,7 @@ public class AddressController {
         }
     }
 
-    //UPDATE_ADDRESS
+    @PreAuthorize("hasAuthority('UPDATE_ADDRESS')")
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody AddressDTO dto)  {
         Address address = addressService.findById(dto.getId()).orElse(null);
@@ -72,7 +74,7 @@ public class AddressController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //DELETE_ADDRESS
+    @PreAuthorize("hasAuthority('DELETE_ADDRESS')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         Address address = addressService.findById(id).orElse(null);

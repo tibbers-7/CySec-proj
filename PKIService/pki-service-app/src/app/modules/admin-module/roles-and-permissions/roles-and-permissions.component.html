@@ -5,8 +5,8 @@
             <mat-expansion-panel-header>
                 <mat-panel-title> Software Engineer </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-selection-list #engineerPrivileges [multiple]="false">  
-                <mat-list-option *ngFor="let engPrivilege of engineerPermissions" [value]="engPrivilege" [ngModel]="chosenForEngineer">  
+            <mat-selection-list #engineerPrivileges [multiple]="false" [(ngModel)]="chosenForEngineer">  
+                <mat-list-option  *ngFor="let engPrivilege of engineerPermissions" [value]="engPrivilege" >  
                   {{engPrivilege.name}}  
                 </mat-list-option>  
               </mat-selection-list>  
@@ -19,9 +19,9 @@
             <mat-expansion-panel-header>
                 <mat-panel-title> Project manager </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-selection-list #PRPrivileges [multiple]="false">  
-                <mat-list-option *ngFor="let PRPrivilege of PRPermissions" [value]="PRPrivilege" [ngModel]="chosenForPR">  
-                  {{PRPrivilege.name}}  
+            <mat-selection-list #PRPrivileges [multiple]="false" [(ngModel)]="chosenForPR">  
+                <mat-list-option  *ngFor="let PRPrivilege of PRPermissions" [value]="PRPrivilege" >
+                    {{PRPrivilege.name}} 
                 </mat-list-option>  
               </mat-selection-list>  
             <mat-action-row>
@@ -33,8 +33,8 @@
             <mat-expansion-panel-header>
                 <mat-panel-title> HR manager </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-selection-list #HRPrivileges [multiple]="false">  
-                <mat-list-option *ngFor="let HRPrivilege of HRPermissions" [value]="HRPrivilege" [(ngModel)]="chosenForHR">  
+            <mat-selection-list #HRPrivileges [multiple]="false" [(ngModel)]="chosenForHR">  
+                <mat-list-option *ngFor="let HRPrivilege of HRPermissions" [value]="HRPrivilege" >  
                   {{HRPrivilege.name}}  
                 </mat-list-option>  
               </mat-selection-list>  

@@ -10,6 +10,7 @@ import com.example.bezbednostbackend.exceptions.UserIsBannedException;
 import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.model.RegistrationRequest;
+import com.example.bezbednostbackend.model.Role;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.model.token.VerificationToken;
 import com.example.bezbednostbackend.model.token.RefreshToken;
@@ -155,9 +156,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public Map<String,Object> addClaims(User user){
+        String allRolesString = "";
+        for(Role role : user.getRoles()){
+            allRolesString = allRolesString.concat(role.getName()).concat(",");
+        }
        Map<String,Object> claims = new HashMap<>();
        claims.put("username", user.getUsername());
-       claims.put("roleName", user.getRoles().toString());
+       claims.put("roleName", allRolesString);
        claims.put("userId", String.valueOf(user.getId()));
        return claims;
     }
@@ -171,7 +176,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String emailContent = "Hello " + username + "," + "\r\n" +
                 "Your account was succesfully approved.\n" +
                 "Please activate your account with this link:\n" +
-                "http://localhost:4200/activate-account?token="+token+"&username="+username+"&hmac="+hmacToken;
+                "http://localhost:4200/activate-account?token="+hmacToken+"&username="+username;
         String emailSubject = "Registration request acceptance";
 
 
@@ -185,7 +190,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean activateAccount(String username, String token, String hmac) throws Exception {
+    public boolean activateAccount(String username, String tokenWithHash) throws Exception {
         User user=userRepository.findByUsername(username);
         Optional<VerificationToken> optionalToken =verificationTokenRepository.findByUsername(username);
         if(optionalToken==null) return false;
@@ -193,7 +198,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         verificationTokenRepository.delete(tokenFromDB);
         if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now()))
             throw new Exception("This token is expired!");
-        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token))
+        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(tokenWithHash))
             throw new Exception("This token has been tampered with!");
         user.setActive(true);
         userRepository.save(user);
@@ -227,20 +232,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hmac = jwtService.calculateHMACOfToken(token);
         String emailContent = "Hello " + user.getName() + "," + "\r\n" +
                 "Use this link to log into your account." + "\r\n" +
-                "http://localhost:4200/login/link?token="+token+"&username="+username+"&hmac="+hmac;
+                "http://localhost:4200/login/link?token="+hmac+"&username="+username;
         String emailSubject = "Sign in to your account";
         emailService.sendSimpleEmail( username, emailSubject, emailContent );
     }
 
     @Override
-    public AuthenticationResponseDTO logInWithLink(String token, String username, String hmac) throws Exception {
+    public AuthenticationResponseDTO logInWithLink(String tokenWithHash, String username) throws Exception {
         Optional<VerificationToken> optional = verificationTokenRepository.findByUsername(username);
         if(optional.isEmpty()) throw new Exception("No token for this user exists!");
         VerificationToken tokenFromDB = optional.get();
         //ne treba nam vise ovaj token pa ga brisemo, proveriti da li ce ovo raditi sve
         verificationTokenRepository.delete(tokenFromDB);
         if(tokenFromDB.getExpiryDate().isBefore(LocalDateTime.now())) throw new Exception("This token is expired!");
-        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(hmac) || !tokenFromDB.getToken().equals(token))
+        if(!jwtService.calculateHMACOfToken(tokenFromDB.getToken()).equals(tokenWithHash))
             throw new Exception("This token has been tampered with!");
         var user=userRepository.findByUsername(username);
         if(user==null) throw(new UsernameNotFoundException("User not found"));

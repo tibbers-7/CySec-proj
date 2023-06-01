@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,7 +22,8 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    //GET_ALL_PROJECTS
+
+    @PreAuthorize("hasAuthority('GET_ALL_PROJECTS')")
     @GetMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectDTO>> findProjects(){
         Collection<Project> projects = projectService.findAll();
@@ -32,7 +34,8 @@ public class ProjectController {
         }
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
-    //GET_PROJECT_BY_ID
+
+    @PreAuthorize("hasAuthority('GET_PROJECT_BY_ID')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectDTO> findProjectById(@PathVariable("id") Integer id){
         Project project = projectService.findById(id).orElse(null);
@@ -43,7 +46,7 @@ public class ProjectController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    //GET_PROJECT_BY_MANAGER_ID
+    @PreAuthorize("hasAuthority('GET_PROJECT_BY_MANAGER_ID')")
     @GetMapping(value = "/findByProjectManager/{projectManagerID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ProjectDTO>> findProjectsByProjectManagerID(@PathVariable("projectManagerID") Integer projectManagerID){
         Collection<Project> projects = projectService.findAllByProjectManagerID(projectManagerID);
@@ -55,7 +58,7 @@ public class ProjectController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    //CREATE_PROJECT
+    @PreAuthorize("hasAuthority('CREATE_PROJECT')")
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Project> create(@RequestBody ProjectDTO dto){
         Project project = new Project();
@@ -69,7 +72,7 @@ public class ProjectController {
         }
     }
 
-    //UPDATE_PROJECT
+    @PreAuthorize("hasAuthority('UPDATE_PROJECT')")
     @PutMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody ProjectDTO dto){
         Project project = projectService.findById(dto.getId()).orElse(null);
@@ -81,7 +84,7 @@ public class ProjectController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //DELETE_PROJECT
+    @PreAuthorize("hasAuthority('DELETE_PROJECT')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
         Project project = projectService.findById(id).orElse(null);
