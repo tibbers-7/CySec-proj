@@ -6,7 +6,7 @@ export class EmployeeDTO {
     password: string = ''
     addressID: number = 0
     phoneNumber: string = ''
-    userType: string = ''
+    role: string = ''
 
     public constructor(obj?: any) {
         if (obj) {
@@ -17,7 +17,7 @@ export class EmployeeDTO {
             this.password = obj.password;
             this.addressID = obj.addressID;
             this.phoneNumber = obj.phoneNumber;
-            this.userType = obj.userType;
+            this.role = obj.role;
         }
     }
 

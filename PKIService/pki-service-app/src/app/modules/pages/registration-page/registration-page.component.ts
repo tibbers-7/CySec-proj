@@ -55,7 +55,7 @@ submitRegistrationRequest() {
     this.registratonRequest.username = this.registrationData.username
     this.registratonRequest.password = this.registrationData.password
     this.registratonRequest.phoneNumber = this.registrationData.phoneNumber
-    this.registratonRequest.userType = this.registrationData.userType
+    this.registratonRequest.role = this.registrationData.role
     this.registratonRequest.workTitle = this.registrationData.workTitle
   }
 

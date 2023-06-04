@@ -121,7 +121,7 @@ private final RolePrivilegeService rolePrivilegeService;
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody EmployeeDTO dto){
         User user = new User();
-        Map(dto, user);
+        user = Map(dto, user);
         try{
             User userOld = userService.findByUsername(dto.getUsername()).orElse(null);
             if(userOld == null){
@@ -144,8 +144,8 @@ private final RolePrivilegeService rolePrivilegeService;
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Map(dto, user);
-        userService.update(user);
+        //user = Map(dto, user);
+        userService.update(Map(dto, user));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -161,14 +161,11 @@ private final RolePrivilegeService rolePrivilegeService;
         }
     }
 
-    private void Map(EmployeeDTO dto, User user) {
-        user = new User(dto.getName(), dto.getSurname(), dto.getUsername(),
-                passwordEncoder.encode(dto.getPassword()), null, dto.getPhoneNumber(),
+    private User Map(EmployeeDTO dto, User user) {
+        return new User(dto.getName(), dto.getSurname(), dto.getUsername(),
+                passwordEncoder.encode(dto.getPassword()), addressService.findById(dto.getAddressID()).orElse(null), dto.getPhoneNumber(),
                 rolePrivilegeService.getRoleByName(dto.getRole()), dto.getWorkTitle(), true);
-        Address address = addressService.findById(dto.getAddressID()).orElse(null);
-        if (address != null) {
-            user.setAddress(address);
-        }
+
     }
 
     @PreAuthorize("hasAuthority('APPROVE_REGISTRATION_REQUEST')")

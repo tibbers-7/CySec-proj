@@ -128,7 +128,7 @@ export class ManagerProfileComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        userType: this.employee.userType
+        role: this.employee.role
       }
 
       console.log(employee)

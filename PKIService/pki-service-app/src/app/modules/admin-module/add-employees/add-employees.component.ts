@@ -29,7 +29,7 @@ export class AddEmployeesComponent implements OnInit{
 
   selectedRole: string | undefined
 
-  allRoles: string[] = ['ADMIN', 'PROJECT_MANAGER', 'HR_MANAGER', 'ENGINEER']
+  allRoles: string[] = ['ROLE_ADMIN', 'ROLE_PROJECT_MANAGER', 'ROLE_HR_MANAGER', 'ROLE_ENGINEER']
 
   error:any={isError:false,errorMessage:''};
   isSelected:any;
@@ -102,7 +102,7 @@ export class AddEmployeesComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        userType: String(this.selectedRole)
+        role: String(this.selectedRole)
       }
 
       console.log(employee)

@@ -18,7 +18,7 @@ export class LoginPageComponent {
 
   signIn(){
     if(!this.validityCheck()) return
-    if(this.isPasswordless) {
+    if(!this.logInData.password) {
       this.authService.passwordlessLoginRequest(this.logInData.username).subscribe(res=>{
         this.toast.success('Check your email!')
       })
@@ -37,8 +37,9 @@ export class LoginPageComponent {
       return false
     } 
     if(this.logInData.password === '' && !this.isPasswordless){
-      this.toast.error("The password field is missing!")
-      return false
+      //this.toast.error("The password field is missing!")
+     //return false
+     return true
     }
     return true
   }

@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.dto;
 
+import com.example.bezbednostbackend.model.Role;
 import com.example.bezbednostbackend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,10 @@ public class EmployeeDTO {
     private String workTitle;
 
     public EmployeeDTO(User dto){
+
+        for(Role role : dto.getRoles()){
+            this.role = role.getName();
+        }
         this.id = dto.getId();
         this.name = dto.getName();
         this.surname = dto.getSurname();
@@ -30,7 +35,6 @@ public class EmployeeDTO {
         this.password = dto.getPassword();
         this.addressID = dto.getAddress().getId();
         this.phoneNumber = dto.getPhoneNumber();
-        this.role = dto.getRoles().toString();
         this.workTitle = dto.getWorkTitle();
     }
 

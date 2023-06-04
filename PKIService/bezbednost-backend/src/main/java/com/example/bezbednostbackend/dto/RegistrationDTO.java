@@ -43,7 +43,7 @@ public class RegistrationDTO {
 
     @Valid
     @Pattern(regexp = "ROLE_ENGINEER|ROLE_PROJECT_MANAGER|ROLE_HR_MANAGER", message = "User type can be either ROLE_ENGINEER,ROLE_HR_MANAGER or ROLE_PROJECT_MANAGER")
-    @NotBlank(message = "User type cannot be empty")
+    @NotBlank(message = "Role cannot be empty")
     public String role;
 
     @Valid
