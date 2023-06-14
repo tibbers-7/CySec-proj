@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.controller;
 
+import com.example.bezbednostbackend.dto.CombinedSearchDTO;
 import com.example.bezbednostbackend.dto.EmployeeDTO;
 import com.example.bezbednostbackend.dto.RegistrationResolveRequestDTO;
 import com.example.bezbednostbackend.dto.StringResponseDTO;
@@ -181,6 +182,13 @@ private final RolePrivilegeService rolePrivilegeService;
     public ResponseEntity<Collection<RegistrationRequest>> getAllRequests(){
         List<RegistrationRequest> requests = authenticationService.getAllRegistrationRequests();
         return new ResponseEntity<>(requests, HttpStatus.OK);
+   }
+
+   @PreAuthorize("hasAuthority('SEARCH_ENGINEERS')")
+   @PostMapping(value="/search-engineers", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<Collection<User>> searchEngineers(@RequestBody CombinedSearchDTO dto){
+        List<User> engineers = userService.searchEngineers(dto);
+        return new ResponseEntity<>(engineers, HttpStatus.OK);
    }
 
 

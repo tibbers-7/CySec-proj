@@ -1,5 +1,6 @@
 package com.example.bezbednostbackend.service;
 
+import com.example.bezbednostbackend.dto.CombinedSearchDTO;
 import com.example.bezbednostbackend.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,4 +25,6 @@ public interface UserService extends UserDetailsService {
     void update(User employee);
 
     UserDetails loadUserByUsername(String username);
+
+    List<User> searchEngineers(CombinedSearchDTO dto);
 }
