@@ -47,4 +47,13 @@ export class LoginPageComponent {
   clickedOnRegistration(){
     this.router.navigate(['registration'])
   }
+
+  clickedOnRecovery(){
+    if(!this.validityCheck()) return;
+    this.authService.recoverAccount(this.logInData).subscribe(res=>{
+      this.toast.success("Recovery email sent!");
+    }, err=>{
+      this.toast.error(err);
+    });
+  }
 }

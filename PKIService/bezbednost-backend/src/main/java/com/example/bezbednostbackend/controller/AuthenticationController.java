@@ -50,7 +50,12 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody AuthenticationRequestDTO request
     ) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        try{
+            AuthenticationResponseDTO response=authenticationService.authenticate(request);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     //NO AUTHORIZATION

@@ -11,6 +11,7 @@ import { ManagerModule } from '../manager-module/manager.module';
 import { AdminModule } from '../admin-module/admin.module';
 import { EngineerModule } from '../engineer-module/engineer.module';
 import { AuthGuard } from 'src/app/auth/auth-guard';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
@@ -26,7 +27,8 @@ const routes: Routes = [
         LoginPageComponent,
         RegistrationPageComponent,
         ActivateAccountPageComponent,
-        HomePageComponent
+        HomePageComponent,
+        ChangePasswordComponent
     ],
     providers: [],
     imports: [
