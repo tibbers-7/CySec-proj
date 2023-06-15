@@ -56,8 +56,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User employee) {
-        userRepository.save(employee);
+    public void create(User user) {
+        user.setAllowRefreshToken(true);
+        user.setBlocked(false);
+        userRepository.save(user);
     }
 
     @Override
@@ -75,6 +77,18 @@ public class UserServiceImpl implements UserService {
         LocalDateTime startDate = LocalDateTime.parse(dto.getStartOfEmployment());
         List<User> users = userRepository.combinedEngineerSearch(dto.getUsername(), dto.getName(), dto.getSurname(), startDate, LocalDateTime.now());
         return new ArrayList<User>();
+    }
+
+    @Override
+    public void blockRefreshToken(User user){
+        user.setAllowRefreshToken(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void blockUser(User user){
+        user.setBlocked(true);
+        userRepository.save(user);
     }
 
 }

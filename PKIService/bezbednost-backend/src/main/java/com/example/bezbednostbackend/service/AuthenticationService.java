@@ -39,4 +39,5 @@ public interface AuthenticationService {
     void deleteSession(String refreshToken) throws TokenRefreshException;
 
     List<RegistrationRequest> getAllRegistrationRequests();
+    void sendRecoveryEmail(AuthenticationRequestDTO dto) throws UserIsBannedException, NoSuchAlgorithmException, InvalidKeyException;
 }

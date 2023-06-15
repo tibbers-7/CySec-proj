@@ -17,6 +17,7 @@ import com.example.bezbednostbackend.model.token.RefreshToken;
 import com.example.bezbednostbackend.repository.*;
 import com.example.bezbednostbackend.service.AuthenticationService;
 import com.example.bezbednostbackend.service.EmailService;
+import com.example.bezbednostbackend.service.RecoveryTokenService;
 import com.example.bezbednostbackend.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
+    private final RecoveryTokenService recoveryTokenService;
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenRepository verificationTokenRepository;
     private final RoleRepository roleRepository;
@@ -147,6 +149,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user=userRepository.findByUsername(request.getUsername());
         if(user==null) throw(new UsernameNotFoundException("User not found"));
         if (!user.isActive()) throw new UserIsBannedException("User not activated");
+        if (user.isBlocked()) throw new UserIsBannedException("User was blocked");
         var accessToken=jwtService.generateAccessToken(addClaims(user), user);
         var refreshToken=refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponseDTO.builder()
@@ -269,6 +272,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public List<RegistrationRequest> getAllRegistrationRequests() {
        return registrationRequestRepository.findAll();
     }
+
+    @Override
+    public void sendRecoveryEmail(AuthenticationRequestDTO dto) throws UserIsBannedException, NoSuchAlgorithmException, InvalidKeyException {
+        log.info("AuthenticationService: entered the passwordlessLogin method.");
+        User user = userRepository.findByUsername(dto.getUsername());
+        if(user == null) throw new UsernameNotFoundException("User with this username doesn't exist");
+        else if (!user.isActive() || user.isBlocked()) throw new UserIsBannedException("Account with this username is inactive");
+        String token = UUID.randomUUID().toString();
+
+        recoveryTokenService.createRecoveryToken(user.getId());
+
+        String hmac = jwtService.calculateHMACOfToken(token);
+        String emailContent = "Hello " + user.getName() + "," + "\r\n" +
+                "Use this link to recover your account." + "\r\n" +
+                "http://localhost:4200/login/link?token="+hmac+"&username="+user.getUsername();
+        String emailSubject = "Sign in to your account";
+        emailService.sendSimpleEmail( user.getUsername(), emailSubject, emailContent );
+    }
+
+
 
 
 }

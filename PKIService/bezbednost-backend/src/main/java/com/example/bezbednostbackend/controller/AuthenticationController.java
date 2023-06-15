@@ -6,7 +6,9 @@ import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.dto.StringResponseDTO;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.service.AuthenticationService;
+import com.example.bezbednostbackend.service.RecoveryTokenService;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +30,8 @@ public class AuthenticationController {
 
     @Autowired
     private final AuthenticationService authenticationService;
+    @Autowired
+    private final RecoveryTokenService recoveryTokenService;
 
     //NO AUTHORIZATION
     @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -118,5 +122,29 @@ public class AuthenticationController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    //NO AUTHORIZATION
+    @PostMapping(value="/authenticate/recovery",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StringResponseDTO> recoverAccount(@RequestParam String token, @RequestParam String username) {
+        try{
+            recoveryTokenService.validateToken(token,username);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //NO AUTHORIZATION
+    @PostMapping(value="/authenticate/send-recovery-email",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StringResponseDTO> sendRecoveryEmail(@RequestParam AuthenticationRequestDTO dto) {
+        try{
+            authenticationService.sendRecoveryEmail(dto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 }

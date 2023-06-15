@@ -43,6 +43,8 @@ public class User implements UserDetails {
     private Collection<Role> roles;
     private String workTitle;
     private boolean isActive;
+    private boolean allowRefreshToken;
+    private boolean isBlocked;
 
     public User(){
         super();

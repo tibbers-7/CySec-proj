@@ -191,5 +191,27 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(engineers, HttpStatus.OK);
    }
 
+    @PreAuthorize("hasAuthority('BLOCK_USER')")
+    @PostMapping(value="/block-user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<User>> blockUser(@RequestBody EmployeeDTO dto){
+        User user = userService.getById(dto.getId());
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        userService.blockUser(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('BLOCK_REFRESH_TOKEN')")
+    @PostMapping(value="/block-refresh-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<User>> blockRefreshToken(@RequestBody EmployeeDTO dto){
+        User user = userService.getById(dto.getId());
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        userService.blockRefreshToken(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

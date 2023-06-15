@@ -80,6 +80,9 @@ insert into privileges(id, name) values (43, 'GET_ALL_PRIVILEGES')
 insert into privileges(id, name) values (44, 'GET_ALL_PRIVILEGES_FOR_ENGINEER')
 insert into privileges(id, name) values (45, 'GET_ALL_PRIVILEGES_FOR_HR')
 insert into privileges(id, name) values (46, 'GET_ALL_PRIVILEGES_FOR_PR')
+insert into privileges(id, name) values (47, 'BLOCK_USER')
+insert into privileges(id, name) values (48, 'BLOCK_REFRESH_TOKEN')
+
 
 insert into roles_privileges(role_id, privilege_id) values (1, 1)
 insert into roles_privileges(role_id, privilege_id) values (1, 2)
@@ -127,6 +130,9 @@ insert into roles_privileges(role_id, privilege_id) values (1, 43)
 insert into roles_privileges(role_id, privilege_id) values (1, 44)
 insert into roles_privileges(role_id, privilege_id) values (1, 45)
 insert into roles_privileges(role_id, privilege_id) values (1, 46)
+insert into roles_privileges(role_id, privilege_id) values (1, 47)
+insert into roles_privileges(role_id, privilege_id) values (1, 48)
+
 
 insert into roles_privileges(role_id, privilege_id) values (2, 1)
 insert into roles_privileges(role_id, privilege_id) values (2, 2)
