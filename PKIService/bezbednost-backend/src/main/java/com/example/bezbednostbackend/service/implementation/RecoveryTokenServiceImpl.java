@@ -7,6 +7,7 @@ import com.example.bezbednostbackend.repository.RecoveryTokenRepository;
 import com.example.bezbednostbackend.repository.UserRepository;
 import com.example.bezbednostbackend.service.RecoveryTokenService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class RecoveryTokenServiceImpl implements RecoveryTokenService {
 
