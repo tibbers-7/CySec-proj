@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllByRole(String role) {
-        return userRepository.findAllByRole(role);
+    public List<User> findAllByRole(Integer roleID) {
+        return userRepository.findAllByRole(roleID);
     }
 
     @Override
@@ -70,11 +70,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(employee);
     }
 
-    @Override
+   /* @Override
     public List<User> searchEngineers(CombinedSearchDTO dto){
         LocalDateTime startDate = LocalDateTime.parse(dto.getStartOfEmployment());
         List<User> users = userRepository.combinedEngineerSearch(dto.getUsername(), dto.getName(), dto.getSurname(), startDate, LocalDateTime.now());
         return new ArrayList<User>();
-    }
+    }*/
 
 }

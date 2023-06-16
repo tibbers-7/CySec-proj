@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     Optional<User> findByUsername(String username);
 
-    List<User> findAllByRole(String role);
+    List<User> findAllByRole(Integer roleID);
 
     void create(User employee);
 
@@ -26,5 +26,5 @@ public interface UserService extends UserDetailsService {
 
     UserDetails loadUserByUsername(String username);
 
-    List<User> searchEngineers(CombinedSearchDTO dto);
+    //List<User> searchEngineers(CombinedSearchDTO dto);
 }
