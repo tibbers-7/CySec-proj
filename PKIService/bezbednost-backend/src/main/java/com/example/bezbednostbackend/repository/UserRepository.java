@@ -19,11 +19,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllByRole(@Param("roleID") Integer roleID);
 
 
-    @Query(value = "SELECT * FROM users u, users_roles r WHERE role_id = 4 and u.id = r.user_id and name LIKE '%:name%' and surname LIKE '%:surname%'", nativeQuery = true)
+    @Query(value = "SELECT * FROM users JOIN users_roles ON id = user_id WHERE role_id = 4", nativeQuery = true)
     List<User> combinedEngineerSearch(@Param("username") String username,
                                       @Param("name") String name,
                                       @Param("surname") String surname,
                                       @Param("startDate")LocalDateTime startOfEmployment, @Param("now") LocalDateTime now);
-
+// and name LIKE '%:name%' and surname LIKE '%:surname%'
 }
 

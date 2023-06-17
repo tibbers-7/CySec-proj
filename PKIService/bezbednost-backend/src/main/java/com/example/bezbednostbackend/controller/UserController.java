@@ -189,9 +189,14 @@ private final RolePrivilegeService rolePrivilegeService;
 
    @PreAuthorize("hasAuthority('SEARCH_ENGINEERS')")
    @PostMapping(value="/search-engineers", produces = MediaType.APPLICATION_JSON_VALUE)
-   public ResponseEntity<Collection<User>> searchEngineers(@RequestBody CombinedSearchDTO dto){
+   public ResponseEntity<Collection<EmployeeDTO>> searchEngineers(@RequestBody CombinedSearchDTO dto){
         List<User> engineers = userService.searchEngineers(dto);
-        return new ResponseEntity<>(engineers, HttpStatus.OK);
+        Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
+       for(User engineer :engineers){
+           EmployeeDTO employee = new EmployeeDTO(engineer);
+           dtos.add(employee);
+       }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
    }
 
 
