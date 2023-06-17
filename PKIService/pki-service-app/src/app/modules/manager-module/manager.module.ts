@@ -7,11 +7,14 @@ import { ManagerToolbarComponent } from './manager-toolbar/manager-toolbar.compo
 import { ManagerProfileComponent } from './manager-profile/manager-profile.component';
 import { RoleGuard } from 'src/app/auth/role-guard';
 import { ManagerProjectsComponent } from './manager-projects/manager-projects.component';
+import { ManagerEngineersOnProjectViewComponent } from './manager-engineers-on-project-view/manager-engineers-on-project-view.component';
 
 const routes: Routes = [
   {path: 'manager/editProfile', component: ManagerProfileComponent,
   canActivate: [RoleGuard], data: { expectedRole: 'ROLE_PROJECT_MANAGER' }},
   {path: 'manager/projects', component: ManagerProjectsComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_PROJECT_MANAGER' }},
+  {path: 'manager/projects/:id/employees', component: ManagerEngineersOnProjectViewComponent,
   canActivate: [RoleGuard], data: { expectedRole: 'ROLE_PROJECT_MANAGER' }}
 
 ];
@@ -20,7 +23,8 @@ const routes: Routes = [
   declarations: [
     ManagerToolbarComponent,
     ManagerProfileComponent,
-    ManagerProjectsComponent
+    ManagerProjectsComponent,
+    ManagerEngineersOnProjectViewComponent
   ],
   imports: [
     AppRoutingModule,

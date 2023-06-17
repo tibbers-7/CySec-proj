@@ -30,7 +30,7 @@ export class ManagerProjectsComponent implements OnInit{
   }
 
   viewProject(id: number){
-    //this.router.navigate(['projects', id, 'employees']);
+    this.router.navigate(['manager/projects', id, 'employees']);
   }
 
 }
