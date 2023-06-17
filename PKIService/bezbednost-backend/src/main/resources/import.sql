@@ -18,7 +18,7 @@ insert into roles(id, name) values (2, 'ROLE_PROJECT_MANAGER')
 insert into roles(id, name) values (3, 'ROLE_HR_MANAGER')
 insert into roles(id, name) values (4, 'ROLE_ENGINEER')
 
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title) values (true, 'Anja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0691442001', 'Dmitrovic', 'tibbers@gmail.com',1, 'Full stack developer');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title) values (true, 'Anja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0691442001', 'Dmitrovic', 'tibbers707@gmail.com',1, 'Full stack developer');
 insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title) values (false, 'Elena', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0623403843', 'Milanovic', 'mili@gmail.com',2, 'Psychologist');
 insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title) values (false, 'Milan', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0645459035', 'Preradovic', 'enaa@gmail.com',3, 'Java developer');
 insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title) values (false, 'Nemanja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0613985239', 'Djordjevic', 'ddgss@gmail.com',4, '.NET developer');

@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
-    @Query(value = "SELECT * FROM projects WHERE project_ManagerID = :project_ManagerID", nativeQuery = true)
+    @Query(name="findByProjectManager")
     List<Project> findAllByProjectManagerID(@Param("project_ManagerID") Integer projectManagerID);
 }

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="projects")
+@NamedQuery(name="findByProjectManager",query="SELECT p FROM Project p WHERE p.projectManagerID=:projectManagerID")
 public class Project {
 
     @Id

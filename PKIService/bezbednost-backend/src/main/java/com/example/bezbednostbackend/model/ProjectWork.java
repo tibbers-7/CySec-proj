@@ -14,6 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="projectWorks")
+@NamedQuery(name="findByEngineer",query = "SELECT pw FROM ProjectWork pw WHERE pw.engineerID = :engineerID")
+@NamedQuery(name="findPWByProject",query = "SELECT pw FROM ProjectWork pw WHERE pw.projectID = :projectId")
+
 public class ProjectWork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
