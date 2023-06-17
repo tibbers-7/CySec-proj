@@ -26,5 +26,5 @@ public interface UserService extends UserDetailsService {
 
     UserDetails loadUserByUsername(String username);
 
-    //List<User> searchEngineers(CombinedSearchDTO dto);
+    List<User> searchEngineers(CombinedSearchDTO dto);
 }

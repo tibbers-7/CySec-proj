@@ -186,13 +186,13 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(requests, HttpStatus.OK);
    }
 
-   /*
+
    @PreAuthorize("hasAuthority('SEARCH_ENGINEERS')")
    @PostMapping(value="/search-engineers", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<Collection<User>> searchEngineers(@RequestBody CombinedSearchDTO dto){
         List<User> engineers = userService.searchEngineers(dto);
         return new ResponseEntity<>(engineers, HttpStatus.OK);
-   }*/
+   }
 
 
 }
