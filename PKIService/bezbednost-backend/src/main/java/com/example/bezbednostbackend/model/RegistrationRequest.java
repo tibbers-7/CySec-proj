@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="registration_requests")
-@NamedQuery(name="findByUsername",query = "SELECT * FROM registration_requests WHERE username = :username ")
+@NamedQuery(name="findRRByUsername",query = "SELECT rr FROM RegistrationRequest rr WHERE rr.username = :username ")
 public class RegistrationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

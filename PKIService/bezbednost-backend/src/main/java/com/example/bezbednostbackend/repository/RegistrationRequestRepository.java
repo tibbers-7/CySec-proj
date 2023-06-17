@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, Integer> {
-    @Query(value = "SELECT * FROM registration_requests WHERE username = :username ", nativeQuery = true)
+    @Query(name="FindRRByUsername")
     List<RegistrationRequest> findByUsername(@Param("username") String username);
 }
