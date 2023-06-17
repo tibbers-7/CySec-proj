@@ -97,7 +97,8 @@ private final RolePrivilegeService rolePrivilegeService;
     @PreAuthorize("hasAuthority('GET_ALL_ENGINEERS')")
     @GetMapping(value="/engineers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<EmployeeDTO>> findAllEngineers(){
-        Collection<User> engineers = userService.findAllByRole("ROLE_ENGINEER");
+        //u tabeli roles ROLE_ENGINEER ima id 4
+        Collection<User> engineers = userService.findAllByRole(4);
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
         for(User engineer: engineers){
             EmployeeDTO dto = new EmployeeDTO(engineer);
@@ -109,7 +110,8 @@ private final RolePrivilegeService rolePrivilegeService;
     @PreAuthorize("hasAuthority('GET_ALL_PROJECT_MANAGERS')")
     @GetMapping(value="/projectManagers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<EmployeeDTO>> findAllProjectManagers(){
-        Collection<User> managers = userService.findAllByRole("ROLE_PROJECT_MANAGER");
+        //u tabeli roles ROLE_PROJECT_MANAGER ima id 2
+        Collection<User> managers = userService.findAllByRole(2);
         Collection<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
         for(User manager: managers){
             EmployeeDTO dto = new EmployeeDTO(manager);
@@ -184,12 +186,13 @@ private final RolePrivilegeService rolePrivilegeService;
         return new ResponseEntity<>(requests, HttpStatus.OK);
    }
 
+   /*
    @PreAuthorize("hasAuthority('SEARCH_ENGINEERS')")
    @PostMapping(value="/search-engineers", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<Collection<User>> searchEngineers(@RequestBody CombinedSearchDTO dto){
         List<User> engineers = userService.searchEngineers(dto);
         return new ResponseEntity<>(engineers, HttpStatus.OK);
-   }
+   }*/
 
     @PreAuthorize("hasAuthority('BLOCK_USER')")
     @PostMapping(value="/block-user", produces = MediaType.APPLICATION_JSON_VALUE)
