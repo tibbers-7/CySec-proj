@@ -55,8 +55,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions
+                                .sameOrigin()
+                        ).xssProtection())
+                .csrf().disable()
                 //whitelisting pages
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**")
