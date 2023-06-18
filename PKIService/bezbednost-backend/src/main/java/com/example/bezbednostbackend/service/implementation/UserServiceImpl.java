@@ -72,12 +72,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(employee);
     }
 
-   /* @Override
+    @Override
     public List<User> searchEngineers(CombinedSearchDTO dto){
         LocalDateTime startDate = LocalDateTime.parse(dto.getStartOfEmployment());
-        //List<User> users = userRepository.combinedEngineerSearch(dto.getUsername(), dto.getName(), dto.getSurname(), startDate, LocalDateTime.now());
-        return new ArrayList<User>();
-    }*/
+        List<User> users = userRepository.combinedEngineerSearch(dto.getUsername(), dto.getName(), dto.getSurname());
+        //PERIOD ZAPOSLENJA??
+        return users;
+    }
 
     @Override
     public void blockRefreshToken(User user){

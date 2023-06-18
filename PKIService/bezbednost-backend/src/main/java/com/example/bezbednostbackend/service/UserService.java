@@ -26,9 +26,8 @@ public interface UserService extends UserDetailsService {
 
     UserDetails loadUserByUsername(String username);
 
-    //List<User> searchEngineers(CombinedSearchDTO dto);
-
     void blockRefreshToken(User user);
     void blockUser(User user);
 
+    List<User> searchEngineers(CombinedSearchDTO dto);
 }
