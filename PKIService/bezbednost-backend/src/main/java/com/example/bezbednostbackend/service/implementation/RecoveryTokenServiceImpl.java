@@ -32,17 +32,16 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     private Long expirationTime;
     @Override
     public Optional<RecoveryToken> findByUser_Username(String username) {
-        return recoveryTokenRepository.findByToken(username);
+        return recoveryTokenRepository.findByUser_Username(username);
     }
 
     @Override
     public boolean validateToken(String token, String username) throws NoSuchAlgorithmException, InvalidKeyException {
 
         //if (!findByUser_Username(username).isPresent()) throw new RuntimeException("Recovery token for this user doesn't exist");
-        RecoveryToken recoveryToken = findByUser_Username(token).get();
-
-        recoveryToken.setToken(jwtService.calculateHMACOfToken(recoveryToken.getToken()));
-        if(!recoveryToken.getToken().equals(token)) throw new RuntimeException("Usernames don't match");
+        RecoveryToken recoveryToken = findByUser_Username(username).get();
+        //recoveryToken.setToken(jwtService.calculateHMACOfToken(recoveryToken.getToken()));
+        if(!jwtService.calculateHMACOfToken(recoveryToken.getToken()).equals(token)) throw new RuntimeException("Usernames don't match");
 
         int comparisonResult = Instant.now().compareTo(recoveryToken.getExpiryDate());
         if (comparisonResult > 0) throw new RuntimeException("Recovery token expired");

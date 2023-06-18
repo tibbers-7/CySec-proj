@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -281,7 +282,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         else if (!user.isActive() || user.isBlocked()) throw new UserIsBannedException("Account with this username is inactive");
         String token = UUID.randomUUID().toString();
 
-        recoveryTokenService.createRecoveryToken(user.getId());
+        VerificationToken verificationToken = new VerificationToken(user.getUsername(), token, 60);
+        verificationTokenRepository.save(verificationToken);
 
         String hmac = jwtService.calculateHMACOfToken(token);
         String emailContent = "Hello " + user.getName() + "," + "\r\n" +

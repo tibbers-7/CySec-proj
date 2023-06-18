@@ -132,12 +132,12 @@ public class AuthenticationController {
     //NO AUTHORIZATION
     @PostMapping(value="/authenticate/recovery",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StringResponseDTO> recoverAccount(@RequestParam String token, @RequestParam String username) {
+    public ResponseEntity<AuthenticationResponseDTO> recoverAccount(@RequestParam String token, @RequestParam String username) {
         try{
-            recoveryTokenService.validateToken(token,username);
-            return new ResponseEntity<>(HttpStatus.OK);
+            AuthenticationResponseDTO response = authenticationService.logInWithLink(token, username);
+            return new ResponseEntity<>(response,HttpStatus.OK);
         }catch(Exception e){
-            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
