@@ -28,6 +28,10 @@ export class AuthenticationService {
     return this.http.post<any>(this.apiHost + '/authenticate/send-recovery-email', credentials, { headers: this.headers})
   }
 
+  validateRecoveryToken(token:string, username:string): Observable<LogInResponseData> {
+    return this.http.post<any>(this.apiHost + '/authenticate/recovery?token='+token+'&username='+username, { headers: this.headers})
+  }
+
   passwordlessLoginRequest(username : String): Observable<any> {
     return this.http.post(this.apiHost + '/authenticate/passwordless', username, { headers: this.headers})
   }
