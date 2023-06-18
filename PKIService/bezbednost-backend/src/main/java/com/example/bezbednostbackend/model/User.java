@@ -22,6 +22,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @Table(name="users")
+@NamedNativeQuery(name = "findUsersByRole", query = "SELECT * FROM users JOIN users_roles ON id = user_id WHERE role_id = :roleID", resultClass = User.class)
+@NamedNativeQuery(name = "combinedEngineerSearch",
+        query = "SELECT * FROM users JOIN users_roles ON id = user_id WHERE role_id = 4 " +
+                "AND lower(username) LIKE '%' || lower(:username) || '%' " +
+                "AND lower(name) LIKE '%' || lower(:name) || '%' " +
+                "AND lower(surname) LIKE '%' || lower(:surname) || '%'",
+        resultClass = User.class)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

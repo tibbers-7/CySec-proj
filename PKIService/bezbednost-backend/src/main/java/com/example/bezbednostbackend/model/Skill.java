@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="skills")
+@NamedQuery(name="findSkillByEngineerId",query = "SELECT s FROM Skill s WHERE s.engineerID = :engineerID")
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

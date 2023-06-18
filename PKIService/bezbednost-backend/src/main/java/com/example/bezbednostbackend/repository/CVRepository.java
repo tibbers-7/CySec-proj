@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CVRepository extends JpaRepository<CV, Integer> {
-    @Query(name="CV.findCVByEngineer")
+    @Query(name="findCVByEngineer")
     Optional<CV> findByEngineerID(Integer engineerID);
 }

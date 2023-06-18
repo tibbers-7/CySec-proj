@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface SkillRepository extends JpaRepository<Skill, Integer> {
-    @Query(value = "SELECT * FROM skills WHERE engineerID = :engineerID", nativeQuery = true)
+    @Query(name="findSkillByEngineerId")
     List<Skill> findAllByEngineerID(@Param("engineerID") Integer engineerID);
 }
