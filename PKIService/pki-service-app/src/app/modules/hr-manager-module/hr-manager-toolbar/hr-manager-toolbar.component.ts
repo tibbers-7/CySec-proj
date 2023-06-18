@@ -10,7 +10,7 @@ export class HrManagerToolbarComponent {
   constructor(private router:Router) { }
  
   EmployeesClick(){
-    //this.router.navigate(['hrmanager/employees']);
+    this.router.navigate(['hrmanager/employees']);
   }
 
   EditProfileClick(){

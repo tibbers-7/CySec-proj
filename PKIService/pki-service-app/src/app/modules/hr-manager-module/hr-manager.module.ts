@@ -5,9 +5,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { RoleGuard } from 'src/app/auth/role-guard';
+import { HrManagerEmployeesViewComponent } from './hr-manager-employees-view/hr-manager-employees-view.component';
 
 const routes: Routes = [
   {path:'hrmanager/editProfile', component: HrManagerProfileComponent,
+  canActivate: [RoleGuard], data: { expectedRole: 'ROLE_HR_MANAGER' }},
+  {path:'hrmanager/employees', component: HrManagerEmployeesViewComponent,
   canActivate: [RoleGuard], data: { expectedRole: 'ROLE_HR_MANAGER' }}
 
 ];
@@ -15,7 +18,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     HrManagerToolbarComponent,
-    HrManagerProfileComponent
+    HrManagerProfileComponent,
+    HrManagerEmployeesViewComponent
   ],
   imports: [
     AppRoutingModule,
