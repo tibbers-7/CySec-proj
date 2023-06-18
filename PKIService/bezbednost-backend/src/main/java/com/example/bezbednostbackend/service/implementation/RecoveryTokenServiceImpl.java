@@ -1,6 +1,5 @@
 package com.example.bezbednostbackend.service.implementation;
 
-import com.example.bezbednostbackend.auth.JwtService;
 import com.example.bezbednostbackend.model.User;
 import com.example.bezbednostbackend.model.token.RecoveryToken;
 import com.example.bezbednostbackend.model.token.RefreshToken;
@@ -13,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -27,7 +24,6 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
 
     private final RecoveryTokenRepository recoveryTokenRepository;
     private final UserRepository userRepository;
-    private final JwtService jwtService;
     @Value("${jwtRecoveryExpirationMs}")
     private Long expirationTime;
     @Override
@@ -36,10 +32,8 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     }
 
     @Override
-    public boolean validateToken(String token, String username) throws NoSuchAlgorithmException, InvalidKeyException {
-        String _token = jwtService.calculateHMACOfToken(token);
-
-        if (!findByToken(_token).isPresent()) throw new RuntimeException("Recovery token doesn't exist");
+    public boolean validateToken(String token, String username) {
+        if (!findByToken(token).isPresent()) throw new RuntimeException("Recovery token doesn't exist");
         RecoveryToken recoveryToken = findByToken(token).get();
 
         if(!recoveryToken.getUser().getUsername().equals(username)) throw new RuntimeException("Usernames don't match");

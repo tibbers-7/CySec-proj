@@ -144,7 +144,7 @@ public class AuthenticationController {
     //NO AUTHORIZATION
     @PostMapping(value="/authenticate/send-recovery-email",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StringResponseDTO> sendRecoveryEmail(@RequestBody AuthenticationRequestDTO dto) {
+    public ResponseEntity<StringResponseDTO> sendRecoveryEmail(@RequestParam AuthenticationRequestDTO dto) {
         try{
             authenticationService.sendRecoveryEmail(dto);
             return new ResponseEntity<>(HttpStatus.OK);

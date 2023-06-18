@@ -12,14 +12,12 @@ import { AdminModule } from '../admin-module/admin.module';
 import { EngineerModule } from '../engineer-module/engineer.module';
 import { AuthGuard } from 'src/app/auth/auth-guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { RecoveryPageComponent } from './recovery-page/recovery-page.component';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
     {path:'registration', component: RegistrationPageComponent},
     {path:'activate-account', component: ActivateAccountPageComponent},
     {path:'login/link', component: PasswordlessLoginPageComponent},
-    {path:'login/recovery', component: RecoveryPageComponent},
     {path:'home', component: HomePageComponent,
     canActivate: [AuthGuard]}
   ];
@@ -30,8 +28,7 @@ const routes: Routes = [
         RegistrationPageComponent,
         ActivateAccountPageComponent,
         HomePageComponent,
-        ChangePasswordComponent,
-        RecoveryPageComponent
+        ChangePasswordComponent
     ],
     providers: [],
     imports: [

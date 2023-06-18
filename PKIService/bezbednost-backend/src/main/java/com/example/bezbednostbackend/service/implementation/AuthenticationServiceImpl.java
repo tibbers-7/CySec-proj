@@ -286,7 +286,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hmac = jwtService.calculateHMACOfToken(token);
         String emailContent = "Hello " + user.getName() + "," + "\r\n" +
                 "Use this link to recover your account." + "\r\n" +
-                "http://localhost:4200/login/recovery?token="+hmac+"&username="+user.getUsername();
+                "http://localhost:4200/login/link?token="+hmac+"&username="+user.getUsername();
         String emailSubject = "Sign in to your account";
         emailService.sendSimpleEmail( user.getUsername(), emailSubject, emailContent );
     }
