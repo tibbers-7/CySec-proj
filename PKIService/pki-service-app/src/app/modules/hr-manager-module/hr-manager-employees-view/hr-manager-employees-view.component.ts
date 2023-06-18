@@ -14,7 +14,7 @@ export class HrManagerEmployeesViewComponent implements OnInit{
 
   public dataSource = new MatTableDataSource<EmployeeDTO>()
   public dataSource2 = new MatTableDataSource<EmployeeDTO>()
-  public displayedColumns = ['id','name', 'surname', 'username', 'phoneNumber']
+  public displayedColumns = ['id','name', 'surname', 'username', 'phoneNumber', 'view-button']
   public managers: EmployeeDTO[] = [];
   public engineers: EmployeeDTO[] = [];
 
@@ -31,6 +31,14 @@ export class HrManagerEmployeesViewComponent implements OnInit{
       this.engineers = res;
       this.dataSource2.data = this.engineers;
     })
+  }
+
+  viewManager(id: number){
+    this.router.navigate(['hrmanager/employees/', id, 'manager']);
+  }
+
+  viewEngineer(id: number){
+    this.router.navigate(['hrmanager/employees/', id, 'engineer']);
   }
 
 }

@@ -29,6 +29,15 @@
             <td mat-cell *matCellDef="let manager" class="clickable cell-center">{{manager.phoneNumber}}</td>
         </ng-container>
 
+        <ng-container matColumnDef="view-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let manager" class="cell-center">
+                <button mat-icon-button (click)="viewManager(manager.id)">
+                    <mat-icon matTooltip="view">view_list</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
@@ -59,6 +68,15 @@
         <ng-container matColumnDef="phoneNumber" >
             <th mat-header-cell *matHeaderCellDef class="cell-center-header">Phone Number</th>
             <td mat-cell *matCellDef="let engineer" class="clickable cell-center">{{engineer.phoneNumber}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="view-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let engineer" class="cell-center">
+                <button mat-icon-button (click)="viewEngineer(engineer.id)">
+                    <mat-icon matTooltip="view">view_list</mat-icon>
+                </button>
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
