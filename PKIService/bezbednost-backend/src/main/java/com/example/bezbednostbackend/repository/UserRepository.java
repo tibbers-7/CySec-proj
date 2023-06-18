@@ -19,11 +19,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllByRole(@Param("roleID") Integer roleID);
 
 
-    @Query(value = "SELECT * FROM users JOIN users_roles ON id = user_id WHERE role_id = 4", nativeQuery = true)
+    @Query(value = "SELECT * FROM users JOIN users_roles ON id = user_id WHERE role_id = 4 and lower(username) LIKE '%' || lower(:username) || '%' and lower(name) LIKE '%' || lower(:name) || '%' and lower(surname) LIKE '%' || lower(:surname) || '%'", nativeQuery = true)
     List<User> combinedEngineerSearch(@Param("username") String username,
                                       @Param("name") String name,
-                                      @Param("surname") String surname,
-                                      @Param("startDate")LocalDateTime startOfEmployment, @Param("now") LocalDateTime now);
-// and name LIKE '%:name%' and surname LIKE '%:surname%'
+                                      @Param("surname") String surname);
 }
 
