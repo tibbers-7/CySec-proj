@@ -1,0 +1,35 @@
+<app-manager-toolbar></app-manager-toolbar>
+<div class="admin-home-main-div">
+    
+    <div class="table-header">
+        <p class="table-title">Projects</p>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="all-certificates-table">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">ID</th>
+            <td mat-cell *matCellDef="let project" class="clickable cell-center">{{project.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="name" >
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Name</th>
+            <td mat-cell *matCellDef="let project" class="clickable cell-center">{{project.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">Start Date</th>
+            <td mat-cell *matCellDef="let project" class="clickable cell-center">{{project.startDate}}</td>
+        </ng-container>
+        <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header">End Date</th>
+            <td mat-cell *matCellDef="let project" class="clickable cell-center">{{project.endDate}}</td>
+        </ng-container>
+        <ng-container matColumnDef="view-button">
+            <th mat-header-cell *matHeaderCellDef class="cell-center-header"></th>
+            <td mat-cell *matCellDef="let project" class="cell-center">
+                <button mat-icon-button (click)="viewProject(project.id)">
+                    <mat-icon matTooltip="update">view_list</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

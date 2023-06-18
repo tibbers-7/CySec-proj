@@ -13,6 +13,7 @@ import { EngineerModule } from '../engineer-module/engineer.module';
 import { AuthGuard } from 'src/app/auth/auth-guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { RecoveryPageComponent } from './recovery-page/recovery-page.component';
+import { HrManagerModule } from '../hr-manager-module/hr-manager.module';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
@@ -40,7 +41,8 @@ const routes: Routes = [
         MaterialModule,
         AdminModule,
         ManagerModule,
-        EngineerModule
+        EngineerModule,
+        HrManagerModule
     ]
 })
 export class PagesModule { }

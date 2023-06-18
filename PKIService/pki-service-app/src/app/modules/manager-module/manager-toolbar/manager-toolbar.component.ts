@@ -10,7 +10,7 @@ export class ManagerToolbarComponent {
   constructor(private router:Router) { }
  
   ProjectsClick(){
-    //this.router.navigate(['manager/projects']);
+    this.router.navigate(['manager/projects']);
   }
 
   EditProfileClick(){

@@ -1,0 +1,97 @@
+<app-hr-manager-toolbar></app-hr-manager-toolbar>
+<div class="add-certificate-main-div">
+    <div class="wrapper">
+        <div class="title">
+            Edit Profile
+        </div>
+        <div class="form">
+          <form [formGroup]="updateEmployeeForm">
+            
+            <div class="inputfield">
+                <label for="name">Name:</label>
+                <input type="text" name="name" formControlName="name" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="name && name.invalid && name.touched"> This word is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="surname">Surname:</label>
+                <input type="text" name="surname" formControlName="surname" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="surname && surname.invalid && surname.touched"> This word is invalid! </span>
+            </div>
+
+        <div class="inputfield">
+            <label for="username">Username:</label>
+            <input readonly="readonly" type="text" name="username" placeholder="example@mail.com" formControlName="username" class="input">
+            </div>
+            <div class="inputfield">
+            <label></label>
+            <span style="color: red; font-size: medium; font: bold;" *ngIf="username && username.invalid && username.touched"> This username is invalid! </span>
+            </div>
+    
+            <div class="inputfield">
+                <label>Password:</label>
+                <input type="password" name="password" formControlName="password" placeholder="*********" class="input">
+            </div>
+            <div class="inputfield">
+                <label></label>
+                <span style="color: red; font-size: medium; font: bold;" *ngIf="password && password.invalid && password.touched"> This password is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" name="phoneNumber" formControlName="phoneNumber" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched"> This phoneNumber is invalid! </span>
+            </div>
+
+            
+            <div class="inputfield">
+                <label for="country">Country:</label>
+                <input type="text" name="country" formControlName="country" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="country && country.invalid && country.touched"> This country is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="city">City:</label>
+                <input type="text" name="city" formControlName="city" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="city && city.invalid && city.touched"> This city is invalid! </span>
+            </div>
+
+            <div class="inputfield">
+                <label for="streetAddress">Street Address:</label>
+                <input type="text" name="streetAddress" formControlName="streetAddress" class="input">
+            </div>
+            <div class="inputfield">
+              <label></label>
+              <span style="color: red; font-size: medium; font: bold;" *ngIf="streetAddress && streetAddress.invalid && streetAddress.touched"> This streetAddress is invalid! </span>
+            </div>
+            
+  
+            <div class="inputfield">
+              <button [disabled]="updateEmployeeForm.invalid"  class="btn" (click)="updateEmployee()">Submit</button>
+            </div>
+          </form>
+          <br>
+          
+          <div class="inputfield">
+            <button class="btn" (click)="goBack()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    
+</div>
+
