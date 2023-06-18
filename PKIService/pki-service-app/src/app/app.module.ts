@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './auth/http-interceptor';
 import { EngineerModule } from './modules/engineer-module/engineer.module';
 import { ManagerModule } from './modules/manager-module/manager.module';
+import { HrManagerModule } from './modules/hr-manager-module/hr-manager.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ManagerModule } from './modules/manager-module/manager.module';
     PagesModule,
     AdminModule,
     EngineerModule,
-    ManagerModule
+    ManagerModule,
+    HrManagerModule
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,

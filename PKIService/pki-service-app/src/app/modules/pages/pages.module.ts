@@ -11,6 +11,7 @@ import { ManagerModule } from '../manager-module/manager.module';
 import { AdminModule } from '../admin-module/admin.module';
 import { EngineerModule } from '../engineer-module/engineer.module';
 import { AuthGuard } from 'src/app/auth/auth-guard';
+import { HrManagerModule } from '../hr-manager-module/hr-manager.module';
 
 const routes: Routes = [
     {path:'', component: LoginPageComponent},
@@ -35,7 +36,8 @@ const routes: Routes = [
         MaterialModule,
         AdminModule,
         ManagerModule,
-        EngineerModule
+        EngineerModule,
+        HrManagerModule
     ]
 })
 export class PagesModule { }
