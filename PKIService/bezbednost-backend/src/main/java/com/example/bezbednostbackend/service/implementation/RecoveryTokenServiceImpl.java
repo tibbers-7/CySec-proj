@@ -38,7 +38,7 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     @Override
     public boolean validateToken(String token, String username) throws NoSuchAlgorithmException, InvalidKeyException {
 
-        if (!findByUser_Username(username).isPresent()) throw new RuntimeException("Recovery token for this user doesn't exist");
+        //if (!findByUser_Username(username).isPresent()) throw new RuntimeException("Recovery token for this user doesn't exist");
         RecoveryToken recoveryToken = findByUser_Username(token).get();
 
         recoveryToken.setToken(jwtService.calculateHMACOfToken(recoveryToken.getToken()));
