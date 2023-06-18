@@ -8,8 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 public interface RecoveryTokenService {
-    Optional<RecoveryToken> findByToken(String token);
+    Optional<RecoveryToken> findByUser_Username(String username);
     boolean validateToken(String token,String username) throws NoSuchAlgorithmException, InvalidKeyException;
-    RecoveryToken createRecoveryToken(Integer userId);
+    RecoveryToken createRecoveryToken(Integer userId) throws NoSuchAlgorithmException, InvalidKeyException;
 
 }

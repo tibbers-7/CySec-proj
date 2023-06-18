@@ -31,18 +31,18 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     @Value("${jwtRecoveryExpirationMs}")
     private Long expirationTime;
     @Override
-    public Optional<RecoveryToken> findByToken(String token) {
-        return recoveryTokenRepository.findByToken(token);
+    public Optional<RecoveryToken> findByUser_Username(String username) {
+        return recoveryTokenRepository.findByToken(username);
     }
 
     @Override
     public boolean validateToken(String token, String username) throws NoSuchAlgorithmException, InvalidKeyException {
-        String _token = jwtService.calculateHMACOfToken(token);
 
-        if (!findByToken(_token).isPresent()) throw new RuntimeException("Recovery token doesn't exist");
-        RecoveryToken recoveryToken = findByToken(token).get();
+        if (!findByUser_Username(username).isPresent()) throw new RuntimeException("Recovery token for this user doesn't exist");
+        RecoveryToken recoveryToken = findByUser_Username(token).get();
 
-        if(!recoveryToken.getUser().getUsername().equals(username)) throw new RuntimeException("Usernames don't match");
+        recoveryToken.setToken(jwtService.calculateHMACOfToken(recoveryToken.getToken()));
+        if(!recoveryToken.getToken().equals(token)) throw new RuntimeException("Usernames don't match");
 
         int comparisonResult = Instant.now().compareTo(recoveryToken.getExpiryDate());
         if (comparisonResult > 0) throw new RuntimeException("Recovery token expired");
@@ -52,7 +52,7 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
     }
 
     @Override
-    public RecoveryToken createRecoveryToken(Integer userId){
+    public RecoveryToken createRecoveryToken(Integer userId) throws NoSuchAlgorithmException, InvalidKeyException {
         Optional<User> user=userRepository.findById(userId);
         if(!user.isPresent()) throw new NoSuchElementException("User not found");
 
@@ -62,6 +62,7 @@ public class RecoveryTokenServiceImpl implements RecoveryTokenService {
         recoveryToken.setUser(user.get());
         recoveryToken.setExpiryDate(Instant.now().plusMillis(expirationTime));
         recoveryToken.setToken(UUID.randomUUID().toString());
+
 
         recoveryToken = recoveryTokenRepository.save(recoveryToken);
         return recoveryToken;
