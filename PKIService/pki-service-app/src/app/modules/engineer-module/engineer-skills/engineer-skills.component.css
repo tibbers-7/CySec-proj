@@ -40,3 +40,23 @@ font-size: 16px;
 p {
     float: left;
 }
+
+mat-card{
+    margin-top: 70px;
+    float: left;
+    font-size: 18px;
+    color:  white;
+    background-color: rgb(32, 30, 30);;
+    height: 160px;
+    width: 280px;
+}
+
+mat-card-content{
+    font-size: 16px;
+    color: white;
+}
+
+mat-card-title {
+    margin-bottom: 20px;
+    margin-left: 20px;
+}

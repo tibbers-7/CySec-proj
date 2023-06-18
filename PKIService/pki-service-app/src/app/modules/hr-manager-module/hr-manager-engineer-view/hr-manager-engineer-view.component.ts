@@ -6,6 +6,7 @@ import { EmployeeDTO } from 'src/app/model/employee-dto';
 import { ProjectWorkDTO } from 'src/app/model/project-work-dto.model';
 import { SkillDTO } from 'src/app/model/skill-dto.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CvService } from 'src/app/services/cv.service';
 import { ProjectWorkService } from 'src/app/services/project-work.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { SkillService } from 'src/app/services/skill.service';
@@ -27,7 +28,12 @@ export class HrManagerEngineerViewComponent implements OnInit{
   public displayedColumns2 = ['id','name','evaluation']
   public skills: SkillDTO[] = [];
 
-  public constructor(private projectService: ProjectService, private projectWorkService: ProjectWorkService, private userService: UserService, private toast: ToastrService, private router: Router, private route: ActivatedRoute, private authService: AuthenticationService, private skillService: SkillService){}
+  public pdfName: string = ''
+
+  retrieveResonse: any;
+  base64Response: any;
+
+  public constructor(private projectService: ProjectService, private projectWorkService: ProjectWorkService, private userService: UserService, private toast: ToastrService, private router: Router, private route: ActivatedRoute, private authService: AuthenticationService, private skillService: SkillService, private fileService: CvService){}
   
   
   ngOnInit(): void {
@@ -47,10 +53,55 @@ export class HrManagerEngineerViewComponent implements OnInit{
         this.skills = res;
         this.dataSource2.data = this.skills;
       })
+
+
+      this.fileService.downloadCV(this.engineerID).subscribe(res=>{
+        if(res != null){
+          this.pdfName = res.docName;
+        }
+        else{
+          this.pdfName = 'nema pdf-a'
+        }
+      })
     
     })
 
     
+  }
+
+
+  openCV() {
+
+    this.fileService.downloadCV(this.engineerID).subscribe(
+      res => {
+        this.retrieveResonse = res;
+        console.log(res)
+        this.processFileResponse(this.retrieveResonse.docData, this.retrieveResonse.docName)
+      }); 
+
+  }
+
+  private processFileResponse(fileResponseData: any, fileName: string): void {
+
+      this.base64Response = fileResponseData;
+      const binaryString = window.atob(fileResponseData);
+      const bytes = new Uint8Array(binaryString.length);
+      const binaryToBlob = bytes.map((byte, i) => binaryString.charCodeAt(i));
+      const blob = new Blob([binaryToBlob], { type: 'application/pdf' });
+      this.downloadFile(blob, fileName);
+
+  }
+  
+  private downloadFile(blob: any, fileName: string): void {
+  
+    // Other Browsers
+    const url = (window.URL || window.webkitURL).createObjectURL(blob);
+    window.open(url, '_blank');
+  
+    // rewoke URL after 15 minutes
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 15 * 60 * 1000);
   }
 
 

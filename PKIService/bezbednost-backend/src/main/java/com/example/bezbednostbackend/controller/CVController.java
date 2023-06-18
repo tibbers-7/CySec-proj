@@ -1,10 +1,12 @@
 package com.example.bezbednostbackend.controller;
 
+import com.example.bezbednostbackend.dto.StringResponseDTO;
 import com.example.bezbednostbackend.model.CV;
 import com.example.bezbednostbackend.service.CVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,19 +33,19 @@ public class CVController {
     }
 
     @PreAuthorize("hasAuthority('UPLOAD_CV')")
-    @PostMapping(value="/uploadFile/{engineerID}")
-    public String uploadFile(@RequestParam("file")MultipartFile file, @PathVariable("engineerID") Integer engineerID){
-        cvService.saveFile(file, engineerID);
-        return "ok";
+    @PostMapping(value="/uploadFile/{engineerID}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<StringResponseDTO> uploadFile(@RequestParam("pdfFile")MultipartFile file, @PathVariable("engineerID") Integer engineerID){
+        String uploadCv = cvService.saveFile(file, engineerID);
+        return new ResponseEntity<>(new StringResponseDTO("File uploaded!"), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('DOWNLOAD_CV')")
-    @GetMapping("/downloadFile/{engineerID}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer engineerID){
-        CV cv = cvService.getFileByEngineerID(engineerID).get();
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(cv.getDocType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\""+cv.getDocName()+"\"")
-                .body(new ByteArrayResource(cv.getData()));
+    @GetMapping(value="/downloadFile/{engineerID}")
+    public CV downloadFile(@PathVariable Integer engineerID){
+        CV cv = cvService.downloadFile(engineerID);
+        if(cv != null){
+            return cv;
+        }
+        return null;
     }
 }

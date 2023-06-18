@@ -1,4 +1,24 @@
 <app-hr-manager-toolbar></app-hr-manager-toolbar>
+<div>
+    <mat-card>
+        <mat-card-title>CV</mat-card-title>
+        <mat-card-content>
+            
+            <div class="input-group">
+                <div class="cv-container">
+                    <label for="cvUrl">{{pdfName}}</label>
+                    <div class="cv-content">
+                        <ng-container>
+                            <button (click)="openCV()">View CV</button>
+                        </ng-container>
+
+                    </div>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</div>
 <div class="admin-home-main-div">
 
     <div class="table-header">
@@ -55,3 +75,5 @@
     </table>
 
 </div>
+
+
