@@ -1,10 +1,7 @@
 package com.example.bezbednostbackend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -12,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="cvs")
+@Builder
 public class CV {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +19,13 @@ public class CV {
     private String docName;
     private String docType;
     @Lob
-    private byte[] data;
+    @Column(name = "data",length = 1000)
+    private byte[] docData;
 
     public CV(Integer engineerID, String docName, String docType, byte[] data) {
         this.engineerID = engineerID;
         this.docName = docName;
         this.docType = docType;
-        this.data = data;
+        this.docData = data;
     }
 }
