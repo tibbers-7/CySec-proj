@@ -146,6 +146,7 @@ insert into roles_privileges(role_id, privilege_id) values (2, 25)
 insert into roles_privileges(role_id, privilege_id) values (2, 29)
 insert into roles_privileges(role_id, privilege_id) values (2, 31)
 insert into roles_privileges(role_id, privilege_id) values (2, 33)
+insert into roles_privileges(role_id, privilege_id) values (2, 34)
 insert into roles_privileges(role_id, privilege_id) values (2, 37)
 insert into roles_privileges(role_id, privilege_id) values (2, 38)
 
