@@ -17,15 +17,18 @@ public class RegistrationDTO {
 
     @Valid
     @NotBlank(message = "Name cannot be empty or null")
+    @Size(max = 100, message = "Name cannot have more than a 100 characters")
     private String name;
 
     @Valid
     @NotBlank(message = "Surname cannot be empty or null")
+    @Size(max = 100, message = "Surname cannot have more than a 100 characters")
     private String surname;
 
     @Valid
     @NotBlank(message = "Username cannot be empty or null")
     @Email(message = "Username should be a valid email address.")
+    @Size(max = 100, message = "Username cannot have more than a 100 characters")
     private String username;
 //Minimum eight characters, at least one letter and one number
     @Valid
@@ -48,6 +51,7 @@ public class RegistrationDTO {
 
     @Valid
     @NotBlank(message = "Work title cannot be empty")
+    @Size(max = 100, message = "Work title cannot have more than a 100 characters")
     public String workTitle;
 
 }

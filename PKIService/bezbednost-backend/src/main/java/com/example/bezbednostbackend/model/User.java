@@ -2,6 +2,9 @@ package com.example.bezbednostbackend.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -28,10 +31,14 @@ public class User implements UserDetails {
     private String surname;
     private String username;
     private String password;
+
+
     @JdbcTypeCode(SqlTypes.JSON)
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @NotEmpty(message = "Phone number is required")
     private String phoneNumber;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -41,6 +48,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
+
+
     private String workTitle;
     private boolean isActive;
     private boolean allowRefreshToken;

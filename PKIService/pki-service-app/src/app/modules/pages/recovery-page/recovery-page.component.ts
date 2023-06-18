@@ -17,7 +17,7 @@ export class RecoveryPageComponent {
         if(!params['username'] || !params['token']) this.toast.error("Link is not valid!")
         this.authService.validateRecoveryToken(params['token'], params['username']).subscribe(res=>{
           this.authService.setSession(res);
-          if(this.authService.isLoggedIn()) this.router.navigate(['home'])
+          if(this.authService.isLoggedIn()) this.router.navigate(['change-password'])
           else this.toast.error('Something went wrong, try again!')
         
       })
