@@ -52,11 +52,11 @@ export class ManagerEngineersOnProjectViewComponent implements OnInit{
   }
 
   addEngineer(){
-    //this.router.navigate(['projects', this.projectID, 'employees', 'add']);
+    this.router.navigate(['manager/projects', this.projectID, 'employees', 'add']);
   }
 
   updateProjectWork(id: number){
-    //this.router.navigate(['projects', this.projectID, 'employees', 'update', id]);
+    this.router.navigate(['manager/projects', this.projectID, 'employees', 'update', id]);
   }
 
   deleteProjectWork(id: number){
