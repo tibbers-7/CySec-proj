@@ -22,6 +22,5 @@ public class CombinedSearchDTO {
     @Size(max = 100, message = "Surname cannot have more than a 100 characters")
     private String surname;
     @NotEmpty(message = "Start of employment is required")
-    @Size(max = 100, message = "Start of employment cannot have more than a 100 characters")
-    private String startOfEmployment;
+    private int numberOfMonthsEmployed;
 }

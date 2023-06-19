@@ -11,8 +11,8 @@ import { ManagerModule } from '../manager-module/manager.module';
 import { AdminModule } from '../admin-module/admin.module';
 import { EngineerModule } from '../engineer-module/engineer.module';
 import { AuthGuard } from 'src/app/auth/auth-guard';
-import { RecoveryPageComponent } from './recovery-page/recovery-page.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { RecoveryPageComponent } from './recovery-page/recovery-page.component';
 import { HrManagerModule } from '../hr-manager-module/hr-manager.module';
 
 const routes: Routes = [

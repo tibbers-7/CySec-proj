@@ -130,7 +130,8 @@ export class EngineerProfileComponent implements OnInit{
         phoneNumber: phoneNumber ? phoneNumber : '',
         role: this.employee.role,
         isBlocked:false,
-        allowRefreshToken:true
+        allowRefreshToken:true,
+        dateOfEmployment : this.employee.dateOfEmployment ? this.employee.dateOfEmployment : new Date().toString()
       }
 
       console.log(employee)

@@ -46,9 +46,6 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public void issueCertificate(NewCertificateRequestDataDTO certData, String keyStorePassword) throws NoSuchAlgorithmException, CertificateException, NoSuchProviderException, KeyStoreException, IOException {
 
-
-
-
         DigitalEntity subject=certData.getSubject();
         DigitalEntity issuer=certData.getIssuer();
 
@@ -147,7 +144,7 @@ public class CertificateServiceImpl implements CertificateService {
 
 
         // ovde ga ne napravi?
-        X509Certificate certificate = certificateGenerator.generateCertificate(subjectData, issuerData,new BigInteger(String.valueOf(subjectId)),CertificateRole.valueOf(role));
+        X509Certificate certificate = certificateGenerator.generateCertificate(subjectData, issuerData,new BigInteger(String.valueOf(subjectId)),CertificateRole.valueOf(role), certData.getExtensions());
 
         saveCertificate(certificateRole, "sifra", certificate.getSerialNumber().toString(), keyStorePassword, keyPairIssuer.getPrivate(), certificate);
 

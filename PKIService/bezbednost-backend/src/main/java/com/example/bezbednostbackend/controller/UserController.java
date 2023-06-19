@@ -26,6 +26,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -128,7 +129,7 @@ private final RolePrivilegeService rolePrivilegeService;
     @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody EmployeeDTO dto){
         User user = new User();
-        user = Map(dto, user);
+        user = Map(dto);
         try{
             User userOld = userService.findByUsername(dto.getUsername()).orElse(null);
             if(userOld == null){
@@ -152,7 +153,7 @@ private final RolePrivilegeService rolePrivilegeService;
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         //user = Map(dto, user);
-        userService.update(Map(dto, user));
+        userService.update(Map(dto));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -168,10 +169,10 @@ private final RolePrivilegeService rolePrivilegeService;
         }
     }
 
-    private User Map(EmployeeDTO dto, User user) {
+    private User Map(EmployeeDTO dto) {
         return new User(dto.getName(), dto.getSurname(), dto.getUsername(),
                 passwordEncoder.encode(dto.getPassword()), addressService.findById(dto.getAddressID()).orElse(null), dto.getPhoneNumber(),
-                rolePrivilegeService.getRoleByName(dto.getRole()), dto.getWorkTitle(), true);
+                rolePrivilegeService.getRoleByName(dto.getRole()), dto.getWorkTitle(), true, LocalDateTime.parse(dto.getDateOfEmployment()));
 
     }
 

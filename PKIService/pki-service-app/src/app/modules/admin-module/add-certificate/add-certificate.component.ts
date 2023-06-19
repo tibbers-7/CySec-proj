@@ -19,6 +19,9 @@ export class AddCertificateComponent implements OnInit {
   SSFormData : NewCertificateRequestData = new NewCertificateRequestData()
   EEAndCAFormData : NewCertificateRequestData = new NewCertificateRequestData()
   keyStorePassword : string = ''
+  selectedExtensions : string[] = []
+  allExtensions : string[] = ['Digital Signature', 'Key Encipherment', 'Data Encipherment',
+  'Key Agreement', 'Certificate Signing']
 
   public constructor(private certificateService: CertificateService, private toast: ToastrService, public dialog: MatDialog){}
 
@@ -49,6 +52,11 @@ export class AddCertificateComponent implements OnInit {
       this.toast.error('You have to fill all fields to continue!')
       return false
     }
+    if(this.selectedExtensions.length = 0){
+      this.toast.error('You have to choose extensions for the certificate!')
+      return false
+    }
+    this.EEAndCAFormData.extensions = this.selectedExtensions
     this.EEAndCAFormData.certificateRole = this.selectedCertificateType
     this.EEAndCAFormData.issuer = this.selectedIssuer
     return true
@@ -66,6 +74,8 @@ export class AddCertificateComponent implements OnInit {
       this.toast.error('You have to fill all fields to continue!')
       return false
     }
+    
+    this.SSFormData.extensions = this.selectedExtensions
     this.SSFormData.issuer = this.SSFormData.subject
     this.SSFormData.certificateRole = this.selectedCertificateType
     

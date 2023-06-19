@@ -2,6 +2,7 @@ package com.example.pkiservicebackend.dto;
 
 import com.example.pkiservicebackend.model.DigitalEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class GetAllCertificatesDTO {
@@ -11,6 +12,7 @@ public class GetAllCertificatesDTO {
         private String serialNumber;
         private String certificateRole;
         private String certificateStatus;
+        //private ArrayList<String> extensions;
         private Date expiringDate;
 
     public GetAllCertificatesDTO() {

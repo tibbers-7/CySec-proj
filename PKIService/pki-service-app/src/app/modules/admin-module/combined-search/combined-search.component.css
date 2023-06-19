@@ -1,0 +1,45 @@
+.search-main-div{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+.engineers-table{
+    background-color: rgb(32, 30, 30);
+    margin-top: 20px;
+    border-radius: 10px;
+    min-width: 650px;
+    height: fit-content;
+}
+
+.search-form-div{
+   justify-self: center;
+   margin-top: 100px;
+   width: 700px;
+
+}
+
+.search-form-div label{
+   color:white;
+}
+.cell-center{
+color: white;
+font-size: 16px;
+}
+
+.cell-center-header{
+  color: white;
+  font-size: 18px;
+  align-content: center;
+  }
+  
+  .search-button{
+    background-color: rgb(32, 30, 30);
+    border:rgb(146, 144, 144) outset 3px;
+    color: white;
+    border-radius: 12px;
+    margin: 5px;
+    margin-left: 20px;
+    font-size: large;
+}

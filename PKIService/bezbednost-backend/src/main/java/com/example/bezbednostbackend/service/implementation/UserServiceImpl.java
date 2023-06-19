@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -84,10 +85,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> searchEngineers(CombinedSearchDTO dto){
-        LocalDateTime startDate = LocalDateTime.parse(dto.getStartOfEmployment());
         List<User> users = userRepository.combinedEngineerSearch(dto.getUsername(), dto.getName(), dto.getSurname());
-        //PERIOD ZAPOSLENJA??
-        return users;
+        LocalDateTime formated = LocalDateTime.now().minusMonths(dto.getNumberOfMonthsEmployed());
+        List<User> filteredUsers = users.stream().filter(u -> u.getStartOfEmployment().isBefore(formated)).collect(Collectors.toList());
+        return filteredUsers;
     }
 
     @Override

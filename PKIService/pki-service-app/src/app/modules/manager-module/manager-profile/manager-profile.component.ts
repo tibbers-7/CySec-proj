@@ -130,7 +130,8 @@ export class ManagerProfileComponent implements OnInit{
         phoneNumber: phoneNumber ? phoneNumber : '',
         role: this.employee.role,
         isBlocked:false,
-        allowRefreshToken:true
+        allowRefreshToken:true,
+        dateOfEmployment: Date().toString()
       }
 
       console.log(employee)

@@ -5,6 +5,9 @@ insert into addresses (country, city, street_address) values ('Srbija', 'Beograd
 insert into addresses (country, city, street_address) values ('Srbija', 'Beograd', 'Kralja Petra 2');
 insert into addresses (country, city, street_address) values ('Srbija', 'Beograd', 'Mihajla Pupina 112');
 insert into addresses (country, city, street_address) values ('Srbija', 'Nis', 'Novosadska 33');
+insert into addresses (country, city, street_address) values ('Srbija', 'Kragujevac', 'Desanke Maksimovic 4');
+insert into addresses (country, city, street_address) values ('Srbija', 'Krusevac', 'Zlatne grede 5');
+insert into addresses (country, city, street_address) values ('Srbija', 'Obrenovac', 'Kralja Petra 2');
 
 insert into registration_requests (address, is_cancelled, is_resolved, name, surname, password, phone_number, request_created, request_updated, role, username, work_title) values ('{"id": null, "city": "Novi Sad", "country": "Srbija", "streetAddress": "Futoska 62"}', false, true, 'Elena', 'Milanovic', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS','0623403843','2023-05-20 17:03:15.433759', '2023-05-22 12:00:10.433759', 'ROLE_HR_MANAGER', 'enaa@gmail.com', 'Psychologist');
 insert into registration_requests (address, is_cancelled, is_resolved, name, surname, password, phone_number, request_created, request_updated, role, username, work_title) values ('{"id": null, "city": "Beograd", "country": "Srbija", "streetAddress": "Petra Drapsina 3"}', false, true, 'Milan', 'Preradovic', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0645459035','2023-05-10 07:00:00.421759', '2023-05-22 12:01:10.433759', 'ROLE_PROJECT_MANAGER', 'mili@gmail.com', 'Java developer');
@@ -18,13 +21,16 @@ insert into roles(id, name) values (2, 'ROLE_PROJECT_MANAGER')
 insert into roles(id, name) values (3, 'ROLE_HR_MANAGER')
 insert into roles(id, name) values (4, 'ROLE_ENGINEER')
 
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (true, 'Anja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0691442001', 'Dmitrovic', 'tibbers707@gmail.com',1, 'Full stack developer',true,false);
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (false, 'Elena', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0623403843', 'Milanovic', 'mili@gmail.com',2, 'Psychologist',true,false);
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (false, 'Milan', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0645459035', 'Preradovic', 'enaa@gmail.com',3, 'Java developer',true,false);
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (false, 'Nemanja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0613985239', 'Djordjevic', 'ddgss@gmail.com',4, '.NET developer',true,false);
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (true, 'Ivana', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0690358205', 'Knezevic', 'maliknez@gmail.com',5, 'JS developer',true,false);
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (false, 'Milos', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0603523525', 'Ciric', 'tibbbii@gmail.com',6, 'Sociologist',true,false);
-insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked) values (true, 'Isidora', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0662202029', 'Zelenovic', 'nestonesto@gmail.com',7, 'JS developer',true,false);
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (true, 'Anja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0691442001', 'Dmitrovic', 'tibbers707@gmail.com',1, 'Full stack developer',true,false, '2023-01-11 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (false, 'Elena', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0623403843', 'Milanovic', 'mili@gmail.com',2, 'Psychologist',true,false, '2022-08-10 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (false, 'Milan', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0645459035', 'Preradovic', 'enaa@gmail.com',3, 'Java developer',true,false, '2021-12-26 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (false, 'Nemanja', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0613985239', 'Djordjevic', 'ddgss@gmail.com',4, '.NET developer',true,false,'2023-05-17 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (true, 'Ivana', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0690358205', 'Knezevic', 'maliknez@gmail.com',5, 'JS developer',true,false, '2023-03-06 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (false, 'Milos', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0603523525', 'Ciric', 'tibbbii@gmail.com',6, 'Sociologist',true,false, '2022-10-10 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (true, 'Isidora', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0662202029', 'Zelenovic', 'nestonesto@gmail.com',7, 'JS developer',true,false, '2022-05-17 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (true, 'Nevena', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0622252022', 'Mikic', 'nevenicaa@gmail.com',8, 'JS developer',true,false, '2022-11-9 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (true, 'Bane', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0614405027', 'Maricic', 'banebane@gmail.com',9, 'JS developer',true,false, '2022-12-02 14:20:00.423292');
+insert into users (is_active, name, password, phone_number, surname, username, address_id, work_title,allow_refresh_token,is_blocked, start_of_employment) values (true, 'Sinisa', '$2a$10$s7s88elNF/TkJ9D5OyOAUejgZ/t/NsHF4/QP4JFAzzLOLjpDBLGpS', '0614405027', 'Gluvic', 'gluvicsi@gmail.com',10, 'Java developer',true,false, '2023-01-01 14:20:00.423292');
 
 insert into users_roles (user_id, role_id) values(1,1)
 insert into users_roles (user_id, role_id) values(2,3)
@@ -33,6 +39,9 @@ insert into users_roles (user_id, role_id) values(4,4)
 insert into users_roles (user_id, role_id) values(5,4)
 insert into users_roles (user_id, role_id) values(6,3)
 insert into users_roles (user_id, role_id) values(7,2)
+insert into users_roles (user_id, role_id) values(8,4)
+insert into users_roles (user_id, role_id) values(9,4)
+insert into users_roles (user_id, role_id) values(10,4)
 
 insert into privileges(id, name) values (1, 'GET_ADDRESSES')
 insert into privileges(id, name) values (2, 'GET_ADDRESS_BY_ID')

@@ -142,8 +142,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createUserFromRegistrationRequest(RegistrationRequest request) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, NoSuchProviderException, InvalidKeyException {
         User registratedUser = new User(request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),null,
-                request.getPhoneNumber(), roleRepository.findByName(request.getRole()).get() , request.getWorkTitle(),false);
-        registratedUser=encryptionService.encryptConfidentialUserData(registratedUser);
+                request.getPhoneNumber(), roleRepository.findByName(request.getRole()).get() , request.getWorkTitle(),false, LocalDateTime.now());
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }

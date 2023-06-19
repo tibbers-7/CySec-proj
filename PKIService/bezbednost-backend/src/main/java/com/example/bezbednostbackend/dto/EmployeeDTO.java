@@ -39,6 +39,7 @@ public class EmployeeDTO {
     @NotEmpty(message = "Work title is required")
     @Size(max = 100, message = "Work title cannot have more than a 100 characters")
     private String workTitle;
+    private String dateOfEmployment;
 
     private boolean isBlocked;
     private boolean allowRefreshToken;
@@ -58,6 +59,7 @@ public class EmployeeDTO {
         this.workTitle = dto.getWorkTitle();
         this.isBlocked=dto.isBlocked();
         this.allowRefreshToken=dto.isAllowRefreshToken();
+        this.dateOfEmployment = dto.getStartOfEmployment().toString();
     }
 
 }

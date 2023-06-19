@@ -9,6 +9,7 @@ export class EmployeeDTO {
     role: string = ''
     isBlocked:boolean=false;
     allowRefreshToken:boolean=true;
+    dateOfEmployment = ''
 
     public constructor(obj?: any) {
         if (obj) {
@@ -22,6 +23,7 @@ export class EmployeeDTO {
             this.role = obj.role;
             this.isBlocked=obj.isBlocked;
             this.allowRefreshToken=obj.allowRefreshToken;
+            this.dateOfEmployment = obj.dateOfEmployment
         }
     }
 

@@ -35,7 +35,13 @@
                 <input matInput type="text" [(ngModel)]="SSFormData.subject.organizationUnit" name="organizationUnit">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Country</mat-label>
+                <mat-label>Choose key usage extensions:</mat-label>
+                <mat-select [(value)]="selectedExtensions" [multiple]="true">
+                    <mat-option *ngFor="let extension of allExtensions" [value]="extension">{{extension}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Country Code</mat-label>
                 <input matInput type="text" [(ngModel)]="SSFormData.subject.country" name="country">
             </mat-form-field>
             <button mat-button class="add-certificate-button" (click)="submitSSForm()">Submit</button>
@@ -78,7 +84,13 @@
                 <input matInput type="text" [(ngModel)]="EEAndCAFormData.subject.organizationUnit" name="organizationUnit">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Country</mat-label>
+                <mat-label>Choose key usage extensions:</mat-label>
+                <mat-select [(value)]="selectedExtensions" [multiple]="true">
+                    <mat-option *ngFor="let extension of allExtensions" [value]="extension">{{extension}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Country Code</mat-label>
                 <input matInput type="text" [(ngModel)]="EEAndCAFormData.subject.country" name="country">
             </mat-form-field>
         <button mat-button class="add-certificate-button" (click)="submitCAEEForm()">Submit</button>

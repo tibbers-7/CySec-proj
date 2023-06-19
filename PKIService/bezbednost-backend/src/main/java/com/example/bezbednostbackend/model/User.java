@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,13 +62,14 @@ public class User implements UserDetails {
     private boolean isActive;
     private boolean allowRefreshToken;
     private boolean isBlocked;
+    private LocalDateTime startOfEmployment;
 
     public User(){
         super();
         this.isActive=false;
     }
 
-    public User(String name, String surname, String username, String password, Address address, String phoneNumber, Role role, String workTitle, boolean isActive) {
+    public User(String name, String surname, String username, String password, Address address, String phoneNumber, Role role, String workTitle, boolean isActive, LocalDateTime startOfEmployment) {
         this.name = name;
         this.surname = surname;
         this.password = password;
@@ -79,6 +81,7 @@ public class User implements UserDetails {
         this.roles = roles;
         this.workTitle = workTitle;
         this.isActive = isActive;
+        this.startOfEmployment = startOfEmployment;
     }
 
 

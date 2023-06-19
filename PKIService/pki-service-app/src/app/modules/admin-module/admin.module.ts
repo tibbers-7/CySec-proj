@@ -21,12 +21,13 @@ import { AddEmployeesComponent } from './add-employees/add-employees.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { PrivilegeDialogComponent } from './privilege-dialog/privilege-dialog.component';
 import { ControlUserDialogComponent } from './control-user-dialog/control-user-dialog.component';
+import { CombinedSearchComponent } from './combined-search/combined-search.component';
 
 const routes: Routes = [
     {path:'certificates', component: CertificatesComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'add-certificate', component: AddCertificateComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
+    canActivate:[RoleGuard], data: {expectedRole: 'ROLE_ADMIN'}},
     {path:'requests', component: RegistrationRequestsComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'projects', component: ProjectsViewComponent,
@@ -48,7 +49,8 @@ const routes: Routes = [
     {path:'employees/create', component: AddEmployeesComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path: 'editProfile', component: EditProfileComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }}
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
+    {path: 'engineers', component:CombinedSearchComponent}
 
   ];
 
@@ -72,7 +74,8 @@ const routes: Routes = [
     EditProfileComponent,
     CertificatesComponent,
     PrivilegeDialogComponent,
-    ControlUserDialogComponent
+    ControlUserDialogComponent,
+    CombinedSearchComponent
   ],
   imports: [
     AppRoutingModule,

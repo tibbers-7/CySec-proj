@@ -104,7 +104,8 @@ export class AddEmployeesComponent implements OnInit{
         phoneNumber: phoneNumber ? phoneNumber : '',
         role: String(this.selectedRole),
         isBlocked:false,
-        allowRefreshToken:true
+        allowRefreshToken:true,
+        dateOfEmployment : new Date().toString()
       }
 
       console.log(employee)
