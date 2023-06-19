@@ -20,8 +20,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -173,7 +177,7 @@ private final RolePrivilegeService rolePrivilegeService;
 
     @PreAuthorize("hasAuthority('APPROVE_REGISTRATION_REQUEST')")
     @PostMapping(value="/register/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StringResponseDTO> approveRegistration(@RequestBody RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException {
+    public ResponseEntity<StringResponseDTO> approveRegistration(@RequestBody RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchProviderException {
         //treba resiti cist nacin na koji ce se vratiti da li je uspesno ili ne
         authenticationService.approveRegistrationRequest(dto);
 

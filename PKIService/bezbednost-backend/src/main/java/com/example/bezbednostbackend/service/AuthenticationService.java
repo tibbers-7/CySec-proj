@@ -10,8 +10,12 @@ import com.example.bezbednostbackend.dto.AuthenticationRequestDTO;
 import com.example.bezbednostbackend.dto.AuthenticationResponseDTO;
 import com.example.bezbednostbackend.model.RegistrationRequest;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.List;
 
 public interface AuthenticationService {
@@ -24,7 +28,7 @@ public interface AuthenticationService {
 
     void cancelRegistrationRequest(RegistrationResolveRequestDTO dto);
 
-    void approveRegistrationRequest(RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException;
+    void approveRegistrationRequest(RegistrationResolveRequestDTO dto) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchProviderException;
 
     AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request);
     void sendRequestApprovalEmail(String username) throws NoSuchAlgorithmException, InvalidKeyException;

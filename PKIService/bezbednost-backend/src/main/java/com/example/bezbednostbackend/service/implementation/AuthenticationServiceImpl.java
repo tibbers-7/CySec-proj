@@ -3,6 +3,7 @@ package com.example.bezbednostbackend.service.implementation;
 import com.example.bezbednostbackend.auth.JwtService;
 import com.example.bezbednostbackend.dto.RegistrationResolveRequestDTO;
 import com.example.bezbednostbackend.dto.RegistrationDTO;
+import com.example.bezbednostbackend.encryption.EncryptionService;
 import com.example.bezbednostbackend.exceptions.RequestAlreadyPendingException;
 import com.example.bezbednostbackend.exceptions.TokenRefreshException;
 import com.example.bezbednostbackend.exceptions.UserAlreadyExistsException;
@@ -31,8 +32,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -54,6 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenRepository verificationTokenRepository;
     private final RoleRepository roleRepository;
+    private final EncryptionService encryptionService;
 
     @Override
     public void makeRegistrationRequest(RegistrationDTO dto) throws UserIsBannedException,
@@ -120,7 +126,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void approveRegistrationRequest(RegistrationResolveRequestDTO dto)
-            throws NoSuchAlgorithmException, InvalidKeyException {
+            throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchProviderException {
         log.info("AuthenticationService: entered the approveRegistrationRequest method.");
         Optional<RegistrationRequest> optionalRequest =
                 registrationRequestRepository.findById(dto.getIdOfRequest());
@@ -133,10 +139,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         sendRequestApprovalEmail(request.getUsername());
     }
 
-    public void createUserFromRegistrationRequest(RegistrationRequest request){
+    public void createUserFromRegistrationRequest(RegistrationRequest request) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, NoSuchProviderException, InvalidKeyException {
         User registratedUser = new User(request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),null,
                 request.getPhoneNumber(), roleRepository.findByName(request.getRole()).get() , request.getWorkTitle(),false);
+        registratedUser=encryptionService.encryptConfidentialUserData(registratedUser);
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }

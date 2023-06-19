@@ -1,6 +1,7 @@
 package com.example.bezbednostbackend.service.implementation;
 
 import com.example.bezbednostbackend.dto.CombinedSearchDTO;
+import com.example.bezbednostbackend.encryption.EncryptionService;
 import com.example.bezbednostbackend.model.Privilege;
 import com.example.bezbednostbackend.model.Role;
 import com.example.bezbednostbackend.model.User;
@@ -14,6 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final EncryptionService encryptionService;
     @Override
     public User getById(Integer id){
         Optional<User> user = userRepository.findById(id);
@@ -56,9 +65,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user) {
+    public void create(User user) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, NoSuchProviderException, InvalidKeyException {
         user.setAllowRefreshToken(true);
         user.setBlocked(false);
+        user=encryptionService.encryptConfidentialUserData(user);
         userRepository.save(user);
     }
 
