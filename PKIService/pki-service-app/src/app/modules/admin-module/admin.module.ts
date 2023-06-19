@@ -20,6 +20,7 @@ import { EmployeesViewComponent } from './employees-view/employees-view.componen
 import { AddEmployeesComponent } from './add-employees/add-employees.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { PrivilegeDialogComponent } from './privilege-dialog/privilege-dialog.component';
+import { ControlUserDialogComponent } from './control-user-dialog/control-user-dialog.component';
 
 const routes: Routes = [
     {path:'certificates', component: CertificatesComponent,
@@ -70,7 +71,8 @@ const routes: Routes = [
     AddEmployeesComponent,
     EditProfileComponent,
     CertificatesComponent,
-    PrivilegeDialogComponent
+    PrivilegeDialogComponent,
+    ControlUserDialogComponent
   ],
   imports: [
     AppRoutingModule,

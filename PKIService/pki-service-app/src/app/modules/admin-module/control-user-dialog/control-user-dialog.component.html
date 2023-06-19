@@ -1,0 +1,18 @@
+<div mat-dialog-content class="mat-dialog-main-div">
+    <div class="mat-dialog-request-info">
+      <mat-card>
+        <mat-label>Username: {{data.employee.username}}</mat-label>
+        <mat-label>Name: {{data.employee.name}}</mat-label>
+        <mat-label>Surname: {{data.employee.surname}}</mat-label>
+        <mat-label>Phone number: {{data.employee.phoneNumber}}</mat-label>
+        <mat-label>Role: {{data.employee.role}}</mat-label>
+      </mat-card>
+  
+    </div>
+  </div>
+  <div mat-dialog-actions class="mat-dialog-buttons">
+      <button mat-button (click)="blockUser()">Block user</button>
+      <button mat-button (click)="blockRefreshTokens()">Disallow refresh tokens</button>
+      <button mat-button (click)="cancel()" >Cancel</button>
+  </div>
+  

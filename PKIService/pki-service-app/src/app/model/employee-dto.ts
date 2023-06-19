@@ -7,6 +7,8 @@ export class EmployeeDTO {
     addressID: number = 0
     phoneNumber: string = ''
     role: string = ''
+    isBlocked:boolean=false;
+    allowRefreshToken:boolean=true;
 
     public constructor(obj?: any) {
         if (obj) {
@@ -18,6 +20,8 @@ export class EmployeeDTO {
             this.addressID = obj.addressID;
             this.phoneNumber = obj.phoneNumber;
             this.role = obj.role;
+            this.isBlocked=obj.isBlocked;
+            this.allowRefreshToken=obj.allowRefreshToken;
         }
     }
 

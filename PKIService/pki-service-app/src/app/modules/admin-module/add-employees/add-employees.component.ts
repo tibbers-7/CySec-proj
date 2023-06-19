@@ -102,7 +102,9 @@ export class AddEmployeesComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        role: String(this.selectedRole)
+        role: String(this.selectedRole),
+        isBlocked:false,
+        allowRefreshToken:true
       }
 
       console.log(employee)

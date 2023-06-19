@@ -48,6 +48,15 @@ export class UserService {
     return this.http.post(this.apiHost+'register/cancel',registrationCancellation, {headers: this.headers})
   }
 
+  blockUser(dto:EmployeeDTO): Observable<any>{
+    return this.http.post(this.apiHost+'block-user',dto, {headers: this.headers})
+  }
+
+  blockRefreshToken(dto:EmployeeDTO): Observable<any>{
+    return this.http.post(this.apiHost+'block-refresh-token',dto, {headers: this.headers})
+  }
+
+
   getRegistrationRequests(): Observable<RegistrationRequest[]>{
     return this.http.get<RegistrationRequest[]>(this.apiHost+'registration-requests', {headers: this.headers})
   }

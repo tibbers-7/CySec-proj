@@ -40,6 +40,9 @@ public class EmployeeDTO {
     @Size(max = 100, message = "Work title cannot have more than a 100 characters")
     private String workTitle;
 
+    private boolean isBlocked;
+    private boolean allowRefreshToken;
+
     public EmployeeDTO(User dto){
 
         for(Role role : dto.getRoles()){
@@ -53,6 +56,8 @@ public class EmployeeDTO {
         this.addressID = dto.getAddress().getId();
         this.phoneNumber = dto.getPhoneNumber();
         this.workTitle = dto.getWorkTitle();
+        this.isBlocked=dto.isBlocked();
+        this.allowRefreshToken=dto.isAllowRefreshToken();
     }
 
 }
