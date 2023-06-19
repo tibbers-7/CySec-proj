@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CombinedSearchComponent {
   dataSource = new MatTableDataSource<EmployeeDTO>()
-  displayedColumns = ['name','surname','phoneNumber', 'startOfEmployment']
+  displayedColumns = ['name','surname', 'username','phoneNumber', 'startOfEmployment']
   searchDTO : EngineerSearchDTO = new EngineerSearchDTO()
   
   public constructor(private userService: UserService, private toast: ToastrService){}

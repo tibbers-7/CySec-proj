@@ -55,7 +55,7 @@ export class UserService {
   }
 
   searchEngineers(dto: EngineerSearchDTO): Observable<EmployeeDTO[]>{
-    return this.http.post<EmployeeDTO[]>(this.apiHost + 'search-engineers', {headers : this.headers})
+    return this.http.post<EmployeeDTO[]>(this.apiHost + 'search-engineers', dto, {headers : this.headers})
   }
 
 }
