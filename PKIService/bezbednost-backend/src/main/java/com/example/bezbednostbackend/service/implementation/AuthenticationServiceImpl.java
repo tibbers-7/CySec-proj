@@ -135,7 +135,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void createUserFromRegistrationRequest(RegistrationRequest request){
         User registratedUser = new User(request.getName(),request.getSurname(),
                 request.getUsername(),request.getPassword(),null,
-                request.getPhoneNumber(), roleRepository.findByName(request.getRole()).get() , request.getWorkTitle(),false);
+                request.getPhoneNumber(), roleRepository.findByName(request.getRole()).get() , request.getWorkTitle(),false, LocalDateTime.now());
         userRepository.save(registratedUser);
         addressRepository.save(request.getAddress());
     }

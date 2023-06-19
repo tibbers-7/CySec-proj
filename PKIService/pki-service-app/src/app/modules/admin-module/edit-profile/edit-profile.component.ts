@@ -128,7 +128,8 @@ export class EditProfileComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        role: this.employee.role
+        role: this.employee.role,
+        dateOfEmployment : this.employee.dateOfEmployment? this.employee.dateOfEmployment : new Date().toString()
       }
 
       console.log(employee)

@@ -22,6 +22,7 @@ public class EmployeeDTO {
     private String phoneNumber;
     private String role;
     private String workTitle;
+    private String dateOfEmployment;
 
     public EmployeeDTO(User dto){
 
@@ -36,6 +37,7 @@ public class EmployeeDTO {
         this.addressID = dto.getAddress().getId();
         this.phoneNumber = dto.getPhoneNumber();
         this.workTitle = dto.getWorkTitle();
+        this.dateOfEmployment = dto.getStartOfEmployment().toString();
     }
 
 }

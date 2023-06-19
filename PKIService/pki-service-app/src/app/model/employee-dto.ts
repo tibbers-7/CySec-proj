@@ -7,6 +7,7 @@ export class EmployeeDTO {
     addressID: number = 0
     phoneNumber: string = ''
     role: string = ''
+    dateOfEmployment = ''
 
     public constructor(obj?: any) {
         if (obj) {
@@ -18,6 +19,7 @@ export class EmployeeDTO {
             this.addressID = obj.addressID;
             this.phoneNumber = obj.phoneNumber;
             this.role = obj.role;
+            this.dateOfEmployment = obj.dateOfEmployment
         }
     }
 

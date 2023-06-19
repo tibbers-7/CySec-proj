@@ -5,6 +5,8 @@ import { EmployeeDTO } from '../model/employee-dto';
 import { RegistrationRequest } from '../model/registrationRequest';
 import { RegistrationApprovalRequest } from '../model/registrationApprovalRequest';
 import { RegistrationCancellationRequest } from '../model/registrationCancellationRequest';
+import { CombinedSearchComponent } from '../modules/admin-module/combined-search/combined-search.component';
+import { EngineerSearchDTO } from '../model/engineer-search-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +52,10 @@ export class UserService {
 
   getRegistrationRequests(): Observable<RegistrationRequest[]>{
     return this.http.get<RegistrationRequest[]>(this.apiHost+'registration-requests', {headers: this.headers})
+  }
+
+  searchEngineers(dto: EngineerSearchDTO): Observable<EmployeeDTO[]>{
+    return this.http.post<EmployeeDTO[]>(this.apiHost + 'search-engineers', {headers : this.headers})
   }
 
 }

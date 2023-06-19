@@ -34,6 +34,14 @@ export class AdminToolbarComponent {
     this.router.navigate(['requests'])
   }
 
+  EngineersClick(){
+    this.router.navigate(['engineers'])
+  }
+
+  CertificatesClick(){
+    this.router.navigate(['certificates'])
+  }
+
   PermissionsClick(){
     this.router.navigate(['permissions'])
   }

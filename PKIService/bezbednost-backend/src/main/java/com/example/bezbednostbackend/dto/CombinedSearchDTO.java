@@ -13,5 +13,5 @@ public class CombinedSearchDTO {
     private String username;
     private String name;
     private String surname;
-    private String startOfEmployment;
+    private int numberOfMonthsEmployed;
 }

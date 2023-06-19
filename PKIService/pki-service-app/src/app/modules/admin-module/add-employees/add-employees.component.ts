@@ -102,7 +102,8 @@ export class AddEmployeesComponent implements OnInit{
         password: password ? password : '',
         addressID: this.addressID,
         phoneNumber: phoneNumber ? phoneNumber : '',
-        role: String(this.selectedRole)
+        role: String(this.selectedRole),
+        dateOfEmployment : new Date().toString()
       }
 
       console.log(employee)
