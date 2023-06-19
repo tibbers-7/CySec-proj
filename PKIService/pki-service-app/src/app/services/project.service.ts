@@ -31,4 +31,8 @@ export class ProjectService {
   updateProject(project: Project): Observable<Project>{
     return this.http.put<Project>(this.apiHost, project, {headers: this.headers});
   }
+
+  getAllProjectsByProjectManagerID(managerId: number): Observable<Project[]>{
+    return this.http.get<Project[]>(this.apiHost + 'findByProjectManager/' + managerId, {headers: this.headers});
+  }
 }

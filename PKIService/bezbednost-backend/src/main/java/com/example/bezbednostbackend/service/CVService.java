@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CVService {
-    CV saveFile(MultipartFile file, Integer engineerID);
+    String saveFile(MultipartFile file, Integer engineerID);
+    CV downloadFile(Integer engineerID);
     Optional<CV> getFileById(Integer fileID);
     Optional<CV> getFileByEngineerID(Integer engineerID);
     List<CV> getFiles();

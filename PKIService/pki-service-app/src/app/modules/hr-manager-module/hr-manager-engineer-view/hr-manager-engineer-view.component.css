@@ -9,7 +9,7 @@
     background-color: rgb(32, 30, 30);
     margin-top: 100px;
     border-radius: 10px;
-    min-width: 700px;
+    min-width: 800px;
     height: fit-content;
 }
 
@@ -47,8 +47,8 @@ mat-card{
     font-size: 18px;
     color:  white;
     background-color: rgb(32, 30, 30);;
-    height: 160px;
-    width: 280px;
+    height: 120px;
+    width: 180px;
 }
 
 mat-card-content{
