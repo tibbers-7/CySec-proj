@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name="cvs")
 @NamedQuery(name="findCVByEngineer",query="SELECT cv FROM CV cv WHERE cv.engineerID=:engineerId")
+@Builder
 public class CV {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
