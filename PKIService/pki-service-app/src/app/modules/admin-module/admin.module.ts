@@ -24,8 +24,7 @@ import { PrivilegeDialogComponent } from './privilege-dialog/privilege-dialog.co
 const routes: Routes = [
     {path:'certificates', component: CertificatesComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
-    {path:'add-certificate', component: AddCertificateComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
+    {path:'add-certificate', component: AddCertificateComponent},
     {path:'requests', component: RegistrationRequestsComponent,
     canActivate: [RoleGuard], data: { expectedRole: 'ROLE_ADMIN' }},
     {path:'projects', component: ProjectsViewComponent,
