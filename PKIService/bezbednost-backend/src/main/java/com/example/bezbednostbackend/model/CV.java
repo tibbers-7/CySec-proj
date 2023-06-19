@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="cvs")
-@NamedQuery(name="findCVByEngineer",query="SELECT cv FROM CV cv WHERE cv.engineerID=:engineerId")
+@NamedQuery(name="findCVByEngineer",query="SELECT cv FROM CV cv WHERE cv.engineerID=:engineerID")
 @Builder
 public class CV {
     @Id
